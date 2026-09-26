@@ -40,12 +40,15 @@ export function HeroSection() {
 
         {/* Headline */}
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground max-w-3xl leading-[1.1]">
-          rauantodev  <span className="text-primary text-3xl">Frontend Developer</span>
+          Raúl Antonio{" "}
+          <span className="block text-primary text-3xl sm:text-4xl font-semibold mt-2 tracking-wide">
+            Full Stack Developer
+          </span>
         </h1>
 
         {/* Subtitle */}
         <p className="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
-          Construyo interfaces que combinan diseño y código — desde sistemas de componentes hasta experiencias WebGL. Enfocado en el detalle, la fluidez y el impacto.
+          Diseño, desarrollo e implemento aplicaciones web robustas — desde interfaces reactivas hasta APIs de alto rendimiento. Arquitectura hexagonal, DDD y entrega orientada a resultados.
         </p>
 
         {/* CTA Buttons */}
