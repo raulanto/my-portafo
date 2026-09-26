@@ -1,5 +1,6 @@
 import GradientWaves from "@/components/GradientWaves";
 import AceternityButton from "@/components/ui/AceternityButton";
+import { Plus } from "lucide-react";
 
 export function HeroSection() {
   return (
@@ -31,22 +32,37 @@ export function HeroSection() {
       </div>
 
       {/* Hero Content — centered on top of the background */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-6 flex flex-col items-center text-center gap-7 pt-28 sm:pt-32 pb-16">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 flex flex-col items-center text-center gap-6 pt-28 sm:pt-32 pb-16">
         {/* Badge */}
         <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-background/80 dark:bg-background/60 backdrop-blur-xl border border-border/60 text-xs font-medium text-foreground shadow-lg">
           <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
           <span>Disponible para proyectos</span>
         </div>
 
-        {/* Headline */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground max-w-3xl leading-[1.1]">
-          Raúl Antonio{" "}
-          <span className="block text-primary text-3xl sm:text-4xl font-semibold mt-2 tracking-wide">
-            Full Stack Developer
-          </span>
-        </h1>
+        {/* Brand Headline (rauantodev Portafolio+) */}
+        <div className="relative flex flex-col items-center justify-center select-none py-4">
+          {/* Subtle dotted background grid matching the design image */}
+          <div className="absolute -inset-10 -z-10 rounded-3xl bg-[radial-gradient(rgba(120,119,198,0.25)_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(rgba(255,255,255,0.15)_1.5px,transparent_1.5px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_100%)] pointer-events-none" />
 
-        {/* Subtitle */}
+          <div className="inline-flex flex-col items-end">
+            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-foreground leading-none drop-shadow-sm">
+              rauantodev
+            </h1>
+            <div className="flex items-center gap-2 mt-1 sm:mt-2 text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground/90 tracking-tight">
+              <span>Portafolio</span>
+              <span className="inline-flex items-center justify-center size-7 sm:size-8 md:size-9 rounded-xl bg-purple-600 dark:bg-purple-500 text-white shadow-lg shadow-purple-500/40">
+                <Plus className="size-5 sm:size-6 stroke-[3]" />
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Role subtitle */}
+        <div className="text-sm sm:text-base font-semibold text-primary uppercase tracking-widest -mt-1">
+          Full Stack Developer
+        </div>
+
+        {/* Subtitle description */}
         <p className="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
           Diseño, desarrollo e implemento aplicaciones web robustas — desde interfaces reactivas hasta APIs de alto rendimiento. Arquitectura hexagonal, DDD y entrega orientada a resultados.
         </p>
@@ -61,9 +77,7 @@ export function HeroSection() {
           </AceternityButton>
         </div>
       </div>
-
-      {/* Bottom Fade Mask */}
-\
     </div>
   );
 }
+
