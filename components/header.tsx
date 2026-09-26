@@ -4,12 +4,12 @@ import * as React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Menu, X, ArrowUpRight, ChevronDown } from "lucide-react";
+import { Menu, X, ArrowUpRight, Sun, Moon, Sparkles } from "lucide-react";
+import { useCircularTheme } from "@/components/ui/CircularThemeProvider";
 
 interface NavItem {
   label: string;
   href: string;
-  hasDropdown?: boolean;
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -20,21 +20,39 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Gustos", href: "#gustos" },
 ];
 
+function ThemeToggle() {
+  const { triggerTransition, isAnimating, theme } = useCircularTheme();
+
+  return (
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      disabled={isAnimating}
+      onClick={(e) => triggerTransition(e)}
+      className="rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200 active:scale-90"
+      aria-label="Cambiar tema de color"
+    >
+      {theme === "dark" ? (
+        <Sun className="size-4 text-amber-400 animate-in fade-in zoom-in-75 duration-200" />
+      ) : (
+        <Moon className="size-4 text-slate-700 animate-in fade-in zoom-in-75 duration-200" />
+      )}
+    </Button>
+  );
+}
+
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  const [scrolled, setScrolled] = React.useState(false);
   const [activeSection, setActiveSection] = React.useState<string>("");
 
   React.useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-
       const sections = NAV_ITEMS.map((item) => item.href.substring(1));
       const current = sections.find((section) => {
         const el = document.getElementById(section);
         if (el) {
           const rect = el.getBoundingClientRect();
-          return rect.top <= 180 && rect.bottom >= 180;
+          return rect.top <= 200 && rect.bottom >= 200;
         }
         return false;
       });
@@ -46,36 +64,26 @@ export function Header() {
   }, []);
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 border-b border-border/40",
-        scrolled
-          ? "bg-background/85 dark:bg-background/80 backdrop-blur-2xl backdrop-saturate-150 shadow-md shadow-black/5 dark:shadow-black/20 border-border/60 py-3"
-          : "bg-background/60 dark:bg-background/40 backdrop-blur-xl backdrop-saturate-150 py-4"
-      )}
-    >
-      <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 flex items-center justify-between gap-4">
+    <header className="fixed top-5 left-0 right-0 z-50 px-4 sm:px-6">
+      <div className="max-w-4xl mx-auto rounded-full bg-background/80 dark:bg-background/60 backdrop-blur-2xl border border-border/60 px-5 sm:px-6 py-2.5 shadow-lg shadow-black/5 dark:shadow-black/20 flex items-center justify-between gap-4">
         {/* Brand / Logo */}
         <Link
           href="/"
-          className="group flex items-center gap-3 text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg py-1 transition-opacity hover:opacity-90"
+          className="group flex items-center gap-2.5 text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-full transition-opacity hover:opacity-90"
           aria-label="Ir al inicio"
         >
-          <div className="flex items-center gap-2.5">
-            <span className="font-extrabold text-base tracking-widest uppercase text-foreground group-hover:text-primary transition-colors">
-              RAÚL ANTÓN
-            </span>
-            <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold tracking-wide">
-              <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              AVAILABLE
-            </span>
+          <div className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-primary font-mono text-xs font-bold border border-primary/20 group-hover:scale-105 transition-transform">
+            <Sparkles className="size-3.5 text-primary" />
           </div>
+          <span className="font-semibold text-sm tracking-tight text-foreground group-hover:text-primary transition-colors">
+            Raúl Antón
+          </span>
         </Link>
 
-        {/* Centered Floating Pill Navigation (Matching Design Screenshot) */}
+        {/* Desktop Navigation Links */}
         <nav
           aria-label="Navegación principal"
-          className="hidden md:flex items-center gap-1 bg-muted/60 dark:bg-muted/30 p-1.5 rounded-full border border-border/50 backdrop-blur-md shadow-xs"
+          className="hidden md:flex items-center gap-1 sm:gap-1.5"
         >
           {NAV_ITEMS.map((item) => {
             const isActive = activeSection === item.href.substring(1);
@@ -84,28 +92,28 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-ring flex items-center gap-1",
+                  "px-3.5 py-1.5 text-xs font-medium rounded-full transition-all duration-200 outline-none",
                   isActive
-                    ? "text-foreground bg-background shadow-xs font-semibold"
-                    : "text-muted-foreground hover:text-foreground hover:bg-background/60"
+                    ? "text-foreground bg-muted font-semibold shadow-xs"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 )}
               >
                 {item.label}
-                {item.hasDropdown && <ChevronDown className="size-3 opacity-60" />}
               </Link>
             );
           })}
         </nav>
 
-        {/* Actions & Get Started Button */}
-        <div className="flex items-center gap-3">
+        {/* Actions, Theme Toggle & CTA Button */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <ThemeToggle />
+
           <Link href="#contacto">
             <Button
               size="sm"
-              className="rounded-full bg-foreground text-background hover:bg-foreground/90 font-medium text-xs px-5 py-2 h-9 shadow-sm transition-all duration-200 gap-1.5 active:scale-95"
+              className="rounded-full font-semibold text-xs px-5 py-2 h-9 shadow-sm transition-all duration-200 active:scale-95"
             >
               Hablemos
-              <ArrowUpRight className="size-3.5" />
             </Button>
           </Link>
 
@@ -113,7 +121,7 @@ export function Header() {
           <Button
             variant="ghost"
             size="icon-sm"
-            className="md:hidden rounded-full text-muted-foreground hover:text-foreground"
+            className="md:hidden rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-expanded={mobileMenuOpen}
             aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -125,8 +133,8 @@ export function Header() {
 
       {/* Mobile Nav Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden w-full border-t border-border/40 bg-background/95 backdrop-blur-2xl px-6 py-5 shadow-2xl animate-in slide-in-from-top-2 duration-200">
-          <nav className="flex flex-col gap-1.5 max-w-7xl mx-auto">
+        <div className="md:hidden max-w-4xl mx-auto mt-3 rounded-3xl border border-border/60 bg-background/95 backdrop-blur-2xl p-5 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-200">
+          <nav className="flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.href}
@@ -139,15 +147,18 @@ export function Header() {
               </Link>
             ))}
             <div className="mt-4 pt-4 border-t border-border/40 flex items-center justify-between px-2">
-              <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
+              <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
                 <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
                 Disponible para proyectos
               </span>
-              <Link href="#contacto" onClick={() => setMobileMenuOpen(false)}>
-                <Button size="sm" variant="outline" className="rounded-full text-xs px-4">
-                  Contacto
-                </Button>
-              </Link>
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <Link href="#contacto" onClick={() => setMobileMenuOpen(false)}>
+                  <Button size="sm" className="rounded-full font-semibold text-xs px-4">
+                    Contacto
+                  </Button>
+                </Link>
+              </div>
             </div>
           </nav>
         </div>
