@@ -5,51 +5,55 @@ import GradientWaves from "@/components/GradientWaves";
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      {/* Full-Screen Hero Header with GradientWaves */}
-      <div style={{ width: "100%", height: "100vh", position: "relative" }} className="overflow-hidden flex items-center justify-center min-h-screen">
-        <GradientWaves
-          horizonColor="#5227FF"
-          waveColor="#FF9FFC"
-          crestColor="#FFFFFF"
-          speed={0.4}
-          amplitude={2.5}
-          waveScale={0.6}
-          waveRatio={0.9}
-          swell={35}
-          turbulence={20}
-          tilt={1.11}
-          zoom={1}
-          height={5.5}
-          fogDepth={15}
-          detail="medium"
-          brightness={1}
-          opacity={1}
-          mouseInteraction
-          parallaxStrength={0.5}
-          grain
-          grainIntensity={0.05}
-        />
+      {/* Full-Screen Hero Section with GradientWaves Background */}
+      <div className="relative w-full min-h-screen overflow-hidden flex items-center justify-center">
+        {/* GradientWaves as absolute full-screen background */}
+        <div className="absolute inset-0" style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}>
+          <GradientWaves
+            horizonColor="#5227FF"
+            waveColor="#FF9FFC"
+            crestColor="#FFFFFF"
+            speed={0.4}
+            amplitude={2.5}
+            waveScale={0.6}
+            waveRatio={0.9}
+            swell={35}
+            turbulence={20}
+            tilt={1.11}
+            zoom={1.0}
+            height={5.5}
+            fogDepth={15}
+            detail="medium"
+            brightness={1.0}
+            opacity={1.0}
+            mouseInteraction={true}
+            parallaxStrength={0.5}
+            grain={true}
+            grainIntensity={0.05}
+          />
+        </div>
 
-        {/* Hero Overlay Content */}
-        <div className="relative z-10 max-w-4xl mx-auto px-6 flex flex-col items-center text-center gap-7 pt-12">
+        {/* Hero Content — centered on top of the background */}
+        <div className="relative z-10 w-full max-w-4xl mx-auto px-6 flex flex-col items-center text-center gap-7 pt-28 sm:pt-32 pb-16">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-background/70 dark:bg-background/50 backdrop-blur-xl border border-border/50 text-xs font-medium text-foreground shadow-lg">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-background/80 dark:bg-background/60 backdrop-blur-xl border border-border/60 text-xs font-medium text-foreground shadow-lg">
             <span className="px-2 py-0.5 rounded-full bg-primary text-primary-foreground font-bold text-[10px] uppercase tracking-wider">
               NEW
             </span>
             <span>Creative Software & Frontend Systems</span>
           </div>
 
-          {/* Main Headline */}
+          {/* Headline */}
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground max-w-3xl leading-[1.1]">
             Soft rolling gradient waves fading into haze.
           </h1>
 
+          {/* Subtitle */}
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
             Desarrollo interfaces modernas, interactivas y fluidas combinando WebGL, sistemas de diseño y arquitectura de software.
           </p>
 
-          {/* Action Buttons */}
+          {/* CTA Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
             <a href="#proyectos">
               <Button size="lg" className="rounded-2xl font-semibold px-7 py-6 text-sm shadow-xl active:scale-95 transition-transform">
@@ -64,12 +68,12 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Subtle Bottom Fade Mask */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none z-10" />
+        {/* Bottom Fade Mask */}
+        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-background/60 to-transparent pointer-events-none z-10" />
       </div>
 
-      {/* Main Portfolio Sections */}
-      <main className="pb-20 px-4 sm:px-6 max-w-5xl mx-auto flex flex-col gap-24 sm:gap-32 w-full pt-12 relative z-20">
+      {/* Main Portfolio Content */}
+      <main className="pb-20 px-4 sm:px-6 max-w-5xl mx-auto flex flex-col gap-24 sm:gap-32 w-full pt-16 relative z-20">
         {/* Proyectos Section */}
         <section id="proyectos" className="scroll-mt-28 flex flex-col gap-6">
           <div className="flex items-center gap-3 border-b border-border/40 pb-4">

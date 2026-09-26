@@ -64,8 +64,8 @@ export function Header() {
   }, []);
 
   return (
-    <header className="fixed top-5 left-0 right-0 z-50 px-4 sm:px-6">
-      <div className="max-w-4xl mx-auto rounded-full bg-background/80 dark:bg-background/60 backdrop-blur-2xl border border-border/60 px-5 sm:px-6 py-2.5 shadow-lg shadow-black/5 dark:shadow-black/20 flex items-center justify-between gap-4">
+    <header className="fixed top-6 inset-x-0 z-50 flex flex-col items-center justify-center px-4 sm:px-6 pointer-events-none">
+      <div className="pointer-events-auto w-full max-w-4xl rounded-full bg-background/80 dark:bg-background/70 backdrop-blur-2xl border border-border/60 px-5 sm:px-6 py-2.5 shadow-xl shadow-black/5 dark:shadow-black/20 flex items-center justify-between gap-4">
         {/* Brand / Logo */}
         <Link
           href="/"
@@ -133,7 +133,7 @@ export function Header() {
 
       {/* Mobile Nav Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden max-w-4xl mx-auto mt-3 rounded-3xl border border-border/60 bg-background/95 backdrop-blur-2xl p-5 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-200">
+        <div className="pointer-events-auto w-full max-w-4xl mt-3 rounded-3xl border border-border/60 bg-background/95 backdrop-blur-2xl p-5 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-200">
           <nav className="flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
               <Link
