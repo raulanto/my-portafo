@@ -41,7 +41,7 @@ function ThemeToggle() {
   );
 }
 
-export function Header() {
+export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [activeSection, setActiveSection] = React.useState<string>("");
 
