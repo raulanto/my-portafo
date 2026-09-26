@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import AceternityButton from "@/components/ui/AceternityButton";
 import { cn } from "@/lib/utils";
 import { Menu, X, ArrowUpRight, Sun, Moon, Sparkles } from "lucide-react";
 import { useCircularTheme } from "@/components/ui/CircularThemeProvider";
@@ -24,12 +24,10 @@ function ThemeToggle() {
   const { triggerTransition, isAnimating, theme } = useCircularTheme();
 
   return (
-    <Button
-      variant="ghost"
-      size="icon-sm"
+    <button
       disabled={isAnimating}
       onClick={(e) => triggerTransition(e)}
-      className="rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200 active:scale-90"
+      className="inline-flex items-center justify-center size-8 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200 active:scale-90 outline-none cursor-pointer"
       aria-label="Cambiar tema de color"
     >
       {theme === "dark" ? (
@@ -37,7 +35,7 @@ function ThemeToggle() {
       ) : (
         <Moon className="size-4 text-slate-700 animate-in fade-in zoom-in-75 duration-200" />
       )}
-    </Button>
+    </button>
   );
 }
 
@@ -108,26 +106,24 @@ export function Navigation() {
         <div className="flex items-center gap-2 sm:gap-3">
           <ThemeToggle />
 
-          <Link href="#contacto">
-            <Button
-              size="sm"
-              className="rounded-full font-semibold text-xs px-5 py-2 h-9 shadow-sm transition-all duration-200 active:scale-95"
-            >
-              Hablemos
-            </Button>
-          </Link>
+          <AceternityButton
+            href="#contacto"
+            size="sm"
+            variant="primary"
+            className="rounded-full"
+          >
+            Hablemos
+          </AceternityButton>
 
           {/* Mobile Menu Toggle Button */}
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="md:hidden rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50"
+          <button
+            className="md:hidden inline-flex items-center justify-center size-8 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200 active:scale-90 outline-none cursor-pointer"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-expanded={mobileMenuOpen}
             aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
           >
             {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-          </Button>
+          </button>
         </div>
       </div>
 
@@ -153,11 +149,15 @@ export function Navigation() {
               </span>
               <div className="flex items-center gap-2">
                 <ThemeToggle />
-                <Link href="#contacto" onClick={() => setMobileMenuOpen(false)}>
-                  <Button size="sm" className="rounded-full font-semibold text-xs px-4">
-                    Contacto
-                  </Button>
-                </Link>
+                <AceternityButton
+                  href="#contacto"
+                  size="sm"
+                  variant="primary"
+                  className="rounded-full"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Contacto
+                </AceternityButton>
               </div>
             </div>
           </nav>

@@ -1,5 +1,5 @@
 import GradientWaves from "@/components/GradientWaves";
-import { Button } from "@/components/ui/button";
+import AceternityButton from "@/components/ui/AceternityButton";
 
 export function HeroSection() {
   return (
@@ -39,8 +39,8 @@ export function HeroSection() {
         </div>
 
         {/* Headline */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground max-w-3xl leading-[1.1]">
-          Hola, soy Raúl — <span className="text-primary">Frontend Developer</span>
+        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground max-w-3xl leading-[1.1]">
+          rauantodev  <span className="text-primary text-3xl">Frontend Developer</span>
         </h1>
 
         {/* Subtitle */}
@@ -50,16 +50,12 @@ export function HeroSection() {
 
         {/* CTA Buttons */}
         <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-          <a href="#proyectos">
-            <Button size="lg" className="rounded-2xl font-semibold px-7 py-6 text-sm shadow-xl active:scale-95 transition-transform">
-              Ver proyectos
-            </Button>
-          </a>
-          <a href="#contacto">
-            <Button size="lg" variant="outline" className="rounded-2xl bg-background/60 hover:bg-muted border-border/60 backdrop-blur-md font-semibold px-7 py-6 text-sm active:scale-95 transition-transform">
-              Contacto
-            </Button>
-          </a>
+          <AceternityButton href="#proyectos" size="lg" variant="primary">
+            Ver proyectos
+          </AceternityButton>
+          <AceternityButton href="#contacto" size="lg" variant="outline">
+            Contacto
+          </AceternityButton>
         </div>
       </div>
 

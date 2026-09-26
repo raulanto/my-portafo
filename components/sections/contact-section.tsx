@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import AceternityButton from "@/components/ui/AceternityButton";
 import { Send, ArrowUpRight } from "lucide-react";
 
 export function ContactSection() {
@@ -11,10 +11,10 @@ export function ContactSection() {
       <p className="text-muted-foreground max-w-md">
         Estoy disponible para colaborar en proyectos desafiantes y crear interfaces excepcionales.
       </p>
-      <Button size="lg" className="rounded-2xl font-semibold gap-2 mt-2">
+      <AceternityButton size="lg" variant="primary" className="mt-2 gap-2">
         Enviar Mensaje
         <ArrowUpRight className="size-4" />
-      </Button>
+      </AceternityButton>
     </section>
   );
 }
