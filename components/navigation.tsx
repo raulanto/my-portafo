@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import AceternityButton from "@/components/ui/AceternityButton";
 import { cn } from "@/lib/utils";
-import { Menu, X, ArrowUpRight, Sun, Moon, Sparkles } from "lucide-react";
+import { Menu, X, ArrowUpRight, Sun, Moon } from "lucide-react";
 import { useCircularTheme } from "@/components/ui/CircularThemeProvider";
 
 interface NavItem {
@@ -13,10 +14,11 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
+  { label: "Sobre mí", href: "#sobre-mi" },
+  { label: "Tecnologías", href: "#tecnologias" },
   { label: "Proyectos", href: "#proyectos" },
   { label: "Experiencia", href: "#experiencia" },
   { label: "Blog", href: "#blog" },
-  { label: "Sobre mí", href: "#sobre-mi" },
   { label: "Gustos", href: "#gustos" },
 ];
 
@@ -70,8 +72,15 @@ export function Navigation() {
           className="group flex items-center gap-2.5 text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-full transition-opacity hover:opacity-90"
           aria-label="Ir al inicio"
         >
-          <div className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-primary font-mono text-xs font-bold border border-primary/20 group-hover:scale-105 transition-transform">
-            <Sparkles className="size-3.5 text-primary" />
+          <div className="relative size-7 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <Image
+              src="/logo.svg"
+              alt="Logo Raúl Antón"
+              width={28}
+              height={28}
+              className="size-7 object-contain"
+              priority
+            />
           </div>
           <span className="font-semibold text-sm tracking-tight text-foreground group-hover:text-primary transition-colors">
             Raúl Antón

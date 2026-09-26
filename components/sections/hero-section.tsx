@@ -1,6 +1,6 @@
 import GradientWaves from "@/components/GradientWaves";
 import AceternityButton from "@/components/ui/AceternityButton";
-import { Plus } from "lucide-react";
+import Image from "next/image";
 
 export function HeroSection() {
   return (
@@ -8,20 +8,20 @@ export function HeroSection() {
       {/* GradientWaves as absolute full-screen background */}
       <div className="absolute inset-0 rotate-180">
         <GradientWaves
-          horizonColor="#5227FF"
-          waveColor="#FF9FFC"
-          crestColor="#FFFFFF"
+          horizonColor="#73b6ff"
+          waveColor="#47a0ff"
+          crestColor="#0a81ff"
           speed={0.4}
           amplitude={2.5}
           waveScale={0.6}
           waveRatio={0.9}
           swell={35}
-          turbulence={20}
+          turbulence={10}
           tilt={1.11}
           zoom={1.0}
           height={5.5}
           fogDepth={15}
-          detail="medium"
+          detail="high"
           brightness={1.0}
           opacity={1.0}
           mouseInteraction={false}
@@ -50,8 +50,14 @@ export function HeroSection() {
             </h1>
             <div className="flex items-center gap-2 mt-1 sm:mt-2 text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground/90 tracking-tight">
               <span>Portafolio</span>
-              <span className="inline-flex items-center justify-center size-7 sm:size-8 md:size-9 rounded-xl bg-purple-600 dark:bg-purple-500 text-white shadow-lg shadow-purple-500/40">
-                <Plus className="size-5 sm:size-6 stroke-[3]" />
+              <span className="inline-flex items-center justify-center size-8 sm:size-9 md:size-10 rounded-xl  p-1.5 ">
+                <Image
+                  src="/logo.svg"
+                  alt="Logo Raúl Antón"
+                  width={46}
+                  height={46}
+                  className="size-full object-contain"
+                />
               </span>
             </div>
           </div>

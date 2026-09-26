@@ -7,14 +7,14 @@ import CircularThemeProvider from "@/components/ui/CircularThemeProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const geist = Geist({
   subsets: ["latin"],
+  variable: "--font-geist",
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  variable: "--font-geist-mono",
 });
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="es"
       className={cn(
         "h-full scroll-smooth antialiased",
-        geistSans.variable,
+        geist.variable,
         geistMono.variable,
         inter.variable,
         "font-sans"
