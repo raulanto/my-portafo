@@ -5,7 +5,7 @@ export function HeroSection() {
   return (
     <div className="relative w-full min-h-screen overflow-hidden flex items-center justify-center">
       {/* GradientWaves as absolute full-screen background */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 rotate-180">
         <GradientWaves
           horizonColor="#5227FF"
           waveColor="#FF9FFC"
@@ -23,7 +23,7 @@ export function HeroSection() {
           detail="medium"
           brightness={1.0}
           opacity={1.0}
-          mouseInteraction={true}
+          mouseInteraction={false}
           parallaxStrength={0.5}
           grain={true}
           grainIntensity={0.05}
@@ -63,7 +63,7 @@ export function HeroSection() {
       </div>
 
       {/* Bottom Fade Mask */}
-      <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-background/60 to-transparent pointer-events-none z-10" />
+\
     </div>
   );
 }
