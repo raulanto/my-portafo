@@ -38,7 +38,7 @@ export default function Home() {
         <TechStackSection />
 
         {/* Contained main sections */}
-        <div className="pb-20 px-4 sm:px-6 max-w-5xl mx-auto flex flex-col gap-24 sm:gap-32 w-full pt-16">
+        <div className="pb-20 px-4 sm:px-6 max-w-7xl mx-auto flex flex-col gap-24 sm:gap-32 w-full pt-16">
           <ProjectsSection />
           <ExperienceSection />
           <BlogSection />
