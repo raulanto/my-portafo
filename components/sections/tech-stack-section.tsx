@@ -1,6 +1,15 @@
 "use client";
 
 import { LogoOrbit } from "@/components/ui/logo-orbit";
+import { Typewriter } from "@/components/ui/typewriter";
+
+const TECH_WORDS = [
+  "resuelven problemas",
+  "crean soluciones",
+  "escalan ideas",
+  "se adaptan a ti",
+  "impulsan proyectos",
+];
 import {
   siVuedotjs,
   siAngular,
@@ -42,8 +51,8 @@ const RINGS = [
       siAstro,
       siFigma,
     ].map(pick),
-    radius: 0.58,
-    lap: 42,
+    radius: 0.65,
+    lap: 36,
   },
   {
     logos: [
@@ -62,8 +71,8 @@ const RINGS = [
       siDart,
       siFlutter,
     ].map(pick),
-    radius: 0.92,
-    lap: -64,
+    radius: 1.05,
+    lap: -52,
   },
 ];
 
@@ -87,28 +96,29 @@ export function TechStackSection() {
       </div>
 
       {/* The orbit — full viewport width, centered */}
-      <div className="relative z-10 w-full max-w-6xl px-4">
-        <LogoOrbit rings={RINGS} className="w-full aspect-[16/8]">
-          <div className="flex flex-col items-center gap-2">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-foreground text-balance leading-[1.2] text-center">
-              Las herramientas
-              <br />
-              <span className="text-primary">detrás del trabajo</span>
+      <div className="relative z-10 w-full max-w-7xl px-2 sm:px-6">
+        <LogoOrbit rings={RINGS} className="w-full aspect-[16/7]">
+          <div className="flex flex-col items-center gap-2 max-w-xs sm:max-w-md">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-foreground text-balance leading-tight text-center">
+              Las herramientas que
             </h2>
-            <p className="text-[11px] text-muted-foreground">
-              Pasa el cursor sobre los iconos
+            <div className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-primary">
+              <Typewriter prefix="" words={TECH_WORDS} />
+            </div>
+            <p className="text-[11px] text-muted-foreground font-mono mt-1">
+              Pasa el cursor sobre los íconos
             </p>
           </div>
         </LogoOrbit>
       </div>
 
       {/* Bottom exploring tag */}
-      <div className="relative z-10 mt-4 px-6 text-center">
+      {/* <div className="relative z-10 mt-4 px-6 text-center">
         <span className="text-xs text-muted-foreground font-mono">
           Explorando actualmente:{" "}
           <span className="text-foreground font-semibold">Flutter</span>
         </span>
-      </div>
+      </div> */}
 
       {/* Bottom fade into next section */}
       <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />

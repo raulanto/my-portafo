@@ -49,9 +49,30 @@ export function LogoOrbit({
 
     const turns = rings.map(() => 0);
     let speed = 1;
+    let scrollBoost = 0;
     let frame = 0;
     let visible = true;
     let last = performance.now();
+    let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
+    let lastScrollTime = performance.now();
+
+    const onScroll = () => {
+      const now = performance.now();
+      const dt = Math.max((now - lastScrollTime) / 1000, 0.008);
+      const currentScrollY = window.scrollY;
+      const dy = Math.abs(currentScrollY - lastScrollY);
+      
+      // Calculate scroll velocity (pixels/sec) and map to speed boost
+      const velocity = dy / dt;
+      const boost = Math.min(velocity / 350, 4.5); // cap boost at 4.5x
+      
+      if (boost > scrollBoost) {
+        scrollBoost = boost;
+      }
+      
+      lastScrollY = currentScrollY;
+      lastScrollTime = now;
+    };
 
     const place = () => {
       const w = stage.offsetWidth;
@@ -77,13 +98,21 @@ export function LogoOrbit({
       last = now;
       const target = hovering.current ? 0 : 1;
       speed += (target - speed) * (1 - Math.exp(-BRAKE * dt));
+
+      // Decouple & decay scroll boost smoothly over time
+      scrollBoost *= Math.exp(-3.5 * dt);
+      if (scrollBoost < 0.01) scrollBoost = 0;
+
+      const currentMultiplier = speed + scrollBoost;
+
       rings.forEach((ring, r) => {
-        turns[r] += ((Math.PI * 2) / ring.lap) * dt * speed;
+        turns[r] += ((Math.PI * 2) / ring.lap) * dt * currentMultiplier;
       });
       place();
       frame = visible ? requestAnimationFrame(step) : 0;
     };
 
+    window.addEventListener("scroll", onScroll, { passive: true });
     place();
     if (paused || reduceMotion) return;
 
@@ -100,6 +129,7 @@ export function LogoOrbit({
     frame = requestAnimationFrame(step);
 
     return () => {
+      window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(frame);
       io.disconnect();
       ro.disconnect();
@@ -147,16 +177,16 @@ export function LogoOrbit({
                 hovering.current = false;
                 setActive(null);
               }}
-              className="relative grid size-11 touch-manipulation place-items-center rounded-full text-foreground outline-hidden focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-foreground"
+              className="relative grid size-14 sm:size-16 touch-manipulation place-items-center rounded-2xl bg-card/80 border border-border/40 shadow-md backdrop-blur-md text-foreground outline-hidden focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-foreground hover:border-primary/50 transition-colors"
             >
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden
-                className="size-7 transition-[color,scale] duration-200 ease-out"
+                className="size-8 sm:size-10 transition-[color,scale] duration-200 ease-out"
                 style={{
                   fill:
                     on && readable(logo.hex) ? `#${logo.hex}` : "currentColor",
-                  scale: on ? "1.12" : "1",
+                  scale: on ? "1.18" : "1",
                 }}
               >
                 <path d={logo.path} />
