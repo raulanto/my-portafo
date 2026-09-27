@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { useMDXComponents } from "@/mdx-components";
 import {
-  Sparkles,
   Info,
   AlertTriangle,
   CheckCircle2,
@@ -11,14 +10,98 @@ import {
   ChevronRight,
   Code,
   Eye,
-  Zap,
   Copy,
   Check,
-  HelpCircle,
+  AlertOctagon,
+  ShieldAlert,
+  Sparkles,
 } from "lucide-react";
 
 interface MarkdownRendererProps {
   content: string;
+}
+
+// Inline formatting parser for **bold**, *italic*, `code`, [links]
+function renderInlineContent(text: string): React.ReactNode[] {
+  // Regex to split on bold, italic, code, links
+  const parts: React.ReactNode[] = [];
+  let remaining = text;
+  let keyIdx = 0;
+
+  while (remaining.length > 0) {
+    // 1. Code inline `code`
+    const codeMatch = remaining.match(/^`([^`]+)`/);
+    if (codeMatch) {
+      parts.push(
+        <code
+          key={keyIdx++}
+          className="px-1.5 py-0.5 rounded-md bg-muted font-mono text-xs text-primary border border-border/40"
+        >
+          {codeMatch[1]}
+        </code>
+      );
+      remaining = remaining.slice(codeMatch[0].length);
+      continue;
+    }
+
+    // 2. Bold **text**
+    const boldMatch = remaining.match(/^\*\*([^*]+)\*\*/);
+    if (boldMatch) {
+      parts.push(
+        <strong key={keyIdx++} className="font-extrabold text-foreground">
+          {boldMatch[1]}
+        </strong>
+      );
+      remaining = remaining.slice(boldMatch[0].length);
+      continue;
+    }
+
+    // 3. Italic *text*
+    const italicMatch = remaining.match(/^\*([^*]+)\*/);
+    if (italicMatch) {
+      parts.push(
+        <em key={keyIdx++} className="italic text-foreground/90">
+          {italicMatch[1]}
+        </em>
+      );
+      remaining = remaining.slice(italicMatch[0].length);
+      continue;
+    }
+
+    // 4. Links [text](url)
+    const linkMatch = remaining.match(/^\[([^\]]+)\]\(([^)]+)\)/);
+    if (linkMatch) {
+      parts.push(
+        <a
+          key={keyIdx++}
+          href={linkMatch[2]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary underline underline-offset-4 font-semibold hover:opacity-80 transition-opacity"
+        >
+          {linkMatch[1]}
+        </a>
+      );
+      remaining = remaining.slice(linkMatch[0].length);
+      continue;
+    }
+
+    // Next plain character block
+    const nextSpecial = remaining.search(/[`*\[]/);
+    if (nextSpecial === -1) {
+      parts.push(remaining);
+      break;
+    } else if (nextSpecial === 0) {
+      // Fallback if regex didn't capture properly
+      parts.push(remaining[0]);
+      remaining = remaining.slice(1);
+    } else {
+      parts.push(remaining.slice(0, nextSpecial));
+      remaining = remaining.slice(nextSpecial);
+    }
+  }
+
+  return parts;
 }
 
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
@@ -28,10 +111,6 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   const H2 = (components.h2 || "h2") as React.ElementType;
   const H3 = (components.h3 || "h3") as React.ElementType;
   const H4 = (components.h4 || "h4") as React.ElementType;
-  const P = (components.p || "p") as React.ElementType;
-  const Ul = (components.ul || "ul") as React.ElementType;
-  const Li = (components.li || "li") as React.ElementType;
-  const Blockquote = (components.blockquote || "blockquote") as React.ElementType;
 
   const lines = content.split("\n");
   const parsedNodes: React.ReactNode[] = [];
@@ -41,29 +120,98 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     const line = lines[i];
     const trimmed = line.trim();
 
-    // 0. Handle inline ::alert{type="..." title="..." description="..."} or :::alert{...}
-    if (trimmed.includes("::alert{") || trimmed.includes(":::alert{")) {
-      const alertTypeMatch = trimmed.match(/type="([^"]+)"/);
-      const alertTitleMatch = trimmed.match(/title="([^"]+)"/);
-      const alertDescMatch = trimmed.match(/description="([^"]+)"/);
-
-      const type = (alertTypeMatch?.[1] || "info").toLowerCase() as any;
-      const title = alertTitleMatch?.[1];
-      const description = alertDescMatch?.[1] || trimmed.replace(/^::+:alert\{|\}$/g, "");
-
-      parsedNodes.push(
-        <AlertDirectiveBlock
-          key={`alert-${i}`}
-          type={type}
-          title={title}
-          description={description}
-        />
-      );
+    // Ignore YAML frontmatter (--- ... ---)
+    if (i === 0 && trimmed === "---") {
       i++;
+      while (i < lines.length && lines[i].trim() !== "---") {
+        i++;
+      }
+      i++; // skip closing ---
       continue;
     }
 
-    // 1. Handle :::code-collapse blocks
+    // 1. Handle ::steps directives
+    const stepsMatch = trimmed.match(/^::+steps(\{.*?\})?/i);
+    if (stepsMatch) {
+      const stepLines: string[] = [];
+      i++;
+
+      while (
+        i < lines.length &&
+        lines[i].trim() !== "::" &&
+        lines[i].trim() !== ":::" &&
+        !lines[i].trim().startsWith("::steps")
+      ) {
+        stepLines.push(lines[i]);
+        i++;
+      }
+
+      if (i < lines.length && (lines[i].trim() === "::" || lines[i].trim() === ":::")) {
+        i++; // skip closing :: / :::
+      }
+
+      parsedNodes.push(<StepsDirectiveBlock key={`steps-${i}`} content={stepLines.join("\n")} />);
+      continue;
+    }
+
+    // 2. Handle Directives ::warning, ::caution, ::note, ::tip, ::info, ::danger (Single or triple colons)
+    const directiveMatch = trimmed.match(/^::+(warning|caution|note|tip|info|danger|alert)/i);
+    if (directiveMatch) {
+      const typeStr = directiveMatch[1].toLowerCase();
+      const alertType: "warning" | "caution" | "note" | "tip" | "info" | "danger" =
+        typeStr === "alert" ? "info" : (typeStr as any);
+
+      const blockLines: string[] = [];
+      i++;
+
+      // Collect block content until matching closing :: or ::: or end of section
+      while (
+        i < lines.length &&
+        lines[i].trim() !== "::" &&
+        lines[i].trim() !== ":::" &&
+        !lines[i].trim().match(/^::+(warning|caution|note|tip|info|danger|alert)/i)
+      ) {
+        blockLines.push(lines[i]);
+        i++;
+      }
+
+      if (i < lines.length && (lines[i].trim() === "::" || lines[i].trim() === ":::")) {
+        i++; // skip closing :: / :::
+      }
+
+      parsedNodes.push(
+        <BlockDirectiveAlert
+          key={`directive-${i}`}
+          type={alertType}
+          content={blockLines.join("\n").trim()}
+        />
+      );
+      continue;
+    }
+
+    // 2. Handle Markdown Tables (supports both '| col1 | col2 |' and 'col1 | col2 | col3')
+    const isTableLine = (l: string) => {
+      const t = l.trim();
+      if (!t || t.startsWith("```") || t.startsWith("::")) return false;
+      // Must contain at least one pipe and have a table delimiter line nearby or pipe layout
+      return t.includes("|");
+    };
+
+    if (isTableLine(trimmed)) {
+      // Check if next line is a table header separator like `---|---` or `---|---|---`
+      const nextLine = i + 1 < lines.length ? lines[i + 1].trim() : "";
+      if (nextLine.match(/^\|?\s*[-:]+[\s|:-]*\|?\s*$/)) {
+        const tableRows: string[] = [];
+        while (i < lines.length && isTableLine(lines[i])) {
+          tableRows.push(lines[i].trim());
+          i++;
+        }
+        parsedNodes.push(<MarkdownTableBlock key={`table-${i}`} rows={tableRows} />);
+        continue;
+      }
+    }
+
+    // 3. Handle :::code-collapse blocks
     if (trimmed.startsWith(":::code-collapse") || trimmed.startsWith("::code-collapse")) {
       const codeLines: string[] = [];
       i++;
@@ -79,78 +227,73 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       continue;
     }
 
-    // 2. Handle ::tabs & :::tabs-item blocks
+    // 4. Handle ::tabs & :::tabs-item blocks
     if (trimmed.startsWith("::tabs") || trimmed.startsWith(":::tabs")) {
       const tabItems: { label: string; content: string }[] = [];
       i++;
-      let currentLabel = "Código";
+      let currentLabel = "";
       let currentContent: string[] = [];
 
-      while (
-        i < lines.length &&
-        lines[i].trim() !== "::" &&
-        lines[i].trim() !== "::::" &&
-        lines[i].trim() !== ":::"
-      ) {
-        const itemMatch = lines[i].trim().match(/^:::tabs-item\{label="([^"]+)"/);
+      while (i < lines.length) {
+        const lineText = lines[i];
+        const lineTrimmed = lineText.trim();
+
+        // Check if starting a new tab item
+        const itemMatch = lineTrimmed.match(/^:::?tabs-item\{label="([^"]+)"/);
         if (itemMatch) {
-          if (currentContent.length > 0) {
+          if (currentLabel) {
             tabItems.push({ label: currentLabel, content: currentContent.join("\n") });
             currentContent = [];
           }
           currentLabel = itemMatch[1];
-        } else {
-          currentContent.push(lines[i]);
+          i++;
+          continue;
         }
+
+        // Check if this line is an item end tag ":::" or outer tabs end tag "::"
+        if (lineTrimmed === ":::" || lineTrimmed === "::" || lineTrimmed === "::::") {
+          // If we have an active tab item, check if this line closes the tab item or the outer tabs container
+          if (currentLabel) {
+            // Count open fenced code blocks in currentContent to ensure we are not inside ```
+            const codeFenceCount = currentContent.filter((l) => l.trim().startsWith("```")).length;
+            if (codeFenceCount % 2 === 0) {
+              // We are outside code fences. Save current tab item!
+              tabItems.push({ label: currentLabel, content: currentContent.join("\n") });
+              currentLabel = "";
+              currentContent = [];
+
+              // If it's "::", it's the main closing tag for ::tabs
+              if (lineTrimmed === "::") {
+                i++;
+                break;
+              }
+              i++;
+              continue;
+            }
+          } else {
+            // No current tab item active, so "::" or ":::" ends the tabs block
+            i++;
+            break;
+          }
+        }
+
+        currentContent.push(lineText);
         i++;
       }
-      if (currentContent.length > 0) {
+
+      if (currentLabel && currentContent.length > 0) {
         tabItems.push({ label: currentLabel, content: currentContent.join("\n") });
       }
-      i++; // skip closing ::
 
-      parsedNodes.push(<TabsBlock key={`tabs-${i}`} items={tabItems} />);
-      continue;
-    }
-
-    // 3. Handle :::tip, :::note, :::warning, :::caution, :::callout
-    if (
-      trimmed.startsWith(":::tip") ||
-      trimmed.startsWith(":::note") ||
-      trimmed.startsWith(":::warning") ||
-      trimmed.startsWith(":::caution") ||
-      trimmed.startsWith(":::callout") ||
-      trimmed.startsWith("::callout") ||
-      trimmed.startsWith("::tip") ||
-      trimmed.startsWith("::note")
-    ) {
-      const calloutType = trimmed.includes("warning") || trimmed.includes("caution")
-        ? "warning"
-        : trimmed.includes("tip")
-        ? "tip"
-        : trimmed.includes("note")
-        ? "note"
-        : "info";
-
-      const calloutLines: string[] = [];
-      i++;
-      while (i < lines.length && !lines[i].trim().startsWith("::")) {
-        calloutLines.push(lines[i]);
-        i++;
+      if (tabItems.length > 0) {
+        parsedNodes.push(<TabsBlock key={`tabs-${i}`} items={tabItems} />);
       }
-      i++; // skip closing :::
-
-      parsedNodes.push(
-        <CalloutBlock
-          key={`callout-${i}`}
-          type={calloutType}
-          content={calloutLines.join("\n")}
-        />
-      );
       continue;
     }
 
-    // 4. Handle Standard Fenced Code Blocks with copy bar
+
+
+    // 5. Handle Standard Fenced Code Blocks with copy bar
     if (trimmed.startsWith("```")) {
       const lang = trimmed.replace("```", "").trim();
       const codeLines: string[] = [];
@@ -167,40 +310,251 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       continue;
     }
 
-    // 5. Standard Markdown Lines
+    // 6. Standard Headings, Quotes, Lists & Paragraphs
     if (trimmed.startsWith("# ")) {
-      parsedNodes.push(<H1 key={i}>{trimmed.replace("# ", "")}</H1>);
+      parsedNodes.push(
+        <h1 key={i} className="text-3xl sm:text-5xl font-black tracking-tight text-foreground my-6">
+          {renderInlineContent(trimmed.replace("# ", ""))}
+        </h1>
+      );
     } else if (trimmed.startsWith("## ")) {
-      parsedNodes.push(<H2 key={i}>{trimmed.replace("## ", "")}</H2>);
+      parsedNodes.push(
+        <h2 key={i} className="text-2xl sm:text-3xl font-black tracking-tight text-foreground mt-10 mb-4 pt-4 border-t border-border/20">
+          {renderInlineContent(trimmed.replace("## ", ""))}
+        </h2>
+      );
     } else if (trimmed.startsWith("### ")) {
-      parsedNodes.push(<H3 key={i}>{trimmed.replace("### ", "")}</H3>);
+      parsedNodes.push(
+        <h3 key={i} className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-8 mb-3">
+          {renderInlineContent(trimmed.replace("### ", ""))}
+        </h3>
+      );
     } else if (trimmed.startsWith("#### ")) {
-      parsedNodes.push(<H4 key={i}>{trimmed.replace("#### ", "")}</H4>);
+      parsedNodes.push(
+        <h4 key={i} className="text-lg font-bold tracking-tight text-foreground mt-6 mb-2">
+          {renderInlineContent(trimmed.replace("#### ", ""))}
+        </h4>
+      );
     } else if (trimmed.startsWith("> ")) {
-      parsedNodes.push(<Blockquote key={i}>{trimmed.replace("> ", "")}</Blockquote>);
+      parsedNodes.push(
+        <blockquote key={i} className="my-4 pl-4 border-l-4 border-primary text-muted-foreground italic font-medium">
+          {renderInlineContent(trimmed.replace("> ", ""))}
+        </blockquote>
+      );
     } else if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
       parsedNodes.push(
-        <Ul key={i}>
-          <Li>{trimmed.replace(/^[-*]\s+/, "")}</Li>
-        </Ul>
+        <ul key={i} className="my-2 ml-4 list-disc space-y-1">
+          <li className="text-sm sm:text-base text-foreground/90 leading-relaxed">
+            {renderInlineContent(trimmed.replace(/^[-*]\s+/, ""))}
+          </li>
+        </ul>
       );
+    } else if (trimmed.startsWith("---")) {
+      parsedNodes.push(<hr key={i} className="my-8 border-border/40" />);
     } else if (trimmed === "") {
       parsedNodes.push(<div key={i} className="h-2" />);
     } else {
-      parsedNodes.push(<P key={i}>{line}</P>);
+      parsedNodes.push(
+        <p key={i} className="text-sm sm:text-base text-foreground/90 leading-relaxed font-normal my-2">
+          {renderInlineContent(line)}
+        </p>
+      );
     }
 
     i++;
   }
 
   return (
-    <div className="typeset typeset-docs w-full flex flex-col gap-3">
+    <div className="typeset typeset-docs w-full flex flex-col gap-1.5">
       {parsedNodes}
     </div>
   );
 }
 
-/* Styled Code Block with Terminal Bar & Copy Button */
+/* Styled Steps Directive Component (::steps ... ::) */
+function StepsDirectiveBlock({ content }: { content: string }) {
+  // Clean markdown lines & parse step titles vs items
+  const rawLines = content.split("\n").map((l) => l.trim()).filter(Boolean);
+  const steps: { title: string; items: string[] }[] = [];
+
+  let currentStep: { title: string; items: string[] } | null = null;
+
+  for (const line of rawLines) {
+    // Clean headers like "#### Title" -> "Title"
+    const cleanedLine = line.replace(/^#{1,6}\s+/, "").trim();
+
+    if (!line.startsWith("-") && !line.startsWith("*")) {
+      if (currentStep) {
+        steps.push(currentStep);
+      }
+      currentStep = { title: cleanedLine, items: [] };
+    } else if (currentStep) {
+      currentStep.items.push(cleanedLine.replace(/^[-*]\s+/, ""));
+    }
+  }
+  if (currentStep) {
+    steps.push(currentStep);
+  }
+
+  return (
+    <div className="my-8 flex flex-col gap-6 py-2">
+      <div className="relative flex flex-col gap-8 pl-6 sm:pl-8 before:absolute before:left-2.5 sm:before:left-3.5 before:top-3 before:bottom-3 before:w-px before:bg-border/60">
+        {steps.map((step, idx) => (
+          <div key={idx} className="relative flex flex-col gap-2 group">
+            {/* Minimalist Step Number Pill */}
+            <div className="absolute -left-6 sm:-left-8 top-0.5 size-5 sm:size-6 rounded-full bg-background border border-primary/40 flex items-center justify-center text-[11px] font-mono font-bold text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              {idx + 1}
+            </div>
+
+            {/* Title without ### */}
+            <h4 className="text-base sm:text-lg font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
+              {renderInlineContent(step.title)}
+            </h4>
+
+            {/* Sub-items */}
+            {step.items.length > 0 && (
+              <ul className="flex flex-col gap-1.5 pt-1 pl-1">
+                {step.items.map((sub, sIdx) => (
+                  <li
+                    key={sIdx}
+                    className="text-xs sm:text-sm font-normal text-muted-foreground flex items-start gap-2 leading-relaxed"
+                  >
+                    <span className="size-1.5 rounded-full bg-primary/60 mt-2 shrink-0" />
+                    <span>{renderInlineContent(sub)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
+/* Pure Minimalist Callout Line Indicator (::warning, ::caution, ::note, ::tip, ::info, ::danger) */
+function BlockDirectiveAlert({
+  type,
+  content,
+}: {
+  type: "warning" | "caution" | "note" | "tip" | "info" | "danger";
+  content: string;
+}) {
+  const configs = {
+    warning: {
+      border: "border-l-amber-500",
+      text: "text-amber-600 dark:text-amber-400",
+      icon: <AlertTriangle className="size-4 text-amber-500 flex-shrink-0" />,
+      defaultTitle: "ADVERTENCIA",
+    },
+    caution: {
+      border: "border-l-orange-500",
+      text: "text-orange-600 dark:text-orange-400",
+      icon: <ShieldAlert className="size-4 text-orange-500 flex-shrink-0" />,
+      defaultTitle: "PRECAUCIÓN",
+    },
+    danger: {
+      border: "border-l-rose-500",
+      text: "text-rose-600 dark:text-rose-400",
+      icon: <AlertOctagon className="size-4 text-rose-500 flex-shrink-0" />,
+      defaultTitle: "RIESGO / ERROR",
+    },
+    note: {
+      border: "border-l-blue-500",
+      text: "text-blue-600 dark:text-blue-400",
+      icon: <Info className="size-4 text-blue-500 flex-shrink-0" />,
+      defaultTitle: "NOTA",
+    },
+    tip: {
+      border: "border-l-emerald-500",
+      text: "text-emerald-600 dark:text-emerald-400",
+      icon: <CheckCircle2 className="size-4 text-emerald-500 flex-shrink-0" />,
+      defaultTitle: "RECOMENDACIÓN",
+    },
+    info: {
+      border: "border-l-purple-500",
+      text: "text-purple-600 dark:text-purple-400",
+      icon: <Sparkles className="size-4 text-purple-500 flex-shrink-0" />,
+      defaultTitle: "INFORMACIÓN",
+    },
+  };
+
+  const config = configs[type] || configs.info;
+  const contentLines = content.split("\n").map((l) => l.trim()).filter(Boolean);
+
+  return (
+    <div className={`my-4 pl-4 border-l-2 ${config.border} flex items-start gap-3`}>
+      <div className="pt-0.5">{config.icon}</div>
+
+      <div className="flex flex-col gap-1 w-full">
+        <h4 className={`text-xs font-mono font-bold uppercase tracking-wider ${config.text}`}>
+          {config.defaultTitle}
+        </h4>
+
+        <div className="flex flex-col gap-1 text-xs sm:text-sm text-foreground/90 font-normal leading-relaxed">
+          {contentLines.map((line, idx) => (
+            <div key={idx}>{renderInlineContent(line)}</div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+/* Styled Markdown Table Block Component */
+function MarkdownTableBlock({ rows }: { rows: string[] }) {
+  if (rows.length === 0) return null;
+
+  // Filter out table delimiter line | --- | --- |
+  const contentRows = rows.filter((r) => !r.match(/^\|[\s:-|-]+\|$/));
+
+  const headerCells = contentRows[0]
+    .split("|")
+    .map((c) => c.trim())
+    .filter(Boolean);
+
+  const bodyRows = contentRows.slice(1).map((row) =>
+    row
+      .split("|")
+      .map((c) => c.trim())
+      .filter(Boolean)
+  );
+
+  return (
+    <div className="my-6 w-full overflow-x-auto rounded-2xl border border-border/60 bg-card/40 backdrop-blur-md shadow-xl">
+      <table className="w-full text-left text-xs sm:text-sm border-collapse">
+        <thead className="bg-muted/70 border-b border-border/40 font-mono text-foreground font-bold">
+          <tr>
+            {headerCells.map((header, idx) => (
+              <th key={idx} className="p-3.5 sm:p-4 tracking-wider uppercase">
+                {renderInlineContent(header)}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border/20 font-medium">
+          {bodyRows.map((rowCells, rIdx) => (
+            <tr
+              key={rIdx}
+              className="hover:bg-muted/30 transition-colors"
+            >
+              {rowCells.map((cell, cIdx) => (
+                <td key={cIdx} className="p-3.5 sm:p-4 text-foreground/90">
+                  {renderInlineContent(cell)}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/* Styled Fenced Code Block Container with Prism Syntax Highlighting */
 function CodeBlockContainer({ lang, code }: { lang: string; code: string }) {
   const [copied, setCopied] = useState(false);
 
@@ -210,23 +564,66 @@ function CodeBlockContainer({ lang, code }: { lang: string; code: string }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Map common aliases to Prism languages
+  const getPrismLang = (l: string) => {
+    const norm = (l || "").toLowerCase().trim();
+    if (norm === "sql" || norm === "mysql" || norm === "postgresql") return "sql";
+    if (norm === "js" || norm === "javascript") return "javascript";
+    if (norm === "ts" || norm === "typescript") return "typescript";
+    if (norm === "py" || norm === "python") return "python";
+    if (norm === "bash" || norm === "sh" || norm === "zsh") return "bash";
+    if (norm === "json") return "json";
+    if (norm === "html") return "markup";
+    if (norm === "css") return "css";
+    if (norm === "go" || norm === "golang") return "go";
+    if (norm === "rust") return "rust";
+    return norm || "clike";
+  };
+
+  const prismLang = getPrismLang(lang);
+  let highlightedHtml = "";
+
+  try {
+    const Prism = require("prismjs");
+
+    // Load common language grammars if available
+    require("prismjs/components/prism-sql");
+    require("prismjs/components/prism-python");
+    require("prismjs/components/prism-typescript");
+    require("prismjs/components/prism-javascript");
+    require("prismjs/components/prism-bash");
+    require("prismjs/components/prism-json");
+    require("prismjs/components/prism-go");
+    require("prismjs/components/prism-rust");
+
+    if (Prism.languages[prismLang]) {
+      highlightedHtml = Prism.highlight(code, Prism.languages[prismLang], prismLang);
+    } else {
+      highlightedHtml = Prism.highlight(code, Prism.languages.clike || Prism.languages.markup, "markup");
+    }
+  } catch (e) {
+    // Fallback if grammar load fails
+    highlightedHtml = "";
+  }
+
   return (
-    <div className="my-6 rounded-2xl border border-border/60 bg-card/95 overflow-hidden shadow-xl shadow-black/10">
-      {/* Terminal Header */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-muted/60 border-b border-border/40 text-xs font-mono text-muted-foreground select-none">
-        <div className="flex items-center gap-2">
+    <div className="my-6 rounded-2xl border border-border/50 bg-card/60 backdrop-blur-xl overflow-hidden shadow-lg shadow-black/5">
+      {/* MacOS Terminal Bar */}
+      <div className="flex items-center justify-between px-4 py-3 bg-muted/40 border-b border-border/30 text-xs font-mono select-none">
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5">
-            <span className="size-2.5 rounded-full bg-rose-500/80" />
-            <span className="size-2.5 rounded-full bg-amber-500/80" />
-            <span className="size-2.5 rounded-full bg-emerald-500/80" />
+            <span className="size-3 rounded-full bg-rose-500/80 border border-rose-600/30" />
+            <span className="size-3 rounded-full bg-amber-500/80 border border-amber-600/30" />
+            <span className="size-3 rounded-full bg-emerald-500/80 border border-emerald-600/30" />
           </div>
-          <span className="text-[11px] font-semibold text-foreground/80 ml-2">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground ml-1">
             {lang ? lang.toUpperCase() : "CODE"}
           </span>
         </div>
+
         <button
           onClick={handleCopy}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/80 hover:bg-background border border-border/40 text-[11px] font-semibold text-foreground transition-all cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-background/80 hover:bg-background border border-border/40 text-xs font-semibold text-foreground transition-all cursor-pointer shadow-sm"
         >
           {copied ? (
             <>
@@ -235,103 +632,32 @@ function CodeBlockContainer({ lang, code }: { lang: string; code: string }) {
             </>
           ) : (
             <>
-              <Copy className="size-3.5" />
+              <Copy className="size-3.5 text-muted-foreground" />
               <span>Copiar</span>
             </>
           )}
         </button>
       </div>
 
-      {/* Code Area */}
-      <pre className="p-5 overflow-x-auto font-mono text-xs sm:text-sm leading-relaxed text-foreground bg-transparent">
-        <code>{code}</code>
-      </pre>
-    </div>
-  );
-}
-
-/* Alert Directive Component (::alert{type="..." title="..." description="..."}) */
-function AlertDirectiveBlock({
-  type,
-  title,
-  description,
-}: {
-  type: "warning" | "info" | "success" | "error" | "neutral";
-  title?: string;
-  description: string;
-}) {
-  const configs = {
-    warning: {
-      border: "border-amber-500/40 dark:border-amber-500/30",
-      bg: "bg-amber-500/10 dark:bg-amber-500/15",
-      text: "text-amber-700 dark:text-amber-300",
-      icon: <AlertTriangle className="size-5 text-amber-500 flex-shrink-0" />,
-      defaultTitle: "Advertencia",
-    },
-    success: {
-      border: "border-emerald-500/40 dark:border-emerald-500/30",
-      bg: "bg-emerald-500/10 dark:bg-emerald-500/15",
-      text: "text-emerald-700 dark:text-emerald-300",
-      icon: <CheckCircle2 className="size-5 text-emerald-500 flex-shrink-0" />,
-      defaultTitle: "Conclusión",
-    },
-    error: {
-      border: "border-rose-500/40 dark:border-rose-500/30",
-      bg: "bg-rose-500/10 dark:bg-rose-500/15",
-      text: "text-rose-700 dark:text-rose-300",
-      icon: <AlertTriangle className="size-5 text-rose-500 flex-shrink-0" />,
-      defaultTitle: "Atención",
-    },
-    info: {
-      border: "border-purple-500/40 dark:border-purple-500/30",
-      bg: "bg-purple-500/10 dark:bg-purple-500/15",
-      text: "text-purple-700 dark:text-purple-300",
-      icon: <Info className="size-5 text-purple-500 flex-shrink-0" />,
-      defaultTitle: "Nota importante",
-    },
-    neutral: {
-      border: "border-border/60",
-      bg: "bg-card/70 dark:bg-card/50",
-      text: "text-foreground",
-      icon: <HelpCircle className="size-5 text-muted-foreground flex-shrink-0" />,
-      defaultTitle: "Información",
-    },
-  };
-
-  const config = configs[type] || configs.info;
-
-  return (
-    <div
-      className={`my-6 p-5 sm:p-6 rounded-2xl border ${config.border} ${config.bg} backdrop-blur-md shadow-md flex items-start gap-4`}
-    >
-      {config.icon}
-      <div className="flex flex-col gap-1">
-        <h4 className={`text-sm font-bold tracking-tight ${config.text}`}>
-          {title || config.defaultTitle}
-        </h4>
-        <p className="text-sm sm:text-base text-foreground/90 leading-relaxed">
-          {description}
-        </p>
+      {/* Code Body */}
+      <div className="p-5 overflow-x-auto font-mono text-xs sm:text-sm leading-relaxed text-foreground bg-background/40">
+        {highlightedHtml ? (
+          <pre className="m-0 p-0 bg-transparent font-mono">
+            <code
+              className={`language-${prismLang}`}
+              dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+            />
+          </pre>
+        ) : (
+          <pre className="m-0 p-0 bg-transparent font-mono">
+            <code>{code}</code>
+          </pre>
+        )}
       </div>
     </div>
   );
 }
 
-/* Callout Block Component */
-function CalloutBlock({
-  type,
-  content,
-}: {
-  type: "tip" | "note" | "warning" | "info";
-  content: string;
-}) {
-  return (
-    <AlertDirectiveBlock
-      type={type === "tip" ? "success" : type === "warning" ? "warning" : "info"}
-      description={content}
-    />
-  );
-}
 
 /* Code Collapse Accordion Component */
 function CodeCollapseBlock({ content }: { content: string }) {
@@ -359,40 +685,62 @@ function CodeCollapseBlock({ content }: { content: string }) {
   );
 }
 
-/* Tabs Component */
+/* Minimalist Tabs Component (::tabs ... ::) */
 function TabsBlock({ items }: { items: { label: string; content: string }[] }) {
   const [activeIdx, setActiveIdx] = useState(0);
 
   if (items.length === 0) return null;
 
+  // Clean raw directives if any remain in tab content string
+  const getCleanContent = (raw: string) => {
+    return raw
+      .replace(/^::+callout\s*/gm, "")
+      .replace(/^::+alert(\{.*?\})?\s*/gm, "")
+      .replace(/^::+\s*$/gm, "")
+      .trim();
+  };
+
+  const activeItem = items[activeIdx] || items[0];
+  const activeContent = getCleanContent(activeItem.content);
+
   return (
-    <div className="my-6 rounded-2xl border border-border/60 bg-card/50 overflow-hidden shadow-lg">
-      <div className="flex items-center gap-1.5 bg-muted/60 p-2 border-b border-border/40 overflow-x-auto">
-        {items.map((item, idx) => (
-          <button
-            key={idx}
-            onClick={() => setActiveIdx(idx)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
-              activeIdx === idx
-                ? "bg-background text-foreground shadow-md shadow-black/5"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-            }`}
-          >
-            {item.label.toLowerCase().includes("code") ? (
-              <Code className="size-3.5 text-primary" />
-            ) : (
-              <Eye className="size-3.5 text-emerald-500" />
-            )}
-            <span>{item.label}</span>
-          </button>
-        ))}
+    <div className="my-6 rounded-2xl border border-border/40 bg-card/20 backdrop-blur-md overflow-hidden">
+      {/* Tab Switcher Header */}
+      <div className="flex items-center gap-1.5 bg-muted/40 p-2 border-b border-border/30 overflow-x-auto">
+        {items.map((item, idx) => {
+          const isCode =
+            item.label.toLowerCase().includes("code") ||
+            item.label.toLowerCase().includes("código") ||
+            item.label.toLowerCase().includes("sql");
+          const isActive = activeIdx === idx;
+
+          return (
+            <button
+              key={idx}
+              onClick={() => setActiveIdx(idx)}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-2 select-none ${
+                isActive
+                  ? "bg-background text-foreground shadow-sm border border-border/40"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
+              }`}
+            >
+              {isCode ? (
+                <Code className="size-3.5 text-primary" />
+              ) : (
+                <Eye className="size-3.5 text-emerald-500" />
+              )}
+              <span>{item.label}</span>
+            </button>
+          );
+        })}
       </div>
 
-      <div className="p-5 text-xs sm:text-sm leading-relaxed overflow-x-auto font-mono text-foreground">
-        <pre className="bg-transparent p-0 m-0">
-          <code>{items[activeIdx]?.content || ""}</code>
-        </pre>
+      {/* Tab Panel Content: Rendered as nested Markdown for full directive & table support */}
+      <div className="p-5">
+        <MarkdownRenderer content={activeContent} />
       </div>
     </div>
   );
 }
+
+

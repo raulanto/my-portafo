@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Lenis from "lenis";
 
 export function LocomotiveScrollProvider({
   children,
@@ -8,31 +9,29 @@ export function LocomotiveScrollProvider({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    let locomotiveScroll: any;
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: "vertical",
+      gestureOrientation: "vertical",
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
+    });
 
-    (async () => {
-      const LocomotiveScroll = (await import("locomotive-scroll")).default;
-      locomotiveScroll = new LocomotiveScroll({
-        lenisOptions: {
-          wrapper: window,
-          content: document.documentElement,
-          lerp: 0.1,
-          duration: 1.2,
-          orientation: "vertical",
-          gestureOrientation: "vertical",
-          smoothWheel: true,
-          wheelMultiplier: 1.0,
-          touchMultiplier: 1.5,
-        },
-      });
-    })();
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    const rafId = requestAnimationFrame(raf);
 
     return () => {
-      if (locomotiveScroll) {
-        locomotiveScroll.destroy();
-      }
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
     };
   }, []);
 
   return <>{children}</>;
 }
+

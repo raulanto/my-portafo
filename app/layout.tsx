@@ -28,22 +28,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="es"
       className={cn(
-        "h-full scroll-smooth antialiased",
+        "scroll-smooth antialiased",
         geist.variable,
         geistMono.variable,
         inter.variable,
         "font-sans"
       )}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+      <body className="bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
         <CircularThemeProvider>
           <LocomotiveScrollProvider>
             <Navigation />
-            <div className="flex-1">{children}</div>
+            <div className="w-full">{children}</div>
           </LocomotiveScrollProvider>
         </CircularThemeProvider>
       </body>
     </html>
   );
 }
+
+
+
 

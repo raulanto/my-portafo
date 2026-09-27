@@ -47,51 +47,49 @@ export default async function BlogPostPage({ params }: PageProps) {
           <span>Volver al Portafolio</span>
         </Link>
 
-        {/* Article Header Banner */}
-        <header className="relative flex flex-col gap-6 p-6 sm:p-10 rounded-3xl border border-border/60 bg-gradient-to-br from-card/80 via-card/50 to-background backdrop-blur-xl shadow-xl shadow-black/5 overflow-hidden">
-          {/* Subtle grid texture overlay */}
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(rgba(120,119,198,0.15)_1.5px,transparent_1.5px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_top_right,black_60%,transparent_100%)] pointer-events-none" />
-
+        {/* Minimalist Editorial Article Header */}
+        <header className="flex flex-col gap-6 border-b border-border/20 pb-10">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="px-3.5 py-1 rounded-full bg-primary/15 text-primary border border-primary/30 text-xs font-extrabold uppercase tracking-wider shadow-sm">
+            <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-mono font-bold uppercase tracking-wider">
               {post.category}
             </span>
-            <span className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono">
-              <Calendar className="size-3.5" />
+            <span className="text-xs text-muted-foreground font-mono flex items-center gap-1.5">
+              <Calendar className="size-3.5 text-primary" />
               {post.date}
             </span>
-            <span className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono">
-              <Clock className="size-3.5" />
+            <span className="text-xs text-muted-foreground font-mono flex items-center gap-1.5">
+              <Clock className="size-3.5 text-primary" />
               {post.readTime}
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.12]">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tighter text-foreground leading-[1.05]">
             {post.title}
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-medium leading-relaxed max-w-3xl">
+          <p className="text-base sm:text-xl text-muted-foreground font-normal leading-relaxed max-w-3xl">
             {post.description}
           </p>
 
-          {/* Author Bar */}
-          <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+          {/* Minimalist Author Bar */}
+          <div className="flex items-center gap-3 pt-4">
             <img
               src={post.authorAvatar}
               alt={post.author}
-              className="size-11 sm:size-12 rounded-full border border-primary/30 object-cover shadow-sm"
+              className="size-10 rounded-full border border-border/60 object-cover"
             />
-            <div>
+            <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <p className="text-sm font-bold text-foreground">{post.author}</p>
-                <span className="size-2 rounded-full bg-emerald-500" />
+                <span className="text-sm font-bold text-foreground">{post.author}</span>
+                <span className="size-1.5 rounded-full bg-emerald-500" />
               </div>
-              <p className="text-xs text-muted-foreground font-mono">
+              <span className="text-xs text-muted-foreground font-mono">
                 {post.authorDescription}
-              </p>
+              </span>
             </div>
           </div>
         </header>
+
 
         {/* Main Content Layout (Article + Sidebar) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">

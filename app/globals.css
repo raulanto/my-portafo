@@ -138,3 +138,50 @@
     @apply font-sans;
   }
 }
+
+/* PrismJS Syntax Highlighting Tokens */
+.token.keyword {
+  color: #3b82f6;
+  font-weight: 700;
+}
+.token.string {
+  color: #10b981;
+}
+.token.comment {
+  color: #6b7280;
+  font-style: italic;
+}
+.token.function {
+  color: #ec4899;
+  font-weight: 600;
+}
+.token.operator,
+.token.punctuation {
+  color: #9ca3af;
+}
+.token.number,
+.token.boolean {
+  color: #f59e0b;
+}
+.token.property,
+.token.class-name {
+  color: #8b5cf6;
+  font-weight: 600;
+}
+
+.dark .token.keyword {
+  color: #60a5fa;
+}
+.dark .token.string {
+  color: #34d399;
+}
+.dark .token.comment {
+  color: #9ca3af;
+}
+.dark .token.function {
+  color: #f472b6;
+}
+.dark .token.number,
+.dark .token.boolean {
+  color: #fbbf24;
+}
