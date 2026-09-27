@@ -1,6 +1,9 @@
+"use client";
+
 import GradientWaves from "@/components/GradientWaves";
 import AceternityButton from "@/components/ui/AceternityButton";
 import Image from "next/image";
+import { SplitTextReveal } from "@/components/ui/split-text-reveal";
 
 export function HeroSection() {
   return (
@@ -39,18 +42,29 @@ export function HeroSection() {
           <span>Disponible para proyectos</span>
         </div>
 
-        {/* Brand Headline (rauantodev Portafolio+) */}
-        <div className="relative flex flex-col items-center justify-center select-none py-4">
+        {/* Brand Headline (raulantodev Portafolio+) */}
+        <div className="relative flex flex-col items-center justify-center select-none py-4 w-full">
           {/* Subtle dotted background grid matching the design image */}
           <div className="absolute -inset-10 -z-10 rounded-3xl bg-[radial-gradient(rgba(120,119,198,0.25)_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(rgba(255,255,255,0.15)_1.5px,transparent_1.5px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_100%)] pointer-events-none" />
 
-          <div className="inline-flex flex-col items-end">
+          <div className="inline-flex flex-col items-center w-full gap-1">
             <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-foreground leading-none drop-shadow-sm">
-              rauantodev
+              <SplitTextReveal
+                text="raulantodev"
+                delay={0.1}
+                stagger={0.05}
+                tag="span"
+              />
             </h1>
-            <div className="flex items-center gap-2 mt-1 sm:mt-2 text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground/90 tracking-tight">
-              <span>Portafolio</span>
-              <span className="inline-flex items-center justify-center size-8 sm:size-9 md:size-10 rounded-xl  p-1.5 ">
+
+            <div className="flex items-center gap-2 text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground/90 tracking-tight">
+              <SplitTextReveal
+                text="Portafolio"
+                delay={0.6}
+                stagger={0.04}
+                tag="span"
+              />
+              <span className="inline-flex items-center justify-center size-8 sm:size-9 md:size-10 rounded-xl p-1.5">
                 <Image
                   src="/logo.svg"
                   alt="Logo Raúl Antón"
@@ -65,12 +79,22 @@ export function HeroSection() {
 
         {/* Role subtitle */}
         <div className="text-sm sm:text-base font-semibold text-primary uppercase tracking-widest -mt-1">
-          Full Stack Developer
+          <SplitTextReveal
+            text="Full Stack Developer"
+            delay={0.9}
+            stagger={0.03}
+            tag="span"
+          />
         </div>
 
         {/* Subtitle description */}
         <p className="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
-          Diseño, desarrollo e implemento aplicaciones web robustas — desde interfaces reactivas hasta APIs de alto rendimiento. Arquitectura hexagonal, DDD y entrega orientada a resultados.
+          <SplitTextReveal
+            text="Diseño, desarrollo e implemento aplicaciones web robustas — desde interfaces reactivas hasta APIs de alto rendimiento."
+            delay={1.2}
+            stagger={0.012}
+            tag="span"
+          />
         </p>
 
         {/* CTA Buttons */}
