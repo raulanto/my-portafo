@@ -153,14 +153,6 @@ export function ExperienceSection() {
                   : "bg-card/20 border-border/40 hover:border-primary/30 hover:bg-card/40 p-6 sm:p-8"
               )}
             >
-              {/* Subtle top accent bar */}
-              <div
-                className={cn(
-                  "absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/50 to-transparent transition-opacity duration-500",
-                  isExpanded ? "opacity-100" : "opacity-0 group-hover:opacity-60"
-                )}
-              />
-
               {/* Card Header Row */}
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="flex items-start sm:items-center gap-4 sm:gap-6">

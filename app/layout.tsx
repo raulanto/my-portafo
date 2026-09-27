@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Navigation } from "@/components/navigation";
 import CircularThemeProvider from "@/components/ui/CircularThemeProvider";
+import { LocomotiveScrollProvider } from "@/components/providers/locomotive-scroll-provider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -36,10 +37,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
         <CircularThemeProvider>
-          <Navigation />
-          <div className="flex-1">{children}</div>
+          <LocomotiveScrollProvider>
+            <Navigation />
+            <div className="flex-1">{children}</div>
+          </LocomotiveScrollProvider>
         </CircularThemeProvider>
       </body>
     </html>
   );
 }
+
