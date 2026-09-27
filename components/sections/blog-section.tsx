@@ -245,85 +245,51 @@ const CATEGORIES = [
 ] as const;
 
 export function BlogSection() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
-  const [searchQuery, setSearchQuery] = useState<string>("");
   const [modalPost, setModalPost] = useState<BlogPostDisplay | null>(null);
 
-  const filteredPosts = ALL_POSTS.filter((post) => {
-    const matchesCat =
-      selectedCategory === "Todos" || post.category === selectedCategory;
-    const matchesSearch =
-      searchQuery === "" ||
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCat && matchesSearch;
-  });
+  const latestPosts = ALL_POSTS.slice(0, 4);
 
   return (
     <section id="blog" className="scroll-mt-28 flex flex-col gap-10">
-      {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border/40 pb-5">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-2xl bg-primary/10 text-primary border border-primary/20">
-            <BookOpen className="size-5" />
+      {/* Clean, Flat & Bold Section Header */}
+      <div className="flex flex-col gap-4 border-b border-border/20 pb-8">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-mono font-bold tracking-wider uppercase">
+            <BookOpen className="size-3.5" />
+            <span>04 / PUBLICACIONES DESTACADAS</span>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-                Blog & Artículos
-              </h2>
-              <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-mono font-bold">
-                {ALL_POSTS.length} publicaciones
-              </span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Guías técnicas y lecciones aprendidas sobre arquitectura, backend, SQL y rendimiento.
+
+          <span className="text-xs font-mono text-muted-foreground">
+            {ALL_POSTS.length} artículos técnicos en total
+          </span>
+        </div>
+
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
+              Blog & <br className="hidden sm:inline" />
+              <span className="text-primary">Artículos Recientes.</span>
+            </h2>
+
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl font-medium leading-relaxed mt-1">
+              Guías técnicas y análisis sobre arquitectura de software, bases de datos SQL y desarrollo de sistemas.
             </p>
           </div>
-        </div>
 
-        {/* Search Bar */}
-        <div className="relative w-full sm:w-64">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Buscar artículos..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm rounded-full bg-card/60 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
-          />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-            >
-              <X className="size-3.5" />
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Category Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-        {CATEGORIES.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-1.5 text-xs font-semibold rounded-full whitespace-nowrap transition-all duration-200 cursor-pointer ${
-              selectedCategory === cat
-                ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
-                : "bg-card/40 border border-border/50 text-muted-foreground hover:text-foreground hover:bg-card/80"
-            }`}
+          {/* View All Posts Button */}
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 text-xs font-bold transition-all duration-300 hover:scale-105 active:scale-95 shrink-0 self-start md:self-auto"
           >
-            {cat}
-          </button>
-        ))}
+            <span>Explorar Todos los Artículos</span>
+            <ArrowUpRight className="size-4" />
+          </Link>
+        </div>
       </div>
 
-      {/* Grid of All 17 Article Cards */}
+      {/* Grid of Top 4 Curated Article Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {filteredPosts.map((post) => (
+        {latestPosts.map((post) => (
           <div
             key={post.slug}
             className="group flex flex-col justify-between p-6 sm:p-7 rounded-3xl border border-border/50 bg-card/40 hover:bg-card/80 hover:border-primary/40 backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-black/5"
@@ -396,24 +362,6 @@ export function BlogSection() {
           </div>
         ))}
       </div>
-
-      {filteredPosts.length === 0 && (
-        <div className="p-12 text-center rounded-3xl border border-border/40 bg-card/30 flex flex-col items-center gap-3">
-          <BookOpen className="size-8 text-muted-foreground/50" />
-          <p className="text-sm text-muted-foreground font-medium">
-            No se encontraron artículos para tu búsqueda.
-          </p>
-          <button
-            onClick={() => {
-              setSelectedCategory("Todos");
-              setSearchQuery("");
-            }}
-            className="px-4 py-1.5 text-xs font-semibold rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-          >
-            Limpiar filtros
-          </button>
-        </div>
-      )}
 
       {/* Article Quick Preview Modal */}
       {modalPost && (
