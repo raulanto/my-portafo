@@ -33,31 +33,32 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   return (
-    <article className="min-h-screen bg-background text-foreground pt-28 sm:pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Full-width Header Hero Background Image with Bottom Circular/Linear Fade Mask */}
-      {post.thumbnail && (
-        <div className="absolute top-0 left-0 right-0 h-[450px] sm:h-[520px] w-full pointer-events-none -z-10 overflow-hidden">
+    <article className="min-h-screen text-foreground pt-28 sm:pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Full-width Header Hero Background Image with Bottom Fade */}
+      {post.thumbnail ? (
+        <div className="absolute top-0 left-0 right-0 h-[480px] sm:h-[540px] w-full pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
           <img
             src={post.thumbnail}
             alt={post.title}
             className="w-full h-full object-cover object-center"
           />
-          {/* Circular/Linear Gradient Mask at the bottom blending to background */}
-          <div
-            className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/60 to-background"
-            style={{
-              maskImage: "radial-gradient(ellipse 120% 80% at 50% 0%, black 40%, transparent 100%)",
-              WebkitMaskImage: "radial-gradient(ellipse 120% 80% at 50% 0%, black 40%, transparent 100%)",
-            }}
-          />
-          <div className="absolute bottom-0 inset-x-0 h-36 bg-gradient-to-t from-background via-background/90 to-transparent" />
+          {/* Dark overlay so text remains readable */}
+          <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/70 to-background" />
+          {/* Hard fade at the very bottom */}
+          <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-background to-transparent" />
         </div>
+      ) : (
+        <div className="absolute inset-0 bg-background" style={{ zIndex: 0 }} />
       )}
 
-      {/* Background ambient lighting */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-primary/10 via-purple-500/5 to-transparent pointer-events-none -z-10 blur-3xl" />
+      {/* Content sits above the hero image */}
+      {/* Solid background below the hero fold */}
+      <div className="absolute left-0 right-0 bottom-0 bg-background pointer-events-none" style={{ top: '420px', zIndex: 0 }} />
 
-      <div className="max-w-5xl mx-auto flex flex-col gap-10">
+      {/* Background ambient lighting */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-primary/10 via-purple-500/5 to-transparent pointer-events-none blur-3xl" style={{ zIndex: 2 }} />
+
+      <div className="relative max-w-5xl mx-auto flex flex-col gap-10" style={{ zIndex: 3 }}>
         {/* Navigation Back Link */}
         <Link
           href="/#blog"
