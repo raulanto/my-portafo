@@ -2,6 +2,7 @@ import { HeroSection } from "@/components/sections/hero-section";
 import { AboutSection } from "@/components/sections/about-section";
 import { TechStackSection } from "@/components/sections/tech-stack-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
+import { AllProjectsSection } from "@/components/sections/all-projects-section";
 import { ExperienceSection } from "@/components/sections/experience-section";
 import { BlogSection } from "@/components/sections/blog-section";
 import { InterestsSection } from "@/components/sections/interests-section";
@@ -40,6 +41,7 @@ export default function Home() {
         {/* Contained main sections */}
         <div className="pb-20 px-4 sm:px-6 max-w-7xl mx-auto flex flex-col gap-24 sm:gap-32 w-full pt-16">
           <ProjectsSection />
+          <AllProjectsSection />
           <ExperienceSection />
           <BlogSection />
           <InterestsSection />
