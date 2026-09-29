@@ -7,6 +7,7 @@ import { ExperienceSection } from "@/components/sections/experience-section";
 import { BlogSection } from "@/components/sections/blog-section";
 import { InterestsSection } from "@/components/sections/interests-section";
 import { ContactSection } from "@/components/sections/contact-section";
+import { Footer } from "@/components/sections/footer";
 import TextOnPathScroll from "@/components/ui/TextOnPathScroll";
 
 export default function Home() {
