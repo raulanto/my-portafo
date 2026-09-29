@@ -195,7 +195,7 @@ export function ExperienceSection() {
 
                 {/* Right side tagline / expand action indicator */}
                 <div className="flex items-center justify-between lg:justify-end gap-4 border-t lg:border-t-0 border-border/20 pt-3 lg:pt-0">
-                  <span className="text-xs sm:text-sm text-muted-foreground font-medium hidden md:inline-block max-w-xs text-right">
+                  <span className="text-xs sm:text-base text-muted-foreground/90 font-serif italic font-normal hidden md:inline-block max-w-xs text-right">
                     {item.tagline}
                   </span>
 

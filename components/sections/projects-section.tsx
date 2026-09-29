@@ -117,10 +117,10 @@ export function ProjectsSection() {
 
         <h2 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
           Trabajo & <br className="hidden sm:inline" />
-          <span className="text-primary">Soluciones Creadas.</span>
+          <span className="text-primary font-serif italic font-normal text-[0.95em]">Soluciones Creadas.</span>
         </h2>
 
-        <p className="text-base sm:text-lg text-muted-foreground max-w-3xl font-medium leading-relaxed">
+        <p className="text-base sm:text-xl text-muted-foreground max-w-3xl font-normal leading-relaxed">
           Selección de aplicaciones web, motores de datos y plataformas de alta escala desarrolladas de punta a punta.
         </p>
       </div>

@@ -57,7 +57,7 @@ export function HeroSection() {
               />
             </h1>
 
-            <div className="flex items-center gap-2 text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground/90 tracking-tight">
+            <div className="flex items-center gap-2 text-2xl sm:text-3xl md:text-4xl font-serif italic font-normal text-foreground/90 tracking-wide">
               <SplitTextReveal
                 text="Portafolio"
                 delay={0.6}

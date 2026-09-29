@@ -63,11 +63,20 @@ export default async function BlogPostPage({ params }: PageProps) {
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tighter text-foreground leading-[1.05]">
-            {post.title}
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.08]">
+            {post.title.includes(":") ? (
+              <>
+                {post.title.split(":")[0]}:{" "}
+                <span className="font-serif italic font-normal text-primary">
+                  {post.title.split(":")[1]}
+                </span>
+              </>
+            ) : (
+              post.title
+            )}
           </h1>
 
-          <p className="text-base sm:text-xl text-muted-foreground font-normal leading-relaxed max-w-3xl">
+          <p className="text-lg sm:text-2xl text-muted-foreground/90 font-serif italic leading-relaxed max-w-3xl font-normal">
             {post.description}
           </p>
 

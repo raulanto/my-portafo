@@ -156,7 +156,7 @@ export function BlogSection() {
                   </h3>
                 </Link>
 
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-normal line-clamp-3">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-serif italic font-normal line-clamp-3">
                   {post.description}
                 </p>
               </div>

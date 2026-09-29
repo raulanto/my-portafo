@@ -69,10 +69,10 @@ export function BlogCatalogClient({ posts }: { posts: BlogPostItem[] }) {
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
             Artículos & <br className="hidden sm:inline" />
-            <span className="text-primary">Publicaciones Técnicas.</span>
+            <span className="text-primary font-serif italic font-normal text-[0.95em]">Publicaciones Técnicas.</span>
           </h1>
 
-          <p className="text-base sm:text-lg text-muted-foreground max-w-3xl font-medium leading-relaxed mt-1">
+          <p className="text-base sm:text-xl text-muted-foreground max-w-3xl font-normal leading-relaxed mt-1">
             Explora todas las guías, análisis de arquitectura, optimizaciones SQL y patrones de desarrollo creados por Raúl Antonio.
           </p>
         </div>
@@ -151,7 +151,7 @@ export function BlogCatalogClient({ posts }: { posts: BlogPostItem[] }) {
                   </h3>
                 </Link>
 
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-3 font-normal">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-3 font-serif italic font-normal">
                   {post.description}
                 </p>
               </div>

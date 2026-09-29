@@ -60,7 +60,7 @@ function renderInlineContent(text: string): React.ReactNode[] {
     const italicMatch = remaining.match(/^\*([^*]+)\*/);
     if (italicMatch) {
       parts.push(
-        <em key={keyIdx++} className="italic text-foreground/90">
+        <em key={keyIdx++} className="font-serif italic font-normal text-foreground/95 text-[1.05em] tracking-wide">
           {italicMatch[1]}
         </em>
       );
