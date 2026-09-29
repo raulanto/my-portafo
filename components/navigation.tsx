@@ -80,6 +80,11 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Whether current pill target is a real active section (not just hovered)
+  const pillIsActive =
+    hoveredIndex === null &&
+    NAV_ITEMS.findIndex((item) => item.href.substring(1) === activeSection) >= 0;
+
   // Update sliding pill position
   React.useEffect(() => {
     const targetIndex =
@@ -155,36 +160,53 @@ export function Navigation() {
           className="hidden md:flex items-center gap-0.5 relative"
           onMouseLeave={() => setHoveredIndex(null)}
         >
-          {/* Sliding pill — only visible when nav has background */}
+          {/* Sliding pill — gradient + glow, stronger when section is active */}
           <div
             aria-hidden
-            className="absolute top-0 bottom-0 rounded-full bg-muted transition-all duration-200 ease-out pointer-events-none"
-            style={{ ...pillStyle, opacity: scrolled ? (pillStyle.opacity as number ?? 1) : 0 }}
+            className="absolute top-0 bottom-0 rounded-full pointer-events-none transition-all duration-300 ease-out"
+            style={{
+              ...pillStyle,
+              opacity: scrolled ? (pillStyle.opacity as number ?? 1) : 0,
+              background: pillIsActive
+                ? "linear-gradient(135deg, hsl(var(--primary)/0.18) 0%, hsl(var(--primary)/0.06) 100%)"
+                : "linear-gradient(135deg, hsl(var(--primary)/0.10) 0%, hsl(var(--primary)/0.03) 100%)",
+              boxShadow: pillIsActive
+                ? "0 0 0 1px hsl(var(--primary)/0.20), 0 2px 12px hsl(var(--primary)/0.12)"
+                : "0 0 0 1px hsl(var(--primary)/0.10)",
+            }}
           />
 
           {NAV_ITEMS.map((item, i) => {
             const isActive = activeSection === item.href.substring(1);
             const isHovered = hoveredIndex === i;
+            const isHighlighted = isActive || isHovered;
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 ref={(el) => { linkRefs.current[i] = el; }}
                 onMouseEnter={() => setHoveredIndex(i)}
-                className={cn(
-                  "relative px-3.5 py-1.5 text-xs font-medium rounded-full transition-colors duration-150 outline-none flex items-center gap-1.5 select-none",
-                  isActive || isHovered
-                    ? "text-foreground font-semibold"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
+                className="relative px-3.5 py-1.5 text-xs font-medium rounded-full outline-none flex items-center gap-1.5 select-none"
+                style={{
+                  color: isActive
+                    ? "hsl(var(--primary))"
+                    : isHovered
+                    ? "hsl(var(--foreground))"
+                    : "hsl(var(--muted-foreground))",
+                  fontWeight: isHighlighted ? 600 : 400,
+                  transform: isHighlighted ? "scale(1.03)" : "scale(1)",
+                  transition: "color 0.2s ease, font-weight 0.15s ease, transform 0.2s ease",
+                }}
               >
                 {/* Index number revealed on hover/active */}
                 <span
-                  className="font-mono text-[9px] tabular-nums text-primary/60 leading-none transition-all duration-200"
+                  className="font-mono text-[9px] tabular-nums leading-none"
                   style={{
-                    opacity: isHovered || isActive ? 1 : 0,
-                    width: isHovered || isActive ? "1.5ch" : "0",
+                    color: isActive ? "hsl(var(--primary)/0.7)" : "hsl(var(--primary)/0.5)",
+                    opacity: isHighlighted ? 1 : 0,
+                    width: isHighlighted ? "1.5ch" : "0",
                     overflow: "hidden",
+                    transition: "opacity 0.2s ease, width 0.2s ease",
                   }}
                 >
                   {item.index}
