@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useMDXComponents } from "@/mdx-components";
 import {
   Info,
@@ -15,6 +16,8 @@ import {
   AlertOctagon,
   ShieldAlert,
   Sparkles,
+  ArrowUpRight,
+  PlaySquare,
 } from "lucide-react";
 
 interface MarkdownRendererProps {
@@ -68,7 +71,28 @@ function renderInlineContent(text: string): React.ReactNode[] {
       continue;
     }
 
-    // 4. Links [text](url)
+    // 4. Images ![alt](url)
+    const imgMatch = remaining.match(/^!\[([^\]]*)\]\(([^)]+)\)/);
+    if (imgMatch) {
+      parts.push(
+        <span key={keyIdx++} className="block my-6 overflow-hidden rounded-2xl border border-border/50 bg-card/40 backdrop-blur-md shadow-lg">
+          <img
+            src={imgMatch[2]}
+            alt={imgMatch[1] || "Imagen ilustrativa"}
+            className="w-full h-auto max-h-[500px] object-cover rounded-2xl"
+          />
+          {imgMatch[1] && (
+            <span className="block p-3 text-center text-xs font-mono text-muted-foreground bg-muted/30 border-t border-border/30">
+              {imgMatch[1]}
+            </span>
+          )}
+        </span>
+      );
+      remaining = remaining.slice(imgMatch[0].length);
+      continue;
+    }
+
+    // 5. Links [text](url)
     const linkMatch = remaining.match(/^\[([^\]]+)\]\(([^)]+)\)/);
     if (linkMatch) {
       parts.push(
@@ -87,7 +111,7 @@ function renderInlineContent(text: string): React.ReactNode[] {
     }
 
     // Next plain character block
-    const nextSpecial = remaining.search(/[`*\[]/);
+    const nextSpecial = remaining.search(/[`*!\[]/);
     if (nextSpecial === -1) {
       parts.push(remaining);
       break;
@@ -154,12 +178,18 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       continue;
     }
 
-    // 2. Handle Directives ::warning, ::caution, ::note, ::tip, ::info, ::danger (Single or triple colons)
-    const directiveMatch = trimmed.match(/^::+(warning|caution|note|tip|info|danger|alert)/i);
+    // 2. Handle Directives ::warning, ::caution, ::note, ::tip, ::info, ::danger, ::callout (Single or triple colons)
+    const directiveMatch = trimmed.match(/^::+(warning|caution|note|tip|info|danger|alert|callout)(\{.*?\})?/i);
     if (directiveMatch) {
       const typeStr = directiveMatch[1].toLowerCase();
+      const attrStr = directiveMatch[2] || "";
+
+      // Extract attributes like to="/blog/disenobd" icon="i-lucide-square-play" color="neutral"
+      const toMatch = attrStr.match(/to="([^"]+)"/);
+      const toUrl = toMatch ? toMatch[1] : null;
+
       const alertType: "warning" | "caution" | "note" | "tip" | "info" | "danger" =
-        typeStr === "alert" ? "info" : (typeStr as any);
+        typeStr === "alert" || typeStr === "callout" ? "info" : (typeStr as any);
 
       const blockLines: string[] = [];
       i++;
@@ -169,7 +199,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
         i < lines.length &&
         lines[i].trim() !== "::" &&
         lines[i].trim() !== ":::" &&
-        !lines[i].trim().match(/^::+(warning|caution|note|tip|info|danger|alert)/i)
+        !lines[i].trim().match(/^::+(warning|caution|note|tip|info|danger|alert|callout)/i)
       ) {
         blockLines.push(lines[i]);
         i++;
@@ -183,6 +213,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
         <BlockDirectiveAlert
           key={`directive-${i}`}
           type={alertType}
+          to={toUrl}
           content={blockLines.join("\n").trim()}
         />
       );
@@ -317,30 +348,35 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
           {renderInlineContent(trimmed.replace("# ", ""))}
         </h1>
       );
+      i++;
     } else if (trimmed.startsWith("## ")) {
       parsedNodes.push(
         <h2 key={i} className="text-2xl sm:text-3xl font-black tracking-tight text-foreground mt-10 mb-4 pt-4 border-t border-border/20">
           {renderInlineContent(trimmed.replace("## ", ""))}
         </h2>
       );
+      i++;
     } else if (trimmed.startsWith("### ")) {
       parsedNodes.push(
         <h3 key={i} className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-8 mb-3">
           {renderInlineContent(trimmed.replace("### ", ""))}
         </h3>
       );
+      i++;
     } else if (trimmed.startsWith("#### ")) {
       parsedNodes.push(
         <h4 key={i} className="text-lg font-bold tracking-tight text-foreground mt-6 mb-2">
           {renderInlineContent(trimmed.replace("#### ", ""))}
         </h4>
       );
+      i++;
     } else if (trimmed.startsWith("> ")) {
       parsedNodes.push(
         <blockquote key={i} className="my-4 pl-4 border-l-4 border-primary text-muted-foreground italic font-medium">
           {renderInlineContent(trimmed.replace("> ", ""))}
         </blockquote>
       );
+      i++;
     } else if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
       parsedNodes.push(
         <ul key={i} className="my-2 ml-4 list-disc space-y-1">
@@ -349,19 +385,40 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
           </li>
         </ul>
       );
+      i++;
     } else if (trimmed.startsWith("---")) {
       parsedNodes.push(<hr key={i} className="my-8 border-border/40" />);
+      i++;
     } else if (trimmed === "") {
       parsedNodes.push(<div key={i} className="h-2" />);
+      i++;
     } else {
-      parsedNodes.push(
-        <p key={i} className="text-sm sm:text-base text-foreground/90 leading-relaxed font-normal my-2">
-          {renderInlineContent(line)}
-        </p>
-      );
-    }
+      // Collect contiguous paragraph text lines into a single paragraph
+      const paragraphLines: string[] = [];
+      while (
+        i < lines.length &&
+        lines[i].trim() !== "" &&
+        !lines[i].trim().startsWith("#") &&
+        !lines[i].trim().startsWith(">") &&
+        !lines[i].trim().startsWith("- ") &&
+        !lines[i].trim().startsWith("* ") &&
+        !lines[i].trim().startsWith("```") &&
+        !lines[i].trim().startsWith("::") &&
+        !lines[i].trim().startsWith("---") &&
+        !(lines[i].trim().startsWith("|") && lines[i].trim().includes("|"))
+      ) {
+        paragraphLines.push(lines[i].trim());
+        i++;
+      }
 
-    i++;
+      if (paragraphLines.length > 0) {
+        parsedNodes.push(
+          <p key={`p-${i}`} className="text-sm sm:text-base text-foreground/90 leading-relaxed font-normal my-2">
+            {renderInlineContent(paragraphLines.join(" "))}
+          </p>
+        );
+      }
+    }
   }
 
   return (
@@ -433,12 +490,14 @@ function StepsDirectiveBlock({ content }: { content: string }) {
 }
 
 
-/* Pure Minimalist Callout Line Indicator (::warning, ::caution, ::note, ::tip, ::info, ::danger) */
+/* Pure Minimalist Callout Line Indicator (::warning, ::caution, ::note, ::tip, ::info, ::danger, ::callout) */
 function BlockDirectiveAlert({
   type,
+  to,
   content,
 }: {
   type: "warning" | "caution" | "note" | "tip" | "info" | "danger";
+  to?: string | null;
   content: string;
 }) {
   const configs = {
@@ -475,8 +534,8 @@ function BlockDirectiveAlert({
     info: {
       border: "border-l-purple-500",
       text: "text-purple-600 dark:text-purple-400",
-      icon: <Sparkles className="size-4 text-purple-500 flex-shrink-0" />,
-      defaultTitle: "INFORMACIÓN",
+      icon: to ? <PlaySquare className="size-4 text-primary flex-shrink-0" /> : <Sparkles className="size-4 text-purple-500 flex-shrink-0" />,
+      defaultTitle: to ? "RECURSO RELACIONADO" : "INFORMACIÓN",
     },
   };
 
@@ -484,13 +543,25 @@ function BlockDirectiveAlert({
   const contentLines = content.split("\n").map((l) => l.trim()).filter(Boolean);
 
   return (
-    <div className={`my-4 pl-4 border-l-2 ${config.border} flex items-start gap-3`}>
+    <div className={`my-4 pl-4 border-l-2 ${config.border} flex items-start gap-3 group`}>
       <div className="pt-0.5">{config.icon}</div>
 
       <div className="flex flex-col gap-1 w-full">
-        <h4 className={`text-xs font-mono font-bold uppercase tracking-wider ${config.text}`}>
-          {config.defaultTitle}
-        </h4>
+        <div className="flex items-center justify-between gap-2">
+          <h4 className={`text-xs font-mono font-bold uppercase tracking-wider ${config.text}`}>
+            {config.defaultTitle}
+          </h4>
+
+          {to && (
+            <Link
+              href={to}
+              className="inline-flex items-center gap-1 text-xs font-mono font-bold text-primary hover:underline group-hover:translate-x-0.5 transition-transform"
+            >
+              <span>Ver artículo</span>
+              <ArrowUpRight className="size-3.5" />
+            </Link>
+          )}
+        </div>
 
         <div className="flex flex-col gap-1 text-xs sm:text-sm text-foreground/90 font-normal leading-relaxed">
           {contentLines.map((line, idx) => (

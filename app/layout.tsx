@@ -6,22 +6,25 @@ import { Navigation } from "@/components/navigation";
 import CircularThemeProvider from "@/components/ui/CircularThemeProvider";
 import { LocomotiveScrollProvider } from "@/components/providers/locomotive-scroll-provider";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
   style: ["normal", "italic"],
+  display: "swap",
 });
 
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist",
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -33,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="es"
+      data-scroll-behavior="smooth"
       className={cn(
         "scroll-smooth antialiased",
         geist.variable,

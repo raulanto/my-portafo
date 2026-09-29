@@ -319,6 +319,18 @@ export default function GradientWaves({
     };
     document.addEventListener("visibilitychange", onVisibility);
 
+    const onContextLost = (e: Event) => {
+      e.preventDefault();
+      tryStop();
+    };
+
+    const onContextRestored = () => {
+      tryStart();
+    };
+
+    canvas.addEventListener("webglcontextlost", onContextLost);
+    canvas.addEventListener("webglcontextrestored", onContextRestored);
+
     tryStart();
 
     return () => {
@@ -328,6 +340,8 @@ export default function GradientWaves({
       document.removeEventListener("visibilitychange", onVisibility);
       canvas.removeEventListener("pointermove", onPointerMove);
       canvas.removeEventListener("pointerleave", onPointerLeave);
+      canvas.removeEventListener("webglcontextlost", onContextLost);
+      canvas.removeEventListener("webglcontextrestored", onContextRestored);
       ctxMap.delete(container);
       try {
         container.removeChild(canvas);

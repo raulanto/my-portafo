@@ -134,6 +134,7 @@ export function getAllBlogPosts(): BlogPostItem[] {
 }
 
 export function getBlogPostBySlug(slug: string): BlogPostItem | null {
+  const decodedSlug = decodeURIComponent(slug).toLowerCase();
   const posts = getAllBlogPosts();
-  return posts.find((p) => p.slug.toLowerCase() === slug.toLowerCase()) || null;
+  return posts.find((p) => p.slug.toLowerCase() === decodedSlug) || null;
 }
