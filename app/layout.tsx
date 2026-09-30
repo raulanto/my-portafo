@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Navigation } from "@/components/navigation";
 import CircularThemeProvider from "@/components/ui/CircularThemeProvider";
 import { LocomotiveScrollProvider } from "@/components/providers/locomotive-scroll-provider";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="w-full">{children}</div>
           </LocomotiveScrollProvider>
         </CircularThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

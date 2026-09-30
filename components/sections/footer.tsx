@@ -127,7 +127,7 @@ export function Footer() {
               <GithubIcon className="size-5" />
             </a>
             <a
-              href="https://linkedin.com/in/raulantodev"
+              href="https://www.linkedin.com/in/rauantodev"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
@@ -136,8 +136,10 @@ export function Footer() {
               <LinkedinIcon className="size-5" />
             </a>
             <a
-              href="mailto:raulantodev@gmail.com"
-              aria-label="Email"
+              href="https://x.com/raulantodev"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X (Twitter)"
               className="hover:text-foreground transition-colors"
             >
               <XIcon className="size-5" />
