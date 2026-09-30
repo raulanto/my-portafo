@@ -29,8 +29,80 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Raúl Antón | Software Engineer Portfolio",
-  description: "Portafolio personal de Raúl Antón: proyectos, experiencia, blog y tecnología.",
+  metadataBase: new URL("https://rauantodev.vercel.app"),
+  title: {
+    default: "Raúl Antón — Software Engineer & Full Stack Developer",
+    template: "%s | Raúl Antón",
+  },
+  description:
+    "Portafolio profesional de Raúl Antón (raulantodev), Ingeniero de Software y Desarrollador Full Stack en México. Especialista en Angular, NestJS, FastAPI, Go, Rust, Django, arquitecturas de datos e IoT.",
+  keywords: [
+    "Raúl Antón",
+    "raulantodev",
+    "Software Engineer",
+    "Full Stack Developer",
+    "Ingeniero de Software México",
+    "Villahermosa Tabasco",
+    "Angular",
+    "NestJS",
+    "FastAPI",
+    "Go",
+    "Golang",
+    "Rust",
+    "Django",
+    "PostgreSQL",
+    "WebSockets",
+    "Fintech",
+    "IoT",
+    "Arquitectura de Software",
+  ],
+  authors: [{ name: "Raúl Antón", url: "https://x.com/raulantodev" }],
+  creator: "Raúl Antón (raulantodev)",
+  publisher: "Raúl Antón",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "es_MX",
+    url: "https://raulantodev.com",
+    title: "Raúl Antón — Software Engineer & Full Stack Developer",
+    description:
+      "Portafolio profesional de Raúl Antón (raulantodev). Proyectos de ingeniería de software, arquitectura de datos, microservicios y soluciones web de alta escala.",
+    siteName: "Raúl Antón Portafolio",
+    images: [
+      {
+        url: "/logo.svg",
+        width: 1200,
+        height: 630,
+        alt: "Raúl Antón — Software Engineer Portafolio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Raúl Antón — Software Engineer & Full Stack Developer",
+    description:
+      "Portafolio profesional de Raúl Antón (raulantodev). Proyectos de ingeniería de software, arquitectura de datos y sistemas en tiempo real.",
+    creator: "@raulantodev",
+    images: ["/logo.svg"],
+  },
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
+  alternates: {
+    canonical: "https://raulantodev.com",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

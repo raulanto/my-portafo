@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
@@ -10,12 +10,33 @@ import {
   Clock,
   Tag,
   BookOpen,
+  ArrowUp,
 } from "lucide-react";
 import { BlogPostItem } from "@/lib/blog";
 import { ScrollTextReveal } from "@/components/ui/scroll-text-reveal";
 
 export function BlogArticleClient({ post }: { post: BlogPostItem }) {
   const headerRef = useRef<HTMLDivElement>(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const { scrollYProgress } = useScroll({
     target: headerRef,
@@ -187,6 +208,18 @@ export function BlogArticleClient({ post }: { post: BlogPostItem }) {
           </aside>
         </div>
       </div>
+
+      {/* Floating Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-50 p-3.5 rounded-full bg-primary text-primary-foreground shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center cursor-pointer border border-primary-foreground/20"
+          title="Ir al inicio de la página"
+          aria-label="Ir al inicio de la página"
+        >
+          <ArrowUp className="size-5" />
+        </button>
+      )}
     </article>
   );
 }
