@@ -30,9 +30,14 @@ export function AllProjectsSection() {
         <span className="text-xs font-mono text-muted-foreground tracking-widest uppercase">
           Todos los proyectos
         </span>
-        <ScrollTextReveal tag="h2" className="text-5xl sm:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
-          El resto del{" "}
-          <span className="font-serif italic font-normal text-primary">trabajo.</span>
+        <ScrollTextReveal
+          tag="h2"
+          className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]"
+        >
+          Trabajo & <br className="hidden sm:inline" />
+          <span className="text-primary font-serif italic font-normal text-[0.95em]">
+            Soluciones Creadas.
+          </span>
         </ScrollTextReveal>
       </div>
 

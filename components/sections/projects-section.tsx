@@ -43,7 +43,14 @@ const PROJECTS: Project[] = [
       "Persistencia de estado en Redis y PostgreSQL",
       "Interfaz reactiva con soporte multitarea y filtros avanzados",
     ],
-    tech: ["Nuxt.js", "Django", "WebSockets", "Redis", "PostgreSQL", "TailwindCSS"],
+    tech: [
+      "Nuxt.js",
+      "Django",
+      "WebSockets",
+      "Redis",
+      "PostgreSQL",
+      "TailwindCSS",
+    ],
     image:
       "/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fproject_kanban_platform_1790477301772.jpg&w=1200&q=80",
     github: "https://github.com/raulanto",
@@ -116,13 +123,19 @@ export function ProjectsSection() {
           </span>
         </div>
 
-        <ScrollTextReveal tag="h2" className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
+        <ScrollTextReveal
+          tag="h2"
+          className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]"
+        >
           Trabajo & <br className="hidden sm:inline" />
-          <span className="text-primary font-serif italic font-normal text-[0.95em]">Soluciones Creadas.</span>
+          <span className="text-primary font-serif italic font-normal text-[0.95em]">
+            Soluciones Creadas.
+          </span>
         </ScrollTextReveal>
 
         <p className="text-base sm:text-xl text-muted-foreground max-w-3xl font-normal leading-relaxed">
-          Selección de aplicaciones web, motores de datos y plataformas de alta escala desarrolladas de punta a punta.
+          Selección de aplicaciones web, motores de datos y plataformas de alta
+          escala desarrolladas de punta a punta.
         </p>
       </div>
 
@@ -140,7 +153,7 @@ export function ProjectsSection() {
                   "group relative w-full text-left p-5 sm:p-6 rounded-3xl transition-all duration-300 border cursor-pointer flex flex-col gap-3",
                   isSelected
                     ? "bg-primary/10 border-primary/40 shadow-lg shadow-primary/5"
-                    : "bg-card/30 hover:bg-card/60 border-border/40 hover:border-border/80"
+                    : "bg-card/30 hover:bg-card/60 border-border/40 hover:border-border/80",
                 )}
               >
                 <div className="flex items-center justify-between">
@@ -149,7 +162,7 @@ export function ProjectsSection() {
                       "text-xs font-mono font-bold px-2.5 py-1 rounded-full transition-colors",
                       isSelected
                         ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground group-hover:text-foreground"
+                        : "bg-muted text-muted-foreground group-hover:text-foreground",
                     )}
                   >
                     {project.number}
@@ -164,7 +177,7 @@ export function ProjectsSection() {
                   <h3
                     className={cn(
                       "text-xl sm:text-2xl font-bold transition-colors flex items-center justify-between gap-2",
-                      isSelected ? "text-primary" : "text-foreground"
+                      isSelected ? "text-primary" : "text-foreground",
                     )}
                   >
                     <span>{project.title}</span>
@@ -173,7 +186,7 @@ export function ProjectsSection() {
                         "size-5 transition-transform duration-300",
                         isSelected
                           ? "translate-x-0.5 -translate-y-0.5 text-primary"
-                          : "opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-muted-foreground"
+                          : "opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-muted-foreground",
                       )}
                     />
                   </h3>
@@ -191,7 +204,7 @@ export function ProjectsSection() {
                         "text-[10px] font-mono px-2 py-0.5 rounded-md",
                         isSelected
                           ? "bg-primary/20 text-primary"
-                          : "bg-muted/70 text-muted-foreground"
+                          : "bg-muted/70 text-muted-foreground",
                       )}
                     >
                       {t}
@@ -217,8 +230,8 @@ export function ProjectsSection() {
                 selected.id === "kanban-platform"
                   ? "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80"
                   : selected.id === "iot-telemetry"
-                  ? "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80"
-                  : "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80"
+                    ? "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80"
+                    : "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80"
               }
               alt={selected.title}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
