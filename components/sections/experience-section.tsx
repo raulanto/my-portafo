@@ -138,8 +138,8 @@ export function ExperienceSection() {
         </p>
       </div>
 
-      {/* Minimalist Big-Type Interactive List */}
-      <div className="flex flex-col gap-4">
+      {/* Editorial Minimalist Interactive List */}
+      <div className="flex flex-col">
         {EXPERIENCE_ITEMS.map((item) => {
           const isExpanded = expandedId === item.id;
 
@@ -148,114 +148,83 @@ export function ExperienceSection() {
               key={item.id}
               onClick={() => setExpandedId(isExpanded ? null : item.id)}
               className={cn(
-                "group relative rounded-3xl border transition-all duration-500 cursor-pointer overflow-hidden backdrop-blur-xl",
-                isExpanded
-                  ? "bg-card/70 border-primary/40 shadow-2xl shadow-primary/5 p-6 sm:p-10"
-                  : "bg-card/20 border-border/40 hover:border-primary/30 hover:bg-card/40 p-6 sm:p-8"
+                "group py-8 sm:py-10 border-b border-border/30 transition-all duration-300 cursor-pointer"
               )}
             >
-              {/* Card Header Row */}
+              {/* Main Line / Summary Row */}
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                <div className="flex items-start sm:items-center gap-4 sm:gap-6">
-                  {/* Big Index Number */}
+                <div className="flex items-baseline gap-4 sm:gap-8">
                   <span
                     className={cn(
-                      "text-3xl sm:text-5xl font-black font-mono tracking-tighter transition-colors duration-300 select-none",
-                      isExpanded ? "text-primary" : "text-muted-foreground/30 group-hover:text-muted-foreground/60"
+                      "text-xl sm:text-2xl font-mono tracking-tighter transition-colors duration-300 select-none shrink-0",
+                      isExpanded ? "text-primary font-bold" : "text-muted-foreground/40 group-hover:text-muted-foreground"
                     )}
                   >
                     {item.number}
                   </span>
 
                   <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      {item.badge && (
-                        <span className="px-2.5 py-0.5 rounded-md bg-primary/10 text-primary text-[11px] font-mono font-bold uppercase tracking-wider">
-                          {item.badge}
-                        </span>
-                      )}
-                      <span className="text-xs font-mono text-muted-foreground flex items-center gap-1">
-                        <Calendar className="size-3 text-primary" />
-                        {item.period}
-                      </span>
-                    </div>
-
                     <h3 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground group-hover:text-primary transition-colors duration-300">
                       {item.role}
                     </h3>
-
-                    <p className="text-sm sm:text-lg font-mono font-bold text-muted-foreground flex items-center gap-2">
-                      <Building2 className="size-4 text-primary shrink-0" />
-                      <span>{item.company}</span>
-                      <span className="text-xs font-normal text-muted-foreground hidden sm:inline">
-                        • {item.location}
-                      </span>
-                    </p>
+                    <div className="flex items-center gap-3 text-sm sm:text-base text-muted-foreground font-mono">
+                      <span className="font-semibold text-foreground/90">{item.company}</span>
+                      <span>•</span>
+                      <span>{item.period}</span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Right side tagline / expand action indicator */}
-                <div className="flex items-center justify-between lg:justify-end gap-4 border-t lg:border-t-0 border-border/20 pt-3 lg:pt-0">
-                  <span className="text-xs sm:text-base text-muted-foreground/90 font-serif italic font-normal hidden md:inline-block max-w-xs text-right">
-                    {item.tagline}
+                <div className="flex items-center justify-between lg:justify-end gap-6">
+                  <span className="text-xs sm:text-sm font-mono text-muted-foreground hidden md:inline-block">
+                    {item.location}
                   </span>
 
                   <div
                     className={cn(
-                      "p-3 rounded-2xl border transition-all duration-300 flex items-center justify-center shrink-0",
+                      "size-9 rounded-full border border-border/40 flex items-center justify-center transition-all duration-300 shrink-0",
                       isExpanded
                         ? "bg-primary text-primary-foreground border-primary rotate-180"
-                        : "bg-muted/50 border-border/40 text-muted-foreground group-hover:border-primary/40 group-hover:text-foreground"
+                        : "bg-transparent text-muted-foreground group-hover:border-primary/50 group-hover:text-foreground"
                     )}
                   >
-                    <ChevronDown className="size-5" />
+                    <ChevronDown className="size-4" />
                   </div>
                 </div>
               </div>
 
-              {/* Revealable Content Description (Smooth Accordion Expand) */}
+              {/* Revealable Content Description */}
               <div
                 className={cn(
                   "grid transition-all duration-500 ease-in-out overflow-hidden",
-                  isExpanded ? "grid-rows-[1fr] opacity-100 pt-8 mt-6 border-t border-border/20" : "grid-rows-[0fr] opacity-0"
+                  isExpanded ? "grid-rows-[1fr] opacity-100 pt-6 mt-4" : "grid-rows-[0fr] opacity-0"
                 )}
               >
-                <div className="overflow-hidden flex flex-col gap-6">
-                  {/* Summary */}
-                  <p className="text-base sm:text-xl text-foreground/90 font-medium leading-relaxed max-w-4xl">
+                <div className="overflow-hidden flex flex-col gap-6 pl-0 sm:pl-16 max-w-4xl">
+                  <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-normal">
                     {item.summary}
                   </p>
 
-                  {/* Key Responsibilities */}
-                  <div className="flex flex-col gap-3">
-                    <span className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                      <Sparkles className="size-3.5 text-primary" />
-                      <span>Atribuciones & Logros Principales:</span>
-                    </span>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {item.responsibilities.map((resp, i) => (
-                        <div
-                          key={i}
-                          className="flex items-start gap-3 p-3.5 rounded-2xl bg-background/50 border border-border/30 hover:border-primary/30 transition-colors"
-                        >
-                          <CheckCircle2 className="size-4 text-primary shrink-0 mt-0.5" />
-                          <span className="text-xs sm:text-sm text-foreground/80 font-medium leading-relaxed">
-                            {resp}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                  {/* Bullet points */}
+                  <div className="flex flex-col gap-2.5">
+                    {item.responsibilities.map((resp, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <span className="size-1.5 rounded-full bg-primary/80 mt-2 shrink-0" />
+                        <span className="text-xs sm:text-sm text-foreground/90 leading-relaxed font-medium">
+                          {resp}
+                        </span>
+                      </div>
+                    ))}
                   </div>
 
-                  {/* Skills / Tech Stack */}
+                  {/* Clean Tech Pills */}
                   <div className="flex flex-wrap gap-2 pt-2">
                     {item.skills.map((skill) => (
                       <span
                         key={skill}
-                        className="px-3.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-mono font-bold"
+                        className="px-3 py-1 rounded-full bg-muted/50 text-muted-foreground text-xs font-mono border border-border/20"
                       >
-                        #{skill}
+                        {skill}
                       </span>
                     ))}
                   </div>
