@@ -13,6 +13,7 @@ import {
   Tag,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ScrollTextReveal } from "@/components/ui/scroll-text-reveal";
 
 interface BlogPostDisplay {
   slug: string;
@@ -105,12 +106,12 @@ export function BlogSection() {
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="flex flex-col gap-2">
-            <h2 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter text-foreground leading-none">
+            <ScrollTextReveal tag="h2" className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter text-foreground leading-none">
               Blog <span className="text-primary font-serif italic font-normal">&amp;</span> <br />
               <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary/80 bg-clip-text text-transparent">
                 Artículos.
               </span>
-            </h2>
+            </ScrollTextReveal>
 
             <p className="text-base sm:text-xl text-muted-foreground max-w-2xl font-normal leading-relaxed mt-1">
               Análisis técnicos sobre diseño de software, optimización de bases de datos y arquitectura distribuida.

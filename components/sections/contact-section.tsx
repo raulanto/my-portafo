@@ -1,5 +1,6 @@
 import AceternityButton from "@/components/ui/AceternityButton";
 import { Send, ArrowUpRight } from "lucide-react";
+import { ScrollTextReveal } from "@/components/ui/scroll-text-reveal";
 
 export function ContactSection() {
   return (
@@ -7,9 +8,9 @@ export function ContactSection() {
       <div className="p-3 rounded-2xl bg-primary/10 text-primary mb-2">
         <Send className="size-6" />
       </div>
-      <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-foreground">
+      <ScrollTextReveal tag="h2" className="text-3xl sm:text-5xl font-black tracking-tight text-foreground">
         ¿Tienes una <span className="font-serif italic font-normal text-primary">idea o proyecto</span> en mente?
-      </h2>
+      </ScrollTextReveal>
       <p className="text-base sm:text-xl text-muted-foreground font-serif italic max-w-lg leading-relaxed">
         Estoy disponible para colaborar en proyectos desafiantes y crear interfaces excepcionales.
       </p>

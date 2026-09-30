@@ -15,6 +15,7 @@ import {
   Code2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ScrollTextReveal } from "@/components/ui/scroll-text-reveal";
 
 type ExperienceCard = {
   id: string;
@@ -125,12 +126,12 @@ export function ExperienceSection() {
           </span>
         </div>
 
-        <h2 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter text-foreground leading-none">
+        <ScrollTextReveal tag="h2" className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter text-foreground leading-none">
           Experiencia <span className="text-primary font-serif italic font-normal">&amp;</span> <br />
           <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary/80 bg-clip-text text-transparent">
             Trayectoria.
           </span>
-        </h2>
+        </ScrollTextReveal>
 
         <p className="text-base sm:text-xl text-muted-foreground max-w-3xl font-normal leading-relaxed">
           Historial laboral, proyectos clave y atribuciones técnicas en desarrollo web, arquitectura de datos e IoT.

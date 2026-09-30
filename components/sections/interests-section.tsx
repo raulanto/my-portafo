@@ -1,3 +1,6 @@
+import { ScrollTextReveal } from "@/components/ui/scroll-text-reveal";
+import { TextReveal } from "@/components/ui/text-reveal";
+
 export function InterestsSection() {
   return (
     <section id="gustos" className="scroll-mt-28 flex flex-col gap-10">
@@ -12,68 +15,46 @@ export function InterestsSection() {
           </span>
         </div>
 
-        <h2 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
+        <ScrollTextReveal tag="h2" className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
           Más allá del{" "}
           <span className="font-serif italic font-normal text-primary text-[0.95em]">
             código limpio.
           </span>
-        </h2>
+        </ScrollTextReveal>
       </div>
 
       {/* Editorial prose */}
-      <div className="max-w-3xl flex flex-col gap-6 text-base sm:text-lg text-muted-foreground leading-[1.85]">
-        <p>
-          Tengo una obsesión tranquila con la{" "}
-          <strong className="text-foreground font-semibold">arquitectura de software</strong>. Prefiero
-          la hexagonal, el DDD y la separación clara de capas — no como dogma, sino porque cuando el
-          código tiene fronteras bien definidas, escala sin dolor. Lo aplico en Go con gRPC, y documento
-          todo con READMEs estructurados y un{" "}
-          <code className="text-xs font-mono px-1.5 py-0.5 rounded bg-muted text-foreground">CLAUDE.md</code>{" "}
-          por proyecto.
-        </p>
+      <div className="max-w-3xl flex flex-col gap-8 text-base sm:text-lg text-muted-foreground leading-[1.85]">
+        <TextReveal>
+          Tengo una obsesión tranquila con la arquitectura de software. Prefiero la hexagonal, el DDD y la separación clara de capas — no como dogma, sino porque cuando el código tiene fronteras bien definidas, escala sin dolor. Lo aplico en Go con gRPC, y documento todo con READMEs estructurados y un CLAUDE.md por proyecto.
+        </TextReveal>
 
-        <p>
-          No tengo un stack favorito — tengo criterio. Angular moderno con signals y zoneless para
-          frontends reactivos, NestJS o ASP.NET Core para APIs robustas,{" "}
-          <strong className="text-foreground font-semibold">Rust con Axum</strong> cuando necesito
-          rendimiento sin concesiones, y FastAPI o Go cuando el tiempo importa más que la ceremonia.
-          En móvil, Flutter para apps offline-first.
-        </p>
+        <TextReveal>
+          No tengo un stack favorito — tengo criterio. Angular moderno con signals y zoneless para frontends reactivos, NestJS o ASP.NET Core para APIs robustas, Rust con Axum cuando necesito rendimiento sin concesiones, y FastAPI o Go cuando el tiempo importa más que la ceremonia. En móvil, Flutter para apps offline-first.
+        </TextReveal>
 
-        <p>
-          Vengo de microcontroladores. PIC, Arduino, ensamblador AVR. Saber cómo funciona el hardware
-          desde dentro cambia la forma en que escribes software — te enseña a tener{" "}
-          <em className="text-foreground">respeto por los recursos</em>. Sigo con interés ahí,
-          aunque ahora compile para servidores en lugar de chips de 8 bits.
-        </p>
+        <TextReveal>
+          Vengo de microcontroladores. PIC, Arduino, ensamblador AVR. Saber cómo funciona el hardware desde dentro cambia la forma en que escribes software — te enseña a tener respeto por los recursos. Sigo con interés ahí, aunque ahora compile para servidores en lugar de chips de 8 bits.
+        </TextReveal>
 
-        <p>
-          Me apasiona el{" "}
-          <strong className="text-foreground font-semibold">fintech mexicano</strong>: el ciclo de vida
-          del crédito, el ecosistema regulatorio — CONDUSEF, CNBV. Hay algo particular en hacer
-          software donde los errores tienen consecuencias reales para personas reales. Eso me mantiene
-          honesto.
-        </p>
+        <TextReveal>
+          Me apasiona el fintech mexicano: el ciclo de vida del crédito, el ecosistema regulatorio — CONDUSEF, CNBV. Hay algo particular en hacer software donde los errores tienen consecuencias reales para personas reales. Eso me mantiene honesto.
+        </TextReveal>
 
-        <p>
-          Como pasatiempo técnico y de estudio me la paso aprendiendo sobre{" "}
-          <strong className="text-foreground font-semibold">ciencia de datos y análisis</strong>, abarcando
-          todo lo relacionado con procesos <strong className="text-foreground font-semibold">ETL / ELT</strong> para
-          reconocer el origen exacto de los problemas.
-        </p>
+        <TextReveal>
+          Como pasatiempo técnico y de estudio me la paso aprendiendo sobre ciencia de datos y análisis, abarcando todo lo relacionado con procesos ETL / ELT para reconocer el origen exacto de los problemas.
+        </TextReveal>
 
-        <p>
-          Mi sistema diario es{" "}
-          <strong className="text-foreground font-semibold">Arch Linux con Hyprland/Wayland</strong>{" "}
-          — lo que algunos llaman Omarchy. 
-        </p>
+        <TextReveal>
+          Mi sistema diario es Arch Linux con Hyprland/Wayland — lo que algunos llaman Omarchy.
+        </TextReveal>
       </div>
 
       {/* Pull quote */}
       <blockquote className="border-l-2 border-primary/40 pl-6 mt-2">
-        <p className="text-lg sm:text-xl font-serif italic text-foreground/80 leading-relaxed">
+        <TextReveal className="text-lg sm:text-xl font-serif italic text-foreground/80 leading-relaxed">
           "No me enamoro de los frameworks: me apasiona entender las tripas del problema, limpiar el caos de los datos y construir arquitectura que perdure."
-        </p>
+        </TextReveal>
       </blockquote>
     </section>
   );

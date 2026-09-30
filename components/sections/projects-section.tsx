@@ -12,6 +12,7 @@ import {
   Terminal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ScrollTextReveal } from "@/components/ui/scroll-text-reveal";
 
 type Project = {
   id: string;
@@ -115,10 +116,10 @@ export function ProjectsSection() {
           </span>
         </div>
 
-        <h2 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
+        <ScrollTextReveal tag="h2" className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
           Trabajo & <br className="hidden sm:inline" />
           <span className="text-primary font-serif italic font-normal text-[0.95em]">Soluciones Creadas.</span>
-        </h2>
+        </ScrollTextReveal>
 
         <p className="text-base sm:text-xl text-muted-foreground max-w-3xl font-normal leading-relaxed">
           Selección de aplicaciones web, motores de datos y plataformas de alta escala desarrolladas de punta a punta.
