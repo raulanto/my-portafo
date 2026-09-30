@@ -15,7 +15,7 @@ import {
   Code2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ScrollTextReveal, ScrollWordOpacity } from "@/components/ui/scroll-text-reveal";
+import { ScrollTextReveal, ScrollWordOpacity, ScrollElementReveal } from "@/components/ui/scroll-text-reveal";
 
 type ExperienceCard = {
   id: string;
@@ -140,97 +140,98 @@ export function ExperienceSection() {
 
       {/* Editorial Minimalist Interactive List */}
       <div className="flex flex-col">
-        {EXPERIENCE_ITEMS.map((item) => {
+        {EXPERIENCE_ITEMS.map((item, idx) => {
           const isExpanded = expandedId === item.id;
 
           return (
-            <div
-              key={item.id}
-              onClick={() => setExpandedId(isExpanded ? null : item.id)}
-              className={cn(
-                "group py-8 sm:py-10 border-b border-border/30 transition-all duration-300 cursor-pointer"
-              )}
-            >
-              {/* Main Line / Summary Row */}
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                <div className="flex items-baseline gap-4 sm:gap-8">
-                  <span
-                    className={cn(
-                      "text-xl sm:text-2xl font-mono tracking-tighter transition-colors duration-300 select-none shrink-0",
-                      isExpanded ? "text-primary font-bold" : "text-muted-foreground/40 group-hover:text-muted-foreground"
-                    )}
-                  >
-                    {item.number}
-                  </span>
+            <ScrollElementReveal key={item.id} delay={idx * 0.08}>
+              <div
+                onClick={() => setExpandedId(isExpanded ? null : item.id)}
+                className={cn(
+                  "group py-8 sm:py-10 border-b border-border/30 transition-all duration-300 cursor-pointer"
+                )}
+              >
+                {/* Main Line / Summary Row */}
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                  <div className="flex items-baseline gap-4 sm:gap-8">
+                    <span
+                      className={cn(
+                        "text-xl sm:text-2xl font-mono tracking-tighter transition-colors duration-300 select-none shrink-0",
+                        isExpanded ? "text-primary font-bold" : "text-muted-foreground/40 group-hover:text-muted-foreground"
+                      )}
+                    >
+                      {item.number}
+                    </span>
 
-                  <div className="flex flex-col gap-1">
-                    <h3 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground group-hover:text-primary transition-colors duration-300">
-                      {item.role}
-                    </h3>
-                    <div className="flex items-center gap-3 text-sm sm:text-base text-muted-foreground font-mono">
-                      <span className="font-semibold text-foreground/90">{item.company}</span>
-                      <span>•</span>
-                      <span>{item.period}</span>
+                    <div className="flex flex-col gap-1">
+                      <h3 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground group-hover:text-primary transition-colors duration-300">
+                        {item.role}
+                      </h3>
+                      <div className="flex items-center gap-3 text-sm sm:text-base text-muted-foreground font-mono">
+                        <span className="font-semibold text-foreground/90">{item.company}</span>
+                        <span>•</span>
+                        <span>{item.period}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between lg:justify-end gap-6">
+                    <span className="text-xs sm:text-sm font-mono text-muted-foreground hidden md:inline-block">
+                      {item.location}
+                    </span>
+
+                    <div
+                      className={cn(
+                        "size-9 rounded-full border border-border/40 flex items-center justify-center transition-all duration-300 shrink-0",
+                        isExpanded
+                          ? "bg-primary text-primary-foreground border-primary rotate-180"
+                          : "bg-transparent text-muted-foreground group-hover:border-primary/50 group-hover:text-foreground"
+                      )}
+                    >
+                      <ChevronDown className="size-4" />
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between lg:justify-end gap-6">
-                  <span className="text-xs sm:text-sm font-mono text-muted-foreground hidden md:inline-block">
-                    {item.location}
-                  </span>
+                {/* Revealable Content Description */}
+                <div
+                  className={cn(
+                    "grid transition-all duration-500 ease-in-out overflow-hidden",
+                    isExpanded ? "grid-rows-[1fr] opacity-100 pt-6 mt-4" : "grid-rows-[0fr] opacity-0"
+                  )}
+                >
+                  <div className="overflow-hidden flex flex-col gap-6 pl-0 sm:pl-16 max-w-4xl">
+                    <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-normal">
+                      {item.summary}
+                    </p>
 
-                  <div
-                    className={cn(
-                      "size-9 rounded-full border border-border/40 flex items-center justify-center transition-all duration-300 shrink-0",
-                      isExpanded
-                        ? "bg-primary text-primary-foreground border-primary rotate-180"
-                        : "bg-transparent text-muted-foreground group-hover:border-primary/50 group-hover:text-foreground"
-                    )}
-                  >
-                    <ChevronDown className="size-4" />
-                  </div>
-                </div>
-              </div>
+                    {/* Bullet points */}
+                    <div className="flex flex-col gap-2.5">
+                      {item.responsibilities.map((resp, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                          <span className="size-1.5 rounded-full bg-primary/80 mt-2 shrink-0" />
+                          <span className="text-xs sm:text-sm text-foreground/90 leading-relaxed font-medium">
+                            {resp}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
 
-              {/* Revealable Content Description */}
-              <div
-                className={cn(
-                  "grid transition-all duration-500 ease-in-out overflow-hidden",
-                  isExpanded ? "grid-rows-[1fr] opacity-100 pt-6 mt-4" : "grid-rows-[0fr] opacity-0"
-                )}
-              >
-                <div className="overflow-hidden flex flex-col gap-6 pl-0 sm:pl-16 max-w-4xl">
-                  <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-normal">
-                    {item.summary}
-                  </p>
-
-                  {/* Bullet points */}
-                  <div className="flex flex-col gap-2.5">
-                    {item.responsibilities.map((resp, i) => (
-                      <div key={i} className="flex items-start gap-3">
-                        <span className="size-1.5 rounded-full bg-primary/80 mt-2 shrink-0" />
-                        <span className="text-xs sm:text-sm text-foreground/90 leading-relaxed font-medium">
-                          {resp}
+                    {/* Clean Tech Pills */}
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {item.skills.map((skill) => (
+                        <span
+                          key={skill}
+                          className="px-3 py-1 rounded-full bg-muted/50 text-muted-foreground text-xs font-mono border border-border/20"
+                        >
+                          {skill}
                         </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Clean Tech Pills */}
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {item.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-3 py-1 rounded-full bg-muted/50 text-muted-foreground text-xs font-mono border border-border/20"
-                      >
-                        {skill}
-                      </span>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </ScrollElementReveal>
           );
         })}
       </div>

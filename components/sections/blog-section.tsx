@@ -13,7 +13,7 @@ import {
   Tag,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ScrollTextReveal } from "@/components/ui/scroll-text-reveal";
+import { ScrollTextReveal, ScrollElementReveal } from "@/components/ui/scroll-text-reveal";
 
 interface BlogPostDisplay {
   slug: string;
@@ -42,7 +42,7 @@ const ALL_POSTS: BlogPostDisplay[] = [
     description:
       "Proceso completo de refactorización de una base de datos empresarial de 87 tablas con más de 15 años de evolución orgánica, eliminando duplicidad y optimizando tiempos de respuesta.",
     contentSnippet:
-      "En este artículo abordo el reto de modernizar un esquema de base de datos relacional altamente acoplado. Analizamos patrones de migración de datos sin tiempo de inactividad (zero-downtime), descomposición de tablas monolíticas, índices estratégicos y preservación de integridad referencial.",
+      "En este artículo abordo el reto de modernizar un esquema de base de datos relacional highly acoplado. Analizamos patrones de migración de datos sin tiempo de inactividad (zero-downtime), descomposición de tablas monolíticas, índices estratégicos y preservación de integridad referencial.",
   },
   {
     slug: "avanzandokpis",
@@ -130,63 +130,64 @@ export function BlogSection() {
 
       {/* Minimalist Editorial Article List */}
       <div className="flex flex-col">
-        {ALL_POSTS.map((post) => (
-          <article
-            key={post.slug}
-            className="group py-8 border-b border-border/30 transition-all duration-300 flex flex-col gap-4"
-          >
-            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-mono font-semibold text-primary">
-                  {post.category}
-                </span>
-                <span className="text-border">•</span>
-                <span className="text-xs font-mono text-muted-foreground flex items-center gap-1">
-                  <Calendar className="size-3 text-muted-foreground" />
-                  {post.date}
-                </span>
-                <span className="text-border">•</span>
-                <span className="text-xs font-mono text-muted-foreground flex items-center gap-1">
-                  <Clock className="size-3 text-muted-foreground" />
-                  {post.readTime}
-                </span>
+        {ALL_POSTS.map((post, idx) => (
+          <ScrollElementReveal key={post.slug} delay={idx * 0.08}>
+            <article
+              className="group py-8 border-b border-border/30 transition-all duration-300 flex flex-col gap-4"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-mono font-semibold text-primary">
+                    {post.category}
+                  </span>
+                  <span className="text-border">•</span>
+                  <span className="text-xs font-mono text-muted-foreground flex items-center gap-1">
+                    <Calendar className="size-3 text-muted-foreground" />
+                    {post.date}
+                  </span>
+                  <span className="text-border">•</span>
+                  <span className="text-xs font-mono text-muted-foreground flex items-center gap-1">
+                    <Clock className="size-3 text-muted-foreground" />
+                    {post.readTime}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setModalPost(post)}
+                    className="text-xs font-mono text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1"
+                  >
+                    <Eye className="size-3.5" />
+                    <span>Vista previa</span>
+                  </button>
+                </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setModalPost(post)}
-                  className="text-xs font-mono text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1"
-                >
-                  <Eye className="size-3.5" />
-                  <span>Vista previa</span>
-                </button>
+              <Link href={`/blog/${post.slug}`} className="group/title flex items-start justify-between gap-4">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground group-hover/title:text-primary transition-colors duration-300 leading-snug">
+                  {post.title}
+                </h3>
+                <div className="size-8 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground group-hover/title:border-primary group-hover/title:bg-primary group-hover/title:text-primary-foreground transition-all duration-300 shrink-0 mt-1">
+                  <ArrowUpRight className="size-4" />
+                </div>
+              </Link>
+
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-4xl">
+                {post.description}
+              </p>
+
+              <div className="flex flex-wrap gap-2 pt-1">
+                {post.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="px-2.5 py-0.5 rounded-full bg-muted/40 text-muted-foreground text-xs font-mono"
+                  >
+                    #{t}
+                  </span>
+                ))}
               </div>
-            </div>
-
-            <Link href={`/blog/${post.slug}`} className="group/title flex items-start justify-between gap-4">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground group-hover/title:text-primary transition-colors duration-300 leading-snug">
-                {post.title}
-              </h3>
-              <div className="size-8 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground group-hover/title:border-primary group-hover/title:bg-primary group-hover/title:text-primary-foreground transition-all duration-300 shrink-0 mt-1">
-                <ArrowUpRight className="size-4" />
-              </div>
-            </Link>
-
-            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-4xl">
-              {post.description}
-            </p>
-
-            <div className="flex flex-wrap gap-2 pt-1">
-              {post.tags.map((t) => (
-                <span
-                  key={t}
-                  className="px-2.5 py-0.5 rounded-full bg-muted/40 text-muted-foreground text-xs font-mono"
-                >
-                  #{t}
-                </span>
-              ))}
-            </div>
-          </article>
+            </article>
+          </ScrollElementReveal>
         ))}
       </div>
 

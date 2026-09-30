@@ -117,3 +117,54 @@ export function ScrollWordOpacity({
     </Tag>
   );
 }
+
+/**
+ * Revelación suave para tarjetas, filas de listas o elementos visuales enteros al hacer scroll.
+ */
+export function ScrollElementReveal({
+  children,
+  className,
+  delay = 0,
+  y = 30,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  y?: number;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (!containerRef.current) return;
+
+      gsap.fromTo(
+        containerRef.current,
+        {
+          y,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          delay,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+    },
+    { scope: containerRef }
+  );
+
+  return (
+    <div ref={containerRef} className={className}>
+      {children}
+    </div>
+  );
+}
+

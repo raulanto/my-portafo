@@ -12,7 +12,7 @@ import {
   Terminal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ScrollTextReveal } from "@/components/ui/scroll-text-reveal";
+import { ScrollTextReveal, ScrollElementReveal } from "@/components/ui/scroll-text-reveal";
 
 type Project = {
   id: string;
@@ -143,86 +143,87 @@ export function ProjectsSection() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Project Selector List */}
         <div className="lg:col-span-5 flex flex-col gap-3">
-          {PROJECTS.map((project) => {
+          {PROJECTS.map((project, idx) => {
             const isSelected = project.id === activeProject;
             return (
-              <button
-                key={project.id}
-                onClick={() => setActiveProject(project.id)}
-                className={cn(
-                  "group relative w-full text-left p-5 sm:p-6 rounded-3xl transition-all duration-300 border cursor-pointer flex flex-col gap-3",
-                  isSelected
-                    ? "bg-primary/10 border-primary/40 shadow-lg shadow-primary/5"
-                    : "bg-card/30 hover:bg-card/60 border-border/40 hover:border-border/80",
-                )}
-              >
-                <div className="flex items-center justify-between">
-                  <span
-                    className={cn(
-                      "text-xs font-mono font-bold px-2.5 py-1 rounded-full transition-colors",
-                      isSelected
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground group-hover:text-foreground",
-                    )}
-                  >
-                    {project.number}
-                  </span>
-
-                  <span className="text-xs font-mono text-muted-foreground">
-                    {project.category}
-                  </span>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <h3
-                    className={cn(
-                      "text-xl sm:text-2xl font-bold transition-colors flex items-center justify-between gap-2",
-                      isSelected ? "text-primary" : "text-foreground",
-                    )}
-                  >
-                    <span>{project.title}</span>
-                    <ArrowUpRight
-                      className={cn(
-                        "size-5 transition-transform duration-300",
-                        isSelected
-                          ? "translate-x-0.5 -translate-y-0.5 text-primary"
-                          : "opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-muted-foreground",
-                      )}
-                    />
-                  </h3>
-                  <p className="text-xs text-muted-foreground font-mono">
-                    {project.subtitle}
-                  </p>
-                </div>
-
-                {/* Tech Pills preview */}
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  {project.tech.slice(0, 4).map((t) => (
+              <ScrollElementReveal key={project.id} delay={idx * 0.08}>
+                <button
+                  onClick={() => setActiveProject(project.id)}
+                  className={cn(
+                    "group relative w-full text-left p-5 sm:p-6 rounded-3xl transition-all duration-300 border cursor-pointer flex flex-col gap-3",
+                    isSelected
+                      ? "bg-primary/10 border-primary/40 shadow-lg shadow-primary/5"
+                      : "bg-card/30 hover:bg-card/60 border-border/40 hover:border-border/80",
+                  )}
+                >
+                  <div className="flex items-center justify-between">
                     <span
-                      key={t}
                       className={cn(
-                        "text-[10px] font-mono px-2 py-0.5 rounded-md",
+                        "text-xs font-mono font-bold px-2.5 py-1 rounded-full transition-colors",
                         isSelected
-                          ? "bg-primary/20 text-primary"
-                          : "bg-muted/70 text-muted-foreground",
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground group-hover:text-foreground",
                       )}
                     >
-                      {t}
+                      {project.number}
                     </span>
-                  ))}
-                  {project.tech.length > 4 && (
-                    <span className="text-[10px] font-mono text-muted-foreground px-1 py-0.5">
-                      +{project.tech.length - 4}
+
+                    <span className="text-xs font-mono text-muted-foreground">
+                      {project.category}
                     </span>
-                  )}
-                </div>
-              </button>
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <h3
+                      className={cn(
+                        "text-xl sm:text-2xl font-bold transition-colors flex items-center justify-between gap-2",
+                        isSelected ? "text-primary" : "text-foreground",
+                      )}
+                    >
+                      <span>{project.title}</span>
+                      <ArrowUpRight
+                        className={cn(
+                          "size-5 transition-transform duration-300",
+                          isSelected
+                            ? "translate-x-0.5 -translate-y-0.5 text-primary"
+                            : "opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-muted-foreground",
+                        )}
+                      />
+                    </h3>
+                    <p className="text-xs text-muted-foreground font-mono">
+                      {project.subtitle}
+                    </p>
+                  </div>
+
+                  {/* Tech Pills preview */}
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {project.tech.slice(0, 4).map((t) => (
+                      <span
+                        key={t}
+                        className={cn(
+                          "text-[10px] font-mono px-2 py-0.5 rounded-md",
+                          isSelected
+                            ? "bg-primary/20 text-primary"
+                            : "bg-muted/70 text-muted-foreground",
+                        )}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                    {project.tech.length > 4 && (
+                      <span className="text-[10px] font-mono text-muted-foreground px-1 py-0.5">
+                        +{project.tech.length - 4}
+                      </span>
+                    )}
+                  </div>
+                </button>
+              </ScrollElementReveal>
             );
           })}
         </div>
 
         {/* Right Column: Active Project Details & Dynamic Display */}
-        <div className="lg:col-span-7 flex flex-col gap-6 p-6 sm:p-8 rounded-3xl bg-card/40 border border-border/60 backdrop-blur-xl">
+        <ScrollElementReveal className="lg:col-span-7 flex flex-col gap-6 p-6 sm:p-8 rounded-3xl bg-card/40 border border-border/60 backdrop-blur-xl">
           {/* Image / Mockup Preview */}
           <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-border/50 bg-black/40 group">
             <img
@@ -323,7 +324,7 @@ export function ProjectsSection() {
               )}
             </div>
           </div>
-        </div>
+        </ScrollElementReveal>
       </div>
     </section>
   );
