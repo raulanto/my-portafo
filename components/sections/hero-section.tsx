@@ -8,6 +8,8 @@ import Image from "next/image";
 import { SplitTextReveal } from "@/components/ui/split-text-reveal";
 import { BlueprintFrame } from "@/components/ui/blueprint-frame";
 
+import TechText from "@/components/ui/tech-text";
+
 export function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -66,7 +68,7 @@ export function HeroSection() {
       {/* Hero Content — Parallax shift + Fade Out on Scroll */}
       <motion.div
         style={{ y: textY, opacity: textOpacity }}
-        className="relative z-10 w-full max-w-5xl mx-auto px-6 flex flex-col items-center text-center gap-6 pt-28 sm:pt-32 pb-16 will-change-transform"
+        className="relative z-30 w-full max-w-5xl mx-auto px-6 flex flex-col items-center text-center gap-6 pt-28 sm:pt-32 pb-16 will-change-transform overflow-visible"
       >
         {/* Status Badge */}
         <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-background/80 dark:bg-background/60 backdrop-blur-xl border border-border/60 text-xs font-medium text-foreground shadow-lg transition-transform hover:scale-105">
@@ -78,19 +80,27 @@ export function HeroSection() {
         </div>
 
         {/* Brand Headline (raulantodev Portafolio+) */}
-        <div className="relative flex flex-col items-center justify-center select-none py-4 w-full">
-          {/* Subtle dotted background grid matching the design image */}
-          <div className="absolute -inset-10 -z-10 rounded-3xl bg-[radial-gradient(rgba(120,119,198,0.25)_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(rgba(255,255,255,0.15)_1.5px,transparent_1.5px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_100%)] pointer-events-none" />
-
-          <div className="inline-flex flex-col items-center w-full gap-1">
-            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-foreground leading-none drop-shadow-sm">
-              <SplitTextReveal
+        <div className="relative flex flex-col items-center justify-center select-none py-2 w-full z-40 overflow-visible">
+          <div className="inline-flex flex-col items-center w-full gap-1 overflow-visible">
+            {/* TechText from React Bits for raulantodev with entrance animation */}
+            <motion.div
+              initial={{ opacity: 0, y: 35, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.85, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
+              className="w-full h-32 sm:h-44 md:h-52 relative flex items-center justify-center max-w-5xl z-50 overflow-visible"
+            >
+              <TechText
                 text="raulantodev"
-                delay={0.1}
-                stagger={0.05}
-                tag="span"
+                fontWeight={900}
+                fontSize={140}
+                reveal="letter"
+                dashLength={4}
+                dashGap={2}
+                specks={15}
+                color="hsl(var(--foreground))"
+                accentColor="hsl(var(--primary))"
               />
-            </h1>
+            </motion.div>
 
             <div className="flex items-center gap-3 text-2xl sm:text-3xl md:text-4xl font-serif italic font-normal text-foreground/90 tracking-wide">
               <SplitTextReveal
