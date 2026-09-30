@@ -92,20 +92,21 @@ export function HeroSection() {
               />
             </h1>
 
-            <div className="flex items-center gap-2 text-2xl sm:text-3xl md:text-4xl font-serif italic font-normal text-foreground/90 tracking-wide">
+            <div className="flex items-center gap-3 text-2xl sm:text-3xl md:text-4xl font-serif italic font-normal text-foreground/90 tracking-wide">
               <SplitTextReveal
                 text="Portafolio"
                 delay={0.6}
                 stagger={0.04}
                 tag="span"
               />
-              <span className="inline-flex items-center justify-center size-8 sm:size-9 md:size-10 rounded-xl p-1.5 hover:rotate-12 transition-transform duration-300">
+              <span className="inline-flex items-center justify-center size-8 sm:size-9 md:size-10 hover:rotate-12 hover:scale-110 transition-transform duration-300">
                 <Image
                   src="/logo.svg"
                   alt="Logo Raúl Antón"
                   width={46}
                   height={46}
                   className="size-full object-contain"
+                  priority
                 />
               </span>
             </div>
