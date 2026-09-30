@@ -30,6 +30,8 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
+import WarpText from "@/components/ui/warp-text";
+
 export function Footer() {
   const [time, setTime] = useState<string>("");
 
@@ -70,11 +72,23 @@ export function Footer() {
                 alt="Logo Raúl Antón"
                 width={32}
                 height={32}
-                className="size-8 object-contain"
+                className="size-8 object-contain shrink-0"
               />
-              <span className="text-xl font-bold tracking-tight text-foreground">
-                rauantodev
-              </span>
+              <div className="w-44 h-10 relative flex items-center">
+                <WarpText
+                  text="raulantodev"
+                  color="hsl(var(--foreground))"
+                  warpStrength={0.08}
+                  warpScale={1.7}
+                  speed={0.55}
+                  pointerInfluence={0.42}
+                  pointerStrength={0.38}
+                  refraction={0.018}
+                  ripple={true}
+                  fontSize="1.5rem"
+                  fontWeight={800}
+                />
+              </div>
             </div>
 
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
