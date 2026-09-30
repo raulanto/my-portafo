@@ -76,6 +76,8 @@ const RINGS = [
   },
 ];
 
+import { ScrollTextReveal } from "@/components/ui/scroll-text-reveal";
+
 export function TechStackSection() {
   return (
     <section
@@ -99,9 +101,12 @@ export function TechStackSection() {
       <div className="relative z-10 w-full max-w-7xl px-2 sm:px-6">
         <LogoOrbit rings={RINGS} className="w-full aspect-[16/7]">
           <div className="flex flex-col items-center gap-2 max-w-xs sm:max-w-md">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-foreground text-balance leading-tight text-center">
+            <ScrollTextReveal
+              tag="h2"
+              className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-foreground text-balance leading-tight text-center"
+            >
               Las herramientas que
-            </h2>
+            </ScrollTextReveal>
             <div className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-primary">
               <Typewriter prefix="" words={TECH_WORDS} />
             </div>

@@ -55,6 +55,18 @@ export function LogoOrbit({
     let last = performance.now();
     let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
     let lastScrollTime = performance.now();
+    let targetExpansion = 0;
+    let currentExpansion = 0;
+
+    const updateScrollProgress = () => {
+      if (!stageRef.current) return;
+      const rect = stageRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const start = windowHeight * 0.9;
+      const end = windowHeight * 0.35;
+      const rawProgress = (start - rect.top) / (start - end);
+      targetExpansion = Math.min(Math.max(rawProgress, 0), 1);
+    };
 
     const onScroll = () => {
       const now = performance.now();
@@ -72,23 +84,35 @@ export function LogoOrbit({
       
       lastScrollY = currentScrollY;
       lastScrollTime = now;
+      updateScrollProgress();
     };
 
     const place = () => {
       const w = stage.offsetWidth;
       const h = stage.offsetHeight;
+
       flat.forEach(({ r, i, n }, k) => {
         const el = itemRefs.current[k];
         if (!el) return;
         const ring = rings[r];
+
+        // Staggered pop-out expansion based on ring index & icon position
+        const delayOffset = r * 0.15;
+        const rawRingExpansion = Math.min(Math.max((currentExpansion - delayOffset) / (1 - delayOffset), 0), 1);
+        const easedExpansion = 1 - Math.pow(1 - rawRingExpansion, 3); // easeOutCubic
+
         const angle = turns[r] + (i / n) * Math.PI * 2;
-        const rx = (ring.radius * w) / 2;
+        const rx = (ring.radius * easedExpansion * w) / 2;
         const x = Math.cos(angle) * rx;
         const y = Math.sin(angle) * rx * TILT;
         const depth = Math.sin(angle);
         const near = (depth + 1) / 2;
-        el.style.transform = `translate(${(w / 2 + x).toFixed(1)}px, ${(h / 2 + y).toFixed(1)}px) translate(-50%, -50%) scale(${(0.7 + near * 0.35).toFixed(3)})`;
-        el.style.opacity = (0.28 + near * 0.72).toFixed(3);
+
+        const baseScale = (0.7 + near * 0.35) * Math.max(easedExpansion, 0.01);
+        const baseOpacity = (0.28 + near * 0.72) * Math.min(easedExpansion * 1.6, 1);
+
+        el.style.transform = `translate(${(w / 2 + x).toFixed(1)}px, ${(h / 2 + y).toFixed(1)}px) translate(-50%, -50%) scale(${baseScale.toFixed(3)})`;
+        el.style.opacity = baseOpacity.toFixed(3);
         el.style.zIndex = depth > 0 ? "3" : "1";
       });
     };
@@ -98,6 +122,9 @@ export function LogoOrbit({
       last = now;
       const target = hovering.current ? 0 : 1;
       speed += (target - speed) * (1 - Math.exp(-BRAKE * dt));
+
+      // Smoothly interpolate expansion progress towards scroll position
+      currentExpansion += (targetExpansion - currentExpansion) * (1 - Math.exp(-6 * dt));
 
       // Decouple & decay scroll boost smoothly over time
       scrollBoost *= Math.exp(-3.5 * dt);
@@ -113,6 +140,7 @@ export function LogoOrbit({
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
+    updateScrollProgress();
     place();
     if (paused || reduceMotion) return;
 
