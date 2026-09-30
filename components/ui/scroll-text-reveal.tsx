@@ -48,9 +48,8 @@ export function ScrollTextReveal({
         ease: "power2.out",
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top 90%",
-          end: "bottom 15%",
-          toggleActions: "play reverse play reverse",
+          start: "top 92%",
+          toggleActions: "play none none none", // Revela una vez y permanece visible de forma limpia y consistente
         },
       });
     },

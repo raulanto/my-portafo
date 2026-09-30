@@ -14,7 +14,7 @@ import {
   MousePointerClick,
 } from "lucide-react";
 import { InfiniteCanvas, type CanvasNote } from "@/components/ui/infinite-canvas";
-import { ScrollTextReveal } from "@/components/ui/scroll-text-reveal";
+import { ScrollTextReveal, ScrollWordOpacity } from "@/components/ui/scroll-text-reveal";
 
 const PORTFOLIO_NOTES: CanvasNote[] = [
   {
@@ -127,9 +127,9 @@ export function AboutSection() {
           <span className="text-primary">Trayectoria.</span>
         </ScrollTextReveal>
 
-        <p className="text-base sm:text-lg text-muted-foreground max-w-3xl font-medium leading-relaxed">
+        <ScrollWordOpacity tag="p" className="text-base sm:text-lg text-muted-foreground max-w-3xl font-medium leading-relaxed">
           Explora mi mapa de habilidades e historia profesional en este lienzo interactivo.
-        </p>
+        </ScrollWordOpacity>
       </div>
 
       {/* Interactive Infinite Canvas Section */}

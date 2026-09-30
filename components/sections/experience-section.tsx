@@ -15,7 +15,7 @@ import {
   Code2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ScrollTextReveal } from "@/components/ui/scroll-text-reveal";
+import { ScrollTextReveal, ScrollWordOpacity } from "@/components/ui/scroll-text-reveal";
 
 type ExperienceCard = {
   id: string;
@@ -133,9 +133,9 @@ export function ExperienceSection() {
           </span>
         </ScrollTextReveal>
 
-        <p className="text-base sm:text-xl text-muted-foreground max-w-3xl font-normal leading-relaxed">
+        <ScrollWordOpacity tag="p" className="text-base sm:text-xl text-muted-foreground max-w-3xl font-normal leading-relaxed">
           Historial laboral, proyectos clave y atribuciones técnicas en desarrollo web, arquitectura de datos e IoT.
-        </p>
+        </ScrollWordOpacity>
       </div>
 
       {/* Editorial Minimalist Interactive List */}
