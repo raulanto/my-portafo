@@ -73,7 +73,7 @@ export function Footer() {
                 className="size-8 object-contain"
               />
               <span className="text-xl font-bold tracking-tight text-foreground">
-                Raúl Antón
+                rauantodev
               </span>
             </div>
 
