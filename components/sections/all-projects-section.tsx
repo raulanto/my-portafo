@@ -3,22 +3,7 @@
 import React, { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { ScrollTextReveal } from "@/components/ui/scroll-text-reveal";
-
-const ALL_PROJECTS = [
-  { title: "Kanban Enterprise System", category: "Full Stack" },
-  { title: "IoT Telemetry Platform", category: "Backend" },
-  { title: "SQL → Django ORM Engine", category: "Tools" },
-  { title: "API Sistema POS", category: "Backend" },
-  { title: "ApiBase — Boilerplate DRF", category: "Backend" },
-  { title: "API Carga de Archivos", category: "Backend" },
-  { title: "Django Excel Reports", category: "Tools" },
-  { title: "Sistema Gestión CV", category: "Full Stack" },
-  { title: "Portfolio Omarchy Theme", category: "Frontend" },
-  { title: "Dashboard Interactivo", category: "Frontend" },
-  { title: "E-commerce Collares", category: "Full Stack" },
-  { title: "Gestor de Gastos", category: "Mobile" },
-  { title: "Listear — Task Manager", category: "Mobile" },
-];
+import { ALL_PROJECTS } from "@/data/projects";
 
 export function AllProjectsSection() {
   const [hovered, setHovered] = useState<number | null>(null);
@@ -52,7 +37,7 @@ export function AllProjectsSection() {
 
           return (
             <li
-              key={project.title}
+              key={project.id || project.title}
               className="relative border-b border-border/20 first:border-t"
             >
               {/* Soft radial glow behind the row */}
@@ -68,7 +53,7 @@ export function AllProjectsSection() {
               />
 
               <a
-                href="https://github.com/raulanto"
+                href={project.url || project.github || "https://github.com/raulantodev"}
                 target="_blank"
                 rel="noopener noreferrer"
                 onMouseEnter={() => setHovered(i)}
