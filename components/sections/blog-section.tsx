@@ -128,90 +128,65 @@ export function BlogSection() {
         </div>
       </div>
 
-      {/* Grid of Dynamic Minimalist Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Minimalist Editorial Article List */}
+      <div className="flex flex-col">
         {ALL_POSTS.map((post) => (
-          <div
+          <article
             key={post.slug}
-            className="group relative flex flex-col justify-between p-7 sm:p-9 rounded-3xl border border-border/40 bg-card/30 hover:bg-card/70 hover:border-primary/40 backdrop-blur-xl transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 overflow-hidden"
+            className="group py-8 border-b border-border/30 transition-all duration-300 flex flex-col gap-4"
           >
-            <div className="flex flex-col gap-5">
-              {/* Card Header: Big Number Index & Meta Info */}
-              <div className="flex items-center justify-between">
-                <span className="text-3xl sm:text-4xl font-black font-mono tracking-tighter text-muted-foreground/30 group-hover:text-primary transition-colors duration-300 select-none">
-                  {post.number}
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-mono font-semibold text-primary">
+                  {post.category}
                 </span>
-
-                <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-mono font-bold text-xs">
-                    {post.category}
-                  </span>
-                </div>
+                <span className="text-border">•</span>
+                <span className="text-xs font-mono text-muted-foreground flex items-center gap-1">
+                  <Calendar className="size-3 text-muted-foreground" />
+                  {post.date}
+                </span>
+                <span className="text-border">•</span>
+                <span className="text-xs font-mono text-muted-foreground flex items-center gap-1">
+                  <Clock className="size-3 text-muted-foreground" />
+                  {post.readTime}
+                </span>
               </div>
 
-              {/* Title & Description */}
-              <div className="flex flex-col gap-3">
-                <Link href={`/blog/${post.slug}`} className="group/title">
-                  <h3 className="text-xl sm:text-2xl font-black tracking-tight text-foreground group-hover/title:text-primary transition-colors duration-300 leading-snug line-clamp-2">
-                    {post.title}
-                  </h3>
-                </Link>
-
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed font-serif italic font-normal line-clamp-3">
-                  {post.description}
-                </p>
-              </div>
-            </div>
-
-            {/* Bottom Meta & Action Row */}
-            <div className="flex flex-col gap-4 pt-6 mt-6 border-t border-border/20">
-              <div className="flex items-center justify-between text-xs font-mono text-muted-foreground">
-                <div className="flex items-center gap-3">
-                  <span className="flex items-center gap-1.5">
-                    <Calendar className="size-3.5 text-primary" />
-                    {post.date}
-                  </span>
-                  <span>•</span>
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="size-3.5 text-primary" />
-                    {post.readTime}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  {/* Quick Preview Button */}
-                  <button
-                    onClick={() => setModalPost(post)}
-                    className="p-2 rounded-xl bg-muted/50 border border-border/40 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
-                    title="Vista previa rápida"
-                  >
-                    <Eye className="size-4" />
-                  </button>
-
-                  {/* Direct Link */}
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="p-2 rounded-xl bg-primary/10 text-primary border border-primary/20 hover:bg-primary hover:text-primary-foreground transition-all duration-300 flex items-center gap-1 text-xs font-bold px-3"
-                  >
-                    <span>Leer</span>
-                    <ArrowUpRight className="size-3.5" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1.5">
-                {post.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="px-2.5 py-0.5 rounded-md bg-muted/40 text-[11px] font-mono text-muted-foreground border border-border/20"
-                  >
-                    #{t}
-                  </span>
-                ))}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setModalPost(post)}
+                  className="text-xs font-mono text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1"
+                >
+                  <Eye className="size-3.5" />
+                  <span>Vista previa</span>
+                </button>
               </div>
             </div>
-          </div>
+
+            <Link href={`/blog/${post.slug}`} className="group/title flex items-start justify-between gap-4">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground group-hover/title:text-primary transition-colors duration-300 leading-snug">
+                {post.title}
+              </h3>
+              <div className="size-8 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground group-hover/title:border-primary group-hover/title:bg-primary group-hover/title:text-primary-foreground transition-all duration-300 shrink-0 mt-1">
+                <ArrowUpRight className="size-4" />
+              </div>
+            </Link>
+
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-4xl">
+              {post.description}
+            </p>
+
+            <div className="flex flex-wrap gap-2 pt-1">
+              {post.tags.map((t) => (
+                <span
+                  key={t}
+                  className="px-2.5 py-0.5 rounded-full bg-muted/40 text-muted-foreground text-xs font-mono"
+                >
+                  #{t}
+                </span>
+              ))}
+            </div>
+          </article>
         ))}
       </div>
 
