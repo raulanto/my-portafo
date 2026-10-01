@@ -44,7 +44,6 @@ function ThemeToggle() {
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [activeSection, setActiveSection] = React.useState<string>("");
-  const [scrollProgress, setScrollProgress] = React.useState(0);
   const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
   const [scrolled, setScrolled] = React.useState(false);
 
@@ -70,10 +69,6 @@ export function Navigation() {
       // Scrolled past hero threshold
       const scrollTop = window.scrollY;
       setScrolled(scrollTop > 80);
-
-      // Scroll progress
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -118,14 +113,6 @@ export function Navigation() {
             : "rounded-full bg-transparent border border-transparent shadow-none"
         )}
       >
-
-        {/* Scroll progress bar — only visible after scrolling */}
-        <div
-          aria-hidden
-          className="absolute bottom-0 left-0 h-[2px] bg-primary/40 rounded-full transition-all duration-150"
-          style={{ width: `${scrollProgress * 100}%`, opacity: scrolled ? 1 : 0 }}
-        />
-
         {/* Brand / Logo */}
         <Link
           href="/"
