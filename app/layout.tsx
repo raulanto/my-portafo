@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     siteName: "Raúl Antón Portafolio",
     images: [
       {
-        url: "/logo.svg",
+        url: "/index.png",
         width: 1200,
         height: 630,
         alt: "Raúl Antón — Software Engineer Portafolio",
@@ -93,7 +93,7 @@ export const metadata: Metadata = {
     description:
       "Portafolio profesional de Raúl Antón (raulantodev). Proyectos de ingeniería de software, arquitectura de datos y sistemas en tiempo real.",
     creator: "@raulantodev",
-    images: ["/logo.svg"],
+    images: ["/index.png"],
   },
   icons: {
     icon: "/icon.svg",
