@@ -107,5 +107,19 @@ export const ALL_PROJECTS: ProjectItem[] = [
     category: "Frontend",
     github: "https://github.com/raulantodev",
     url: "https://calculadora-div.vercel.app",
-  }
+  },
+  {
+    id: "CLI Forja",
+    title: "Forja Rust",
+    category: "CLI",
+    github: "https://github.com/raulantodev",
+    url: "https://github.com/raulanto/forja-rust",
+  },
+  {
+    id: "pdf-viewer",
+    title: "PDF View",
+    category: "GUI",
+    github: "https://github.com/raulantodev",
+    url: "https://github.com/raulanto/pdf-view",
+  },
 ];
