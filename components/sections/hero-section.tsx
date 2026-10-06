@@ -68,10 +68,10 @@ export function HeroSection() {
       {/* Hero Content — Parallax shift + Fade Out on Scroll */}
       <motion.div
         style={{ y: textY, opacity: textOpacity }}
-        className="relative z-30 w-full max-w-5xl mx-auto px-6 flex flex-col items-center text-center gap-6 pt-28 sm:pt-32 pb-16 will-change-transform overflow-visible"
+        className="relative z-30 w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center gap-5 sm:gap-6 pt-24 sm:pt-32 pb-14 sm:pb-16 will-change-transform overflow-visible"
       >
         {/* Status Badge */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-background/80 dark:bg-background/60 backdrop-blur-xl border border-border/60 text-xs font-medium text-foreground shadow-lg transition-transform hover:scale-105">
+        <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-background/80 dark:bg-background/60 backdrop-blur-xl border border-border/60 text-[11px] sm:text-xs font-medium text-foreground shadow-lg transition-transform hover:scale-105">
           <span className="relative flex size-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full size-2 bg-emerald-500" />
@@ -80,14 +80,14 @@ export function HeroSection() {
         </div>
 
         {/* Brand Headline (raulantodev Portafolio+) */}
-        <div className="relative flex flex-col items-center justify-center select-none py-2 w-full z-40 overflow-visible">
+        <div className="relative flex flex-col items-center justify-center select-none py-1 sm:py-2 w-full z-40 overflow-visible">
           <div className="inline-flex flex-col items-center w-full gap-1 overflow-visible">
             {/* TechText from React Bits for raulantodev with entrance animation */}
             <motion.div
               initial={{ opacity: 0, y: 35, scale: 0.94 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.85, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
-              className="w-full h-32 sm:h-44 md:h-52 relative flex items-center justify-center max-w-5xl z-50 overflow-visible"
+              className="w-full h-28 sm:h-44 md:h-52 relative flex items-center justify-center max-w-5xl z-50 overflow-visible"
             >
               <TechText
                 text="raulantodev"
@@ -102,14 +102,14 @@ export function HeroSection() {
               />
             </motion.div>
 
-            <div className="flex items-center gap-3 text-2xl sm:text-3xl md:text-4xl font-serif italic font-normal text-foreground/90 tracking-wide">
+            <div className="flex items-center gap-2.5 sm:gap-3 text-xl sm:text-3xl md:text-4xl font-serif italic font-normal text-foreground/90 tracking-wide">
               <SplitTextReveal
                 text="Portafolio"
                 delay={0.6}
                 stagger={0.04}
                 tag="span"
               />
-              <span className="inline-flex items-center justify-center size-8 sm:size-9 md:size-10 hover:rotate-12 hover:scale-110 transition-transform duration-300">
+              <span className="inline-flex items-center justify-center size-7 sm:size-9 md:size-10 hover:rotate-12 hover:scale-110 transition-transform duration-300">
                 <Image
                   src="/logo.svg"
                   alt="Logo Raúl Antón"
@@ -124,7 +124,7 @@ export function HeroSection() {
         </div>
 
         {/* Role subtitle */}
-        <div className="text-sm sm:text-base font-semibold text-primary uppercase tracking-widest -mt-1 font-mono">
+        <div className="text-xs sm:text-base font-semibold text-primary uppercase tracking-widest -mt-1 font-mono">
           <SplitTextReveal
             text="Full Stack Developer"
             delay={0.9}
@@ -134,7 +134,7 @@ export function HeroSection() {
         </div>
 
         {/* Subtitle description */}
-        <p className="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed font-normal">
+        <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl leading-relaxed font-normal px-2">
           <SplitTextReveal
             text="Diseño, desarrollo e implemento aplicaciones web robustas — desde interfaces reactivas hasta APIs de alto rendimiento."
             delay={1.2}
@@ -144,11 +144,21 @@ export function HeroSection() {
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-          <AceternityButton href="#proyectos" size="lg" variant="primary">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 w-full max-w-xs sm:max-w-none">
+          <AceternityButton
+            href="#proyectos"
+            size="lg"
+            variant="primary"
+            className="w-full sm:w-auto min-h-[48px] justify-center text-sm"
+          >
             Ver proyectos
           </AceternityButton>
-          <AceternityButton href="#contacto" size="lg" variant="outline">
+          <AceternityButton
+            href="#contacto"
+            size="lg"
+            variant="outline"
+            className="w-full sm:w-auto min-h-[48px] justify-center text-sm"
+          >
             Contacto
           </AceternityButton>
         </div>

@@ -61,11 +61,11 @@ export function Footer() {
     <footer className="relative w-full bg-background text-foreground pt-16 pb-0 overflow-hidden select-none border-t border-border/30">
       
       {/* Container principal de enlaces e información */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+      <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-12 pb-12 sm:pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8 items-start">
           
           {/* Marca + Breve descripción */}
-          <div className="lg:col-span-4 flex flex-col gap-4">
+          <div className="lg:col-span-4 flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center gap-3">
               <Image
                 src="/logo.svg"
@@ -74,7 +74,7 @@ export function Footer() {
                 height={32}
                 className="size-8 object-contain shrink-0"
               />
-              <div className="w-44 h-10 relative flex items-center">
+              <div className="w-40 sm:w-44 h-10 relative flex items-center">
                 <WarpText
                   text="raulantodev"
                   color="hsl(var(--foreground))"
@@ -85,98 +85,101 @@ export function Footer() {
                   pointerStrength={0.38}
                   refraction={0.018}
                   ripple={true}
-                  fontSize="1.5rem"
+                  fontSize="1.35rem"
                   fontWeight={800}
                 />
               </div>
             </div>
 
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
-              Software Architect & Full Stack Engineer especializado en arquitectura hexagonal, DDD y ciencia de datos.
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-sm">
+              Software Architect & Full Stack Engineer especializado en arquitectura hexagonal, DDD y desarrollo de alta escala.
             </p>
           </div>
 
           {/* Columnas de navegación estilo limpio */}
-          <div className="lg:col-span-6 grid grid-cols-2 sm:grid-cols-3 gap-8">
+          <div className="lg:col-span-6 grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8">
             {/* Navegación */}
-            <div className="flex flex-col gap-3">
-              <h4 className="text-sm font-semibold text-foreground">Navegación</h4>
-              <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">Inicio</a></li>
-                <li><a href="#sobre-mi" className="hover:text-foreground transition-colors">Sobre mí</a></li>
-                <li><a href="#proyectos" className="hover:text-foreground transition-colors">Proyectos</a></li>
-                <li><a href="#experiencia" className="hover:text-foreground transition-colors">Experiencia</a></li>
+            <div className="flex flex-col gap-2.5 sm:gap-3">
+              <h4 className="text-xs sm:text-sm font-semibold text-foreground uppercase tracking-wider font-mono">Navegación</h4>
+              <ul className="flex flex-col gap-2 text-xs sm:text-sm text-muted-foreground">
+                <li><a href="#" className="hover:text-foreground transition-colors py-0.5 inline-block">Inicio</a></li>
+                <li><a href="#sobre-mi" className="hover:text-foreground transition-colors py-0.5 inline-block">Sobre mí</a></li>
+                <li><a href="#tecnologias" className="hover:text-foreground transition-colors py-0.5 inline-block">Tecnologías</a></li>
+                <li><a href="#proyectos" className="hover:text-foreground transition-colors py-0.5 inline-block">Proyectos</a></li>
               </ul>
             </div>
 
             {/* Recursos / Secciones */}
-            <div className="flex flex-col gap-3">
-              <h4 className="text-sm font-semibold text-foreground">Explorar</h4>
-              <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
-                <li><a href="#blog" className="hover:text-foreground transition-colors">Blog</a></li>
-                <li><a href="#gustos" className="hover:text-foreground transition-colors">Intereses</a></li>
-                <li><a href="#contacto" className="hover:text-foreground transition-colors">Contacto</a></li>
+            <div className="flex flex-col gap-2.5 sm:gap-3">
+              <h4 className="text-xs sm:text-sm font-semibold text-foreground uppercase tracking-wider font-mono">Explorar</h4>
+              <ul className="flex flex-col gap-2 text-xs sm:text-sm text-muted-foreground">
+                <li><a href="#experiencia" className="hover:text-foreground transition-colors py-0.5 inline-block">Experiencia</a></li>
+                <li><a href="#blog" className="hover:text-foreground transition-colors py-0.5 inline-block">Blog</a></li>
+                <li><a href="#gustos" className="hover:text-foreground transition-colors py-0.5 inline-block">Intereses</a></li>
+                <li><a href="#contacto" className="hover:text-foreground transition-colors py-0.5 inline-block">Contacto</a></li>
               </ul>
             </div>
 
             {/* Info / Status */}
-            <div className="flex flex-col gap-3 col-span-2 sm:col-span-1">
-              <h4 className="text-sm font-semibold text-foreground">Ubicación</h4>
-              <div className="flex flex-col gap-1 text-sm text-muted-foreground font-mono">
-                <span>CDMX (UTC-6)</span>
-                <span className="text-xs text-primary">{time || "--:--:--"}</span>
+            <div className="flex flex-col gap-2.5 sm:gap-3 col-span-2 sm:col-span-1">
+              <h4 className="text-xs sm:text-sm font-semibold text-foreground uppercase tracking-wider font-mono">Ubicación</h4>
+              <div className="flex flex-col gap-1 text-xs sm:text-sm text-muted-foreground font-mono">
+                <span>México (UTC-6)</span>
+                <span className="text-xs text-primary font-bold">{time || "--:--:--"}</span>
+                <span className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1">● Disponible</span>
               </div>
             </div>
           </div>
 
-          {/* Social Icons en la esquina superior derecha */}
-          <div className="lg:col-span-2 flex items-center lg:justify-end gap-4 text-muted-foreground">
+          {/* Social Icons con hit areas accesibles */}
+          <div className="lg:col-span-2 flex items-center lg:justify-end gap-3 text-muted-foreground">
             <a
-              href="https://github.com/raulantodev"
+              href="https://github.com/raulanto"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
-              className="hover:text-foreground transition-colors"
+              className="size-10 sm:size-9 rounded-full bg-muted/50 hover:bg-muted hover:text-foreground transition-all flex items-center justify-center active:scale-90"
             >
-              <GithubIcon className="size-5" />
+              <GithubIcon className="size-4 sm:size-5" />
             </a>
             <a
               href="https://www.linkedin.com/in/rauantodev"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="hover:text-foreground transition-colors"
+              className="size-10 sm:size-9 rounded-full bg-muted/50 hover:bg-muted hover:text-foreground transition-all flex items-center justify-center active:scale-90"
             >
-              <LinkedinIcon className="size-5" />
+              <LinkedinIcon className="size-4 sm:size-5" />
             </a>
             <a
               href="https://x.com/raulantodev"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="X (Twitter)"
-              className="hover:text-foreground transition-colors"
+              className="size-10 sm:size-9 rounded-full bg-muted/50 hover:bg-muted hover:text-foreground transition-all flex items-center justify-center active:scale-90"
             >
-              <XIcon className="size-5" />
+              <XIcon className="size-4 sm:size-5" />
             </a>
           </div>
 
         </div>
 
         {/* Copyright sutil antes del watermark gigante */}
-        <div className="flex items-center justify-between pt-12 text-xs text-muted-foreground">
-          <span>© {new Date().getFullYear()} Raúl Antón. Todos los derechos reservados.</span>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-8 sm:pt-12 text-xs text-muted-foreground border-t border-border/20 mt-8">
+          <span className="text-center sm:text-left">© {new Date().getFullYear()} Raúl Antón. Todos los derechos reservados.</span>
           <button
             onClick={scrollToTop}
-            className="flex items-center gap-1 hover:text-foreground transition-colors"
+            className="flex items-center gap-1.5 hover:text-foreground transition-colors p-2 rounded-lg bg-muted/30 hover:bg-muted/60 min-h-[36px] cursor-pointer"
+            aria-label="Volver arriba"
           >
             <span>Ir arriba</span>
-            <ArrowUp className="size-3" />
+            <ArrowUp className="size-3.5" />
           </button>
         </div>
       </div>
 
       {/* WATERMARK TEXT STYLED ACCURAIL TYPE EMBOSSED / SOFT GRADIENT LIGHT BACKGROUND */}
-      <div className="relative w-full overflow-hidden select-none pointer-events-none border-t border-border/10 pt-6 pb-6 mt-4">
+      <div className="relative w-full overflow-hidden select-none pointer-events-none border-t border-border/10 pt-4 sm:pt-6 pb-4 sm:pb-6 mt-2 sm:mt-4">
         {/* Soft Grid Dot Background overlay */}
         <div
           aria-hidden
@@ -189,9 +192,9 @@ export function Footer() {
           className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[70%] h-[160px] bg-primary/10 dark:bg-primary/15 blur-[90px] rounded-full"
         />
 
-        <div className="relative w-full px-4 sm:px-8 flex items-center justify-center">
-          <h1 className="text-[9.5vw] sm:text-[10.5vw] lg:text-[11.5vw] font-black tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-b from-foreground/20 via-foreground/5 to-transparent dark:from-foreground/25 dark:via-foreground/5 dark:to-transparent drop-shadow-[0_1px_2px_rgba(0,0,0,0.03)] uppercase whitespace-nowrap">
-            rauantodev
+        <div className="relative w-full px-2 sm:px-8 flex items-center justify-center">
+          <h1 className="text-[12vw] sm:text-[10.5vw] lg:text-[11.5vw] font-black tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-b from-foreground/20 via-foreground/5 to-transparent dark:from-foreground/25 dark:via-foreground/5 dark:to-transparent drop-shadow-[0_1px_2px_rgba(0,0,0,0.03)] uppercase whitespace-nowrap">
+            raulantodev
           </h1>
         </div>
       </div>

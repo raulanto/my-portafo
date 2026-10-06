@@ -104,32 +104,32 @@ export function Navigation() {
   }, [hoveredIndex, activeSection]);
 
   return (
-    <header className="fixed top-6 inset-x-0 z-50 flex flex-col items-center justify-center px-4 sm:px-6 pointer-events-none">
+    <header className="fixed top-3 sm:top-6 inset-x-0 z-50 flex flex-col items-center justify-center px-3 sm:px-6 pointer-events-none">
       <div
         className={cn(
-          "pointer-events-auto w-full max-w-5xl px-5 sm:px-6 py-2.5 flex items-center justify-between gap-4 relative overflow-hidden transition-all duration-500",
-          scrolled
-            ? "rounded-full bg-background/80 dark:bg-background/70 backdrop-blur-2xl border border-border/60 shadow-xl shadow-black/5 dark:shadow-black/20"
-            : "rounded-full bg-transparent border border-transparent shadow-none"
+          "pointer-events-auto w-full max-w-5xl px-3.5 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-4 relative overflow-hidden transition-all duration-500",
+          scrolled || mobileMenuOpen
+            ? "rounded-full bg-background/85 dark:bg-background/80 backdrop-blur-2xl border border-border/60 shadow-xl shadow-black/5 dark:shadow-black/25"
+            : "rounded-full bg-background/40 dark:bg-background/30 backdrop-blur-md border border-border/30 shadow-none sm:bg-transparent sm:border-transparent"
         )}
       >
         {/* Brand / Logo */}
         <Link
           href="/"
-          className="group flex items-center gap-2.5 text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-full transition-opacity hover:opacity-90 shrink-0"
+          className="group flex items-center gap-2 sm:gap-2.5 text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-full transition-opacity hover:opacity-90 shrink-0"
           aria-label="Ir al inicio"
         >
-          <div className="relative size-7 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+          <div className="relative size-6 sm:size-7 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
             <Image
               src="/logo.svg"
               alt="Logo Raúl Antón"
               width={28}
               height={28}
-              className="size-7 object-contain"
+              className="size-6 sm:size-7 object-contain"
               priority
             />
           </div>
-          <span className="font-semibold text-sm tracking-tight text-foreground group-hover:text-primary transition-colors">
+          <span className="font-semibold text-xs sm:text-sm tracking-tight text-foreground group-hover:text-primary transition-colors">
             Raúl Antón
           </span>
 
@@ -205,20 +205,20 @@ export function Navigation() {
         </nav>
 
         {/* Actions */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <ThemeToggle />
 
           <AceternityButton
             href="#contacto"
             size="sm"
             variant="primary"
-            className="rounded-full"
+            className="rounded-full hidden sm:inline-flex text-xs px-3.5 py-1.5"
           >
             Hablemos
           </AceternityButton>
 
           <button
-            className="md:hidden inline-flex items-center justify-center size-8 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200 active:scale-90 outline-none cursor-pointer"
+            className="md:hidden inline-flex items-center justify-center size-9 rounded-full text-foreground/80 hover:text-foreground hover:bg-muted/60 transition-all duration-200 active:scale-90 outline-none cursor-pointer border border-border/40"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-expanded={mobileMenuOpen}
             aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -234,34 +234,65 @@ export function Navigation() {
 
       {/* Mobile Nav Dropdown */}
       {mobileMenuOpen && (
-        <div className="pointer-events-auto w-full max-w-4xl mt-3 rounded-3xl border border-border/60 bg-background/95 backdrop-blur-2xl p-5 shadow-2xl animate-in fade-in-0 slide-in-from-top-2 duration-200">
-          <nav className="flex flex-col gap-1">
-            {NAV_ITEMS.map((item, i) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="group flex items-center justify-between px-4 py-3 text-sm font-medium text-foreground hover:bg-muted/60 rounded-2xl transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-[10px] font-mono text-muted-foreground tabular-nums">{item.index}</span>
-                  <span>{item.label}</span>
-                </div>
-                <ArrowUpRight className="size-4 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-              </Link>
-            ))}
-            <div className="mt-4 pt-4 border-t border-border/40 flex items-center justify-between px-2">
-              <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
-                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                Disponible para proyectos
-              </span>
-              <div className="flex items-center gap-2">
-                <ThemeToggle />
+        <div className="pointer-events-auto w-full max-w-lg mt-2.5 rounded-3xl border border-border/60 bg-background/95 dark:bg-background/90 backdrop-blur-2xl p-4 sm:p-5 shadow-2xl animate-in fade-in-0 slide-in-from-top-3 duration-250">
+          <nav className="flex flex-col gap-1" aria-label="Navegación móvil">
+            {NAV_ITEMS.map((item) => {
+              const isActive = activeSection === item.href.substring(1);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    "group flex items-center justify-between px-3.5 py-3 text-sm font-medium rounded-2xl transition-all duration-200 min-h-[48px]",
+                    isActive
+                      ? "bg-primary/10 text-primary font-bold border border-primary/20"
+                      : "text-foreground hover:bg-muted/60"
+                  )}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className={cn(
+                      "text-[10px] font-mono tabular-nums px-1.5 py-0.5 rounded-md",
+                      isActive ? "bg-primary text-primary-foreground font-bold" : "text-muted-foreground bg-muted/60"
+                    )}>
+                      {item.index}
+                    </span>
+                    <span className="text-sm">{item.label}</span>
+                  </div>
+                  <ArrowUpRight className={cn(
+                    "size-4 transition-all duration-200",
+                    isActive ? "text-primary opacity-100" : "text-muted-foreground opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  )} />
+                </Link>
+              );
+            })}
+
+            <div className="mt-3 pt-3 border-t border-border/40 flex flex-col gap-3">
+              <div className="flex items-center justify-between px-1">
+                <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
+                  <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                  Disponible para proyectos
+                </span>
+                <span className="text-[11px] font-mono text-muted-foreground">México (UTC-6)</span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                <a
+                  href="https://wa.me/529936719807"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold transition-colors min-h-[44px]"
+                >
+                  <span>WhatsApp</span>
+                  <ArrowUpRight className="size-3.5" />
+                </a>
+
                 <AceternityButton
                   href="#contacto"
                   size="sm"
                   variant="primary"
-                  className="rounded-full"
+                  className="rounded-2xl w-full justify-center min-h-[44px]"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Contacto

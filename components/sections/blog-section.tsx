@@ -90,37 +90,37 @@ export function BlogSection() {
   const [modalPost, setModalPost] = useState<BlogPostDisplay | null>(null);
 
   return (
-    <section id="blog" className="scroll-mt-28 flex flex-col gap-12 py-6">
+    <section id="blog" className="scroll-mt-24 sm:scroll-mt-28 flex flex-col gap-8 sm:gap-12 py-4 sm:py-6">
       {/* Ultra Minimalist Header with Giant Typography */}
-      <div className="flex flex-col gap-5 border-b border-border/20 pb-10">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-mono font-bold tracking-widest uppercase">
+      <div className="flex flex-col gap-4 sm:gap-5 border-b border-border/20 pb-6 sm:pb-10">
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 text-primary text-[11px] sm:text-xs font-mono font-bold tracking-widest uppercase">
             <BookOpen className="size-3.5" />
-            <span>04 / PUBLICACIONES & GUÍAS</span>
+            <span>05 / PUBLICACIONES & GUÍAS</span>
           </div>
 
-          <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
+          <span className="text-[11px] sm:text-xs font-mono text-muted-foreground uppercase tracking-wider">
             Arquitectura • SQL • Backend
           </span>
         </div>
 
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 sm:gap-6">
           <div className="flex flex-col gap-2">
-            <ScrollTextReveal tag="h2" className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter text-foreground leading-none">
+            <ScrollTextReveal tag="h2" className="text-3xl sm:text-6xl md:text-8xl font-black tracking-tighter text-foreground leading-[1.05]">
               Blog <span className="text-primary font-serif italic font-normal">&amp;</span> <br />
               <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary/80 bg-clip-text text-transparent">
                 Artículos.
               </span>
             </ScrollTextReveal>
 
-            <p className="text-base sm:text-xl text-muted-foreground max-w-2xl font-normal leading-relaxed mt-1">
+            <p className="text-sm sm:text-xl text-muted-foreground max-w-2xl font-normal leading-relaxed mt-1">
               Análisis técnicos sobre diseño de software, optimización de bases de datos y arquitectura distribuida.
             </p>
           </div>
 
           <Link
             href="/blog"
-            className="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-primary text-primary-foreground text-xs font-bold transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 hover:scale-105 active:scale-95 shrink-0 self-start md:self-auto"
+            className="group inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full bg-primary text-primary-foreground text-xs font-bold transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 hover:scale-105 active:scale-95 shrink-0 self-stretch sm:self-start md:self-auto min-h-[44px]"
           >
             <span>Catálogo Completo</span>
             <ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -133,20 +133,20 @@ export function BlogSection() {
         {ALL_POSTS.map((post, idx) => (
           <ScrollElementReveal key={post.slug} delay={idx * 0.08}>
             <article
-              className="group py-8 border-b border-border/30 transition-all duration-300 flex flex-col gap-4"
+              className="group py-6 sm:py-8 border-b border-border/30 transition-all duration-300 flex flex-col gap-3 sm:gap-4"
             >
               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                   <span className="text-xs font-mono font-semibold text-primary">
                     {post.category}
                   </span>
                   <span className="text-border">•</span>
-                  <span className="text-xs font-mono text-muted-foreground flex items-center gap-1">
+                  <span className="text-[11px] sm:text-xs font-mono text-muted-foreground flex items-center gap-1">
                     <Calendar className="size-3 text-muted-foreground" />
                     {post.date}
                   </span>
                   <span className="text-border">•</span>
-                  <span className="text-xs font-mono text-muted-foreground flex items-center gap-1">
+                  <span className="text-[11px] sm:text-xs font-mono text-muted-foreground flex items-center gap-1">
                     <Clock className="size-3 text-muted-foreground" />
                     {post.readTime}
                   </span>
@@ -155,7 +155,7 @@ export function BlogSection() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setModalPost(post)}
-                    className="text-xs font-mono text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1"
+                    className="text-xs font-mono text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1.5 py-1 px-2.5 rounded-lg bg-muted/40 hover:bg-muted/70 min-h-[36px]"
                   >
                     <Eye className="size-3.5" />
                     <span>Vista previa</span>
@@ -163,8 +163,8 @@ export function BlogSection() {
                 </div>
               </div>
 
-              <Link href={`/blog/${post.slug}`} className="group/title flex items-start justify-between gap-4">
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground group-hover/title:text-primary transition-colors duration-300 leading-snug">
+              <Link href={`/blog/${post.slug}`} className="group/title flex items-start justify-between gap-3 sm:gap-4">
+                <h3 className="text-xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground group-hover/title:text-primary transition-colors duration-300 leading-snug">
                   {post.title}
                 </h3>
                 <div className="size-8 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground group-hover/title:border-primary group-hover/title:bg-primary group-hover/title:text-primary-foreground transition-all duration-300 shrink-0 mt-1">
@@ -172,15 +172,15 @@ export function BlogSection() {
                 </div>
               </Link>
 
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-4xl">
+              <p className="text-xs sm:text-base text-muted-foreground leading-relaxed max-w-4xl">
                 {post.description}
               </p>
 
-              <div className="flex flex-wrap gap-2 pt-1">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
                 {post.tags.map((t) => (
                   <span
                     key={t}
-                    className="px-2.5 py-0.5 rounded-full bg-muted/40 text-muted-foreground text-xs font-mono"
+                    className="px-2.5 py-0.5 rounded-full bg-muted/40 text-muted-foreground text-[11px] sm:text-xs font-mono"
                   >
                     #{t}
                   </span>
@@ -193,17 +193,18 @@ export function BlogSection() {
 
       {/* Quick Article Preview Modal */}
       {modalPost && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in-0 duration-200">
-          <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl border border-border/60 bg-background/95 p-6 sm:p-9 shadow-2xl flex flex-col gap-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-md animate-in fade-in-0 duration-200">
+          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto overscroll-contain rounded-3xl border border-border/60 bg-background/98 p-5 sm:p-9 shadow-2xl flex flex-col gap-5 sm:gap-6">
             <button
               onClick={() => setModalPost(null)}
-              className="absolute top-5 right-5 p-2 rounded-full bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+              className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-full bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
+              aria-label="Cerrar vista previa"
             >
               <X className="size-5" />
             </button>
 
-            <div className="flex flex-col gap-3 pr-8">
-              <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
+            <div className="flex flex-col gap-2.5 pr-8">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-muted-foreground">
                 <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-bold">
                   {modalPost.category}
                 </span>
@@ -213,41 +214,41 @@ export function BlogSection() {
                 <span>{modalPost.readTime}</span>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight leading-tight">
+              <h2 className="text-xl sm:text-3xl font-black text-foreground tracking-tight leading-tight">
                 {modalPost.title}
               </h2>
             </div>
 
-            <div className="flex flex-col gap-4 text-sm sm:text-base text-muted-foreground leading-relaxed border-t border-b border-border/30 py-5">
+            <div className="flex flex-col gap-3 sm:gap-4 text-xs sm:text-base text-muted-foreground leading-relaxed border-t border-b border-border/30 py-4 sm:py-5">
               <p className="font-semibold text-foreground">
                 {modalPost.description}
               </p>
               <p className="text-muted-foreground">{modalPost.contentSnippet}</p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex flex-wrap gap-1.5">
                 {modalPost.tags.map((t) => (
                   <span
                     key={t}
-                    className="px-2.5 py-1 text-xs font-mono rounded-md bg-muted/60 text-muted-foreground"
+                    className="px-2.5 py-1 text-[11px] sm:text-xs font-mono rounded-md bg-muted/60 text-muted-foreground"
                   >
                     #{t}
                   </span>
                 ))}
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5 w-full sm:w-auto">
                 <button
                   onClick={() => setModalPost(null)}
-                  className="px-4 py-2 text-xs font-semibold text-muted-foreground hover:text-foreground cursor-pointer"
+                  className="flex-1 sm:flex-initial px-4 py-2.5 text-xs font-semibold text-muted-foreground hover:text-foreground cursor-pointer min-h-[44px] rounded-full hover:bg-muted/40"
                 >
                   Cerrar
                 </button>
                 <Link
                   href={`/blog/${modalPost.slug}`}
                   onClick={() => setModalPost(null)}
-                  className="px-5 py-2.5 text-xs font-bold rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity flex items-center gap-1.5 shadow-md"
+                  className="flex-1 sm:flex-initial px-5 py-2.5 text-xs font-bold rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5 shadow-md min-h-[44px]"
                 >
                   <span>Ver artículo completo</span>
                   <ArrowUpRight className="size-4" />

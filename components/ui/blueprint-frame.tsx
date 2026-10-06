@@ -62,6 +62,21 @@ export function BlueprintFrame({
   mask = false,
   className,
 }: BlueprintFrameProps) {
+  const [currentInset, setCurrentInset] = React.useState(inset);
+
+  React.useEffect(() => {
+    const updateInset = () => {
+      if (typeof window !== 'undefined') {
+        const isMobile = window.innerWidth < 640;
+        setCurrentInset(isMobile ? Math.min(inset, 16) : inset);
+      }
+    };
+    updateInset();
+    window.addEventListener('resize', updateInset);
+    return () => window.removeEventListener('resize', updateInset);
+  }, [inset]);
+
+  const effectiveInset = currentInset;
   const frozen = speed <= 0;
   const driftDur = frozen ? 0 : 7 / speed;
   const line = 'color-mix(in srgb, var(--bp) 10%, transparent)';
@@ -73,8 +88,8 @@ export function BlueprintFrame({
   const botTopY = `calc(100% - ${gap + bandH}px)`;
   const botBotY = `calc(100% - ${gap}px)`;
 
-  const leftX: React.CSSProperties = { left: inset };
-  const rightX: React.CSSProperties = { left: `calc(100% - ${inset}px)` };
+  const leftX: React.CSSProperties = { left: effectiveInset };
+  const rightX: React.CSSProperties = { left: `calc(100% - ${effectiveInset}px)` };
 
   const bands = [
     { top: topTopY, height: bandH },

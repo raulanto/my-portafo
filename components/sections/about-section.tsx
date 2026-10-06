@@ -96,6 +96,7 @@ const CANVAS_HOME = { x: 0, y: 0 };
 
 export function AboutSection() {
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [viewMode, setViewMode] = useState<"canvas" | "cards">("cards");
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText("raulantodev@gmail.com");
@@ -104,16 +105,16 @@ export function AboutSection() {
   };
 
   return (
-    <section id="sobre-mi" className="scroll-mt-28 flex flex-col gap-8">
+    <section id="sobre-mi" className="scroll-mt-24 sm:scroll-mt-28 flex flex-col gap-6 sm:gap-8">
       {/* Clean, Flat & Bold Section Header */}
-      <div className="flex flex-col gap-4 py-2 border-b border-border/20 pb-8">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-mono font-bold tracking-wider uppercase">
+      <div className="flex flex-col gap-4 py-2 border-b border-border/20 pb-6 sm:pb-8">
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[11px] sm:text-xs font-mono font-bold tracking-wider uppercase">
             <User className="size-3.5" />
             <span>01 / SOBRE MÍ</span>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[11px] sm:text-xs font-bold">
             <span className="relative flex size-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full size-2 bg-emerald-500" />
@@ -122,61 +123,137 @@ export function AboutSection() {
           </div>
         </div>
 
-        <ScrollTextReveal tag="h2" className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
+        <ScrollTextReveal tag="h2" className="text-3xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.08]">
           Sobre Mí & <br className="hidden sm:inline" />
           <span className="text-primary">Trayectoria.</span>
         </ScrollTextReveal>
 
-        <ScrollWordOpacity tag="p" className="text-base sm:text-lg text-muted-foreground max-w-3xl font-medium leading-relaxed">
-          Explora mi mapa de habilidades e historia profesional en este lienzo interactivo.
+        <ScrollWordOpacity tag="p" className="text-sm sm:text-lg text-muted-foreground max-w-3xl font-medium leading-relaxed">
+          Explora mi mapa de habilidades e historia profesional en este lienzo interactivo o en formato de tarjetas.
         </ScrollWordOpacity>
       </div>
 
-      {/* Interactive Infinite Canvas Section */}
+      {/* View Mode Toggle for Responsive Experience */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between px-1 text-xs text-muted-foreground font-mono">
-          <span className="flex items-center gap-1.5 text-primary font-semibold">
-            <MousePointerClick className="size-4" />
-            Canvas Interactivo Infinito
+        <div className="flex items-center justify-between flex-wrap gap-2 px-1 text-xs text-muted-foreground font-mono">
+          <span className="flex items-center gap-1.5 text-primary font-semibold text-[11px] sm:text-xs">
+            <MousePointerClick className="size-3.5 sm:size-4" />
+            <span>{viewMode === "canvas" ? "Canvas Infinito Interactivo" : "Vista Tarjetas Organizadas"}</span>
           </span>
-          <span>Presiona 'Encuadrar' o '100%' para enfocar</span>
+
+          {/* View Switch Buttons */}
+          <div className="flex items-center p-1 rounded-full bg-muted/50 border border-border/40">
+            <button
+              onClick={() => setViewMode("cards")}
+              className={`px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition-all cursor-pointer ${
+                viewMode === "cards"
+                  ? "bg-background text-foreground shadow-sm font-bold"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Tarjetas
+            </button>
+            <button
+              onClick={() => setViewMode("canvas")}
+              className={`px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition-all cursor-pointer ${
+                viewMode === "canvas"
+                  ? "bg-background text-foreground shadow-sm font-bold"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Canvas
+            </button>
+          </div>
         </div>
 
-        <InfiniteCanvas
-          notes={PORTFOLIO_NOTES}
-          home={CANVAS_HOME}
-          label="Tablero personal de Raúl Antonio"
-        />
+        {/* Conditional View Rendering: Canvas vs Cards */}
+        {viewMode === "canvas" ? (
+          <InfiniteCanvas
+            notes={PORTFOLIO_NOTES}
+            home={CANVAS_HOME}
+            label="Tablero personal de Raúl Antonio"
+          />
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 animate-in fade-in-50 duration-300">
+            {PORTFOLIO_NOTES.map((note) => (
+              <div
+                key={note.id}
+                className={`flex flex-col justify-between gap-3 rounded-2xl p-5 border backdrop-blur-md transition-all hover:scale-[1.02] shadow-sm ${
+                  note.accent
+                    ? "bg-gradient-to-br from-primary/95 to-purple-600/95 text-white border-primary/40 shadow-primary/15 sm:col-span-2"
+                    : "bg-card/70 text-card-foreground border-border/70 hover:border-primary/40"
+                }`}
+              >
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-sm font-bold tracking-tight">
+                      {note.title}
+                    </span>
+                    <span
+                      className={`size-2 rounded-full shrink-0 ${
+                        note.accent ? "bg-emerald-400 animate-pulse" : "bg-primary"
+                      }`}
+                    />
+                  </div>
+                  <p
+                    className={`text-xs leading-relaxed ${
+                      note.accent ? "text-white/90" : "text-muted-foreground"
+                    }`}
+                  >
+                    {note.text}
+                  </p>
+                </div>
+
+                {note.tags && note.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-current/10">
+                    {note.tags.map((t) => (
+                      <span
+                        key={t}
+                        className={`px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold ${
+                          note.accent
+                            ? "bg-white/15 text-white"
+                            : "bg-muted/80 text-muted-foreground"
+                        }`}
+                      >
+                        #{t}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Profile Info Details Flat Bar */}
-      <div className="py-4 px-2 flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-t border-border/20">
-        <div className="flex items-center gap-4">
+      <div className="py-4 px-1 sm:px-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6 border-t border-border/20">
+        <div className="flex items-center gap-3 sm:gap-4">
           <img
             src="https://avatars.githubusercontent.com/u/74162376?v=4"
             alt="Raúl Antonio"
-            className="size-14 rounded-full border-2 border-primary/30 object-cover"
+            className="size-12 sm:size-14 rounded-full border-2 border-primary/30 object-cover shrink-0"
           />
           <div className="flex flex-col gap-0.5">
-            <div className="flex items-center gap-2">
-              <h3 className="text-xl font-bold text-foreground">
+            <div className="flex items-center gap-1.5">
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">
                 Raúl Antonio
               </h3>
-              <Sparkles className="size-4 text-primary" />
+              <Sparkles className="size-3.5 sm:size-4 text-primary" />
             </div>
-            <p className="text-xs font-mono font-semibold text-primary">
+            <p className="text-[11px] sm:text-xs font-mono font-semibold text-primary">
               Full Stack Developer • México
             </p>
-            <p className="text-xs text-muted-foreground font-mono">
+            <p className="text-[11px] sm:text-xs text-muted-foreground font-mono">
               raulantodev@gmail.com
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <button
             onClick={handleCopyEmail}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 hover:bg-primary/20 text-xs font-bold text-primary transition-all cursor-pointer active:scale-95"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-primary/10 hover:bg-primary/20 text-xs font-bold text-primary transition-all cursor-pointer active:scale-95 min-h-[44px]"
             title="Copiar correo de contacto"
           >
             {copiedEmail ? (
@@ -196,8 +273,9 @@ export function AboutSection() {
             href="https://github.com/raulanto"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-full bg-muted/80 hover:bg-muted text-foreground transition-all hover:scale-105 active:scale-95"
+            className="p-3 rounded-full bg-muted/80 hover:bg-muted text-foreground transition-all hover:scale-105 active:scale-95 min-h-[44px] min-w-[44px] flex items-center justify-center"
             title="Ver GitHub"
+            aria-label="Ver GitHub"
           >
             <svg
               className="size-4 fill-current"

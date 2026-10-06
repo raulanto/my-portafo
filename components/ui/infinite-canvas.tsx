@@ -269,6 +269,13 @@ export function InfiniteCanvas({
       reset,
     };
 
+    // Auto-fit on small screens upon loading
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setTimeout(() => {
+        fit();
+      }, 150);
+    }
+
     let coast = 0;
     const stopMomentum = () => {
       cancelAnimationFrame(coast);
@@ -520,7 +527,7 @@ export function InfiniteCanvas({
       aria-describedby={hintId}
       tabIndex={0}
       className={cn(
-        "relative isolate h-[700px] sm:h-[800px] lg:h-[850px] w-full cursor-grab touch-none overflow-clip rounded-3xl border border-border/60 bg-card/40 backdrop-blur-xl  outline-none select-none focus-visible:ring-2 focus-visible:ring-primary data-dragging:cursor-grabbing",
+        "relative isolate h-[520px] sm:h-[750px] lg:h-[850px] w-full cursor-grab touch-none overflow-clip rounded-3xl border border-border/60 bg-card/40 backdrop-blur-xl outline-none select-none focus-visible:ring-2 focus-visible:ring-primary data-dragging:cursor-grabbing",
         className,
       )}
       style={{
@@ -538,7 +545,7 @@ export function InfiniteCanvas({
           <div
             key={note.id}
             className={cn(
-              "absolute flex w-64 flex-col gap-2 rounded-2xl p-5  border backdrop-blur-md transition-shadow hover:shadow-2xl",
+              "absolute flex w-64 flex-col gap-2 rounded-2xl p-5 border backdrop-blur-md transition-shadow hover:shadow-2xl",
               note.accent
                 ? "bg-gradient-to-br from-primary/95 to-purple-600/95 text-white border-primary/40 shadow-primary/20"
                 : "bg-card/90 text-card-foreground border-border/70 shadow-black/10",
@@ -591,20 +598,20 @@ export function InfiniteCanvas({
 
       <p
         id={hintId}
-        className="pointer-events-none absolute bottom-4 left-4 text-xs font-mono text-muted-foreground/80 max-sm:sr-only backdrop-blur-sm px-3 py-1 rounded-full bg-background/60 border border-border/40"
+        className="pointer-events-none absolute bottom-4 left-4 text-xs font-mono text-muted-foreground/80 max-sm:hidden backdrop-blur-sm px-3 py-1 rounded-full bg-background/60 border border-border/40"
       >
         Arrastra para navegar • Pellizca/Rueda para zoom
       </p>
 
       <div
         data-canvas-toolbar
-        className="absolute right-3 bottom-3 flex h-11 cursor-default items-center gap-1 rounded-full bg-background/90 backdrop-blur-md p-1 border border-border/60 shadow-lg"
+        className="absolute right-2.5 sm:right-3 bottom-2.5 sm:bottom-3 flex h-10 sm:h-11 cursor-default items-center gap-1 rounded-full bg-background/95 sm:bg-background/90 backdrop-blur-md p-1 border border-border/60 shadow-lg"
       >
         <button
           type="button"
           aria-label="Zoom out"
           onClick={() => api.current?.zoomBy(1 / BUTTON_ZOOM)}
-          className={cn(toolButton, "w-9")}
+          className={cn(toolButton, "size-8 sm:w-9 sm:h-9")}
         >
           <ToolIcon d="M5 12h14" />
         </button>
@@ -612,7 +619,7 @@ export function InfiniteCanvas({
           type="button"
           aria-label="Reset zoom"
           onClick={() => api.current?.reset()}
-          className={cn(toolButton, "w-14 font-mono")}
+          className={cn(toolButton, "px-2 sm:w-14 font-mono text-[11px] sm:text-xs")}
         >
           <span ref={zoomLabel}>100%</span>
         </button>
@@ -620,15 +627,15 @@ export function InfiniteCanvas({
           type="button"
           aria-label="Zoom in"
           onClick={() => api.current?.zoomBy(BUTTON_ZOOM)}
-          className={cn(toolButton, "w-9")}
+          className={cn(toolButton, "size-8 sm:w-9 sm:h-9")}
         >
           <ToolIcon d="M5 12h14M12 5v14" />
         </button>
-        <span aria-hidden className="mx-1 h-5 w-px bg-border/60" />
+        <span aria-hidden className="mx-0.5 sm:mx-1 h-4 sm:h-5 w-px bg-border/60" />
         <button
           type="button"
           onClick={() => api.current?.fit()}
-          className={cn(toolButton, "px-3.5 font-bold text-primary")}
+          className={cn(toolButton, "px-2.5 sm:px-3.5 font-bold text-primary text-[11px] sm:text-xs")}
         >
           Encuadrar
         </button>

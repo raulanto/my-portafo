@@ -9,15 +9,15 @@ export function AllProjectsSection() {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section id="todos-proyectos" className="scroll-mt-28 flex flex-col items-center gap-16">
+    <section id="proyectos" className="scroll-mt-24 sm:scroll-mt-28 flex flex-col items-center gap-10 sm:gap-16">
       {/* Header */}
-      <div className="flex flex-col items-center gap-3 text-center">
-        <span className="text-xs font-mono text-muted-foreground tracking-widest uppercase">
-          Todos los proyectos
+      <div className="flex flex-col items-center gap-3 text-center px-4">
+        <span className="text-[11px] sm:text-xs font-mono text-muted-foreground tracking-widest uppercase px-3 py-1 rounded-full bg-muted/50 border border-border/30">
+          03 / Todos los proyectos
         </span>
         <ScrollTextReveal
           tag="h2"
-          className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]"
+          className="text-3xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.08]"
         >
           Trabajo & <br className="hidden sm:inline" />
           <span className="text-primary font-serif italic font-normal text-[0.95em]">
@@ -55,55 +55,57 @@ export function AllProjectsSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onMouseEnter={() => setHovered(i)}
-                  className="relative flex items-center justify-between gap-4 px-2 py-5"
+                  className="relative flex items-center justify-between gap-3 sm:gap-4 px-2 py-4 sm:py-5 min-h-[56px]"
                   style={{
                     opacity: isDimmed ? 0.35 : 1,
                     transition: "opacity 0.25s ease",
                   }}
                 >
-                  <div className="flex items-baseline gap-4 w-full">
+                  <div className="flex items-center sm:items-baseline gap-3 sm:gap-4 w-full">
                     <span
-                      className="text-xs font-mono tabular-nums w-5 shrink-0"
+                      className="text-xs font-mono tabular-nums w-5 shrink-0 text-muted-foreground"
                       style={{
                         color: isHovered
                           ? "hsl(var(--primary))"
-                          : "hsl(var(--muted-foreground))",
+                          : undefined,
                         transition: "color 0.25s ease",
                       }}
                     >
                       {String(i + 1).padStart(2, "0")}
                     </span>
 
-                    <span
-                      className="text-xl sm:text-2xl font-semibold tracking-tight flex-1"
-                      style={{
-                        color: isHovered
-                          ? "hsl(var(--primary))"
-                          : "hsl(var(--foreground))",
-                        transition: "color 0.25s ease",
-                      }}
-                    >
-                      {project.title}
-                    </span>
+                    <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5 sm:gap-4 flex-1">
+                      <span
+                        className="text-lg sm:text-2xl font-semibold tracking-tight"
+                        style={{
+                          color: isHovered
+                            ? "hsl(var(--primary))"
+                            : "hsl(var(--foreground))",
+                          transition: "color 0.25s ease",
+                        }}
+                      >
+                        {project.title}
+                      </span>
 
-                    <span
-                      className="hidden sm:inline text-xs font-mono shrink-0"
-                      style={{
-                        color: isHovered
-                          ? "hsl(var(--primary) / 0.7)"
-                          : "hsl(var(--muted-foreground))",
-                        transition: "color 0.25s ease",
-                      }}
-                    >
-                      {project.category}
-                    </span>
+                      <span
+                        className="text-[11px] sm:text-xs font-mono shrink-0 text-primary/80 sm:text-muted-foreground"
+                        style={{
+                          color: isHovered
+                            ? "hsl(var(--primary) / 0.8)"
+                            : undefined,
+                          transition: "color 0.25s ease",
+                        }}
+                      >
+                        {project.category}
+                      </span>
+                    </div>
                   </div>
 
                   <ArrowUpRight
-                    className="size-4 shrink-0"
+                    className="size-4 shrink-0 text-muted-foreground/60 sm:text-primary"
                     style={{
                       color: "hsl(var(--primary))",
-                      opacity: isHovered ? 1 : 0,
+                      opacity: isHovered ? 1 : 0.6,
                       transform: isHovered ? "translate(2px, -2px)" : "translate(0, 0)",
                       transition: "opacity 0.2s ease, transform 0.2s ease",
                     }}

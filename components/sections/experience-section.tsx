@@ -113,27 +113,27 @@ export function ExperienceSection() {
   const [expandedId, setExpandedId] = useState<string | null>("fincrece");
 
   return (
-    <section id="experiencia" className="scroll-mt-28 flex flex-col gap-12 py-6">
+    <section id="experiencia" className="scroll-mt-24 sm:scroll-mt-28 flex flex-col gap-8 sm:gap-12 py-4 sm:py-6">
       {/* Minimalist Section Header with Giant Typography */}
-      <div className="flex flex-col gap-5 border-b border-border/20 pb-10">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-mono font-bold tracking-widest uppercase">
+      <div className="flex flex-col gap-4 sm:gap-5 border-b border-border/20 pb-6 sm:pb-10">
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 text-primary text-[11px] sm:text-xs font-mono font-bold tracking-widest uppercase">
             <Briefcase className="size-3.5" />
-            <span>03 / TRAYECTORIA & ROLES</span>
+            <span>04 / TRAYECTORIA & ROLES</span>
           </div>
-          <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-            Hover o Toca una tarjeta para explorar detalles
+          <span className="text-[11px] sm:text-xs font-mono text-muted-foreground uppercase tracking-wider">
+            Toca una tarjeta para ver detalles
           </span>
         </div>
 
-        <ScrollTextReveal tag="h2" className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter text-foreground leading-none">
+        <ScrollTextReveal tag="h2" className="text-3xl sm:text-6xl md:text-8xl font-black tracking-tighter text-foreground leading-[1.05]">
           Experiencia <span className="text-primary font-serif italic font-normal">&amp;</span> <br />
           <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary/80 bg-clip-text text-transparent">
             Trayectoria.
           </span>
         </ScrollTextReveal>
 
-        <ScrollWordOpacity tag="p" className="text-base sm:text-xl text-muted-foreground max-w-3xl font-normal leading-relaxed">
+        <ScrollWordOpacity tag="p" className="text-sm sm:text-xl text-muted-foreground max-w-3xl font-normal leading-relaxed">
           Historial laboral, proyectos clave y atribuciones técnicas en desarrollo web, arquitectura de datos e IoT.
         </ScrollWordOpacity>
       </div>
@@ -148,26 +148,26 @@ export function ExperienceSection() {
               <div
                 onClick={() => setExpandedId(isExpanded ? null : item.id)}
                 className={cn(
-                  "group py-8 sm:py-10 border-b border-border/30 transition-all duration-300 cursor-pointer"
+                  "group py-6 sm:py-10 border-b border-border/30 transition-all duration-300 cursor-pointer"
                 )}
               >
                 {/* Main Line / Summary Row */}
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                  <div className="flex items-baseline gap-4 sm:gap-8">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 sm:gap-4">
+                  <div className="flex items-start sm:items-baseline gap-3 sm:gap-8">
                     <span
                       className={cn(
-                        "text-xl sm:text-2xl font-mono tracking-tighter transition-colors duration-300 select-none shrink-0",
-                        isExpanded ? "text-primary font-bold" : "text-muted-foreground/40 group-hover:text-muted-foreground"
+                        "text-lg sm:text-2xl font-mono tracking-tighter transition-colors duration-300 select-none shrink-0 mt-0.5 sm:mt-0",
+                        isExpanded ? "text-primary font-bold" : "text-muted-foreground/50 group-hover:text-muted-foreground"
                       )}
                     >
                       {item.number}
                     </span>
 
-                    <div className="flex flex-col gap-1">
-                      <h3 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground group-hover:text-primary transition-colors duration-300">
+                    <div className="flex flex-col gap-1 flex-1">
+                      <h3 className="text-xl sm:text-3xl md:text-5xl font-black tracking-tight text-foreground group-hover:text-primary transition-colors duration-300">
                         {item.role}
                       </h3>
-                      <div className="flex items-center gap-3 text-sm sm:text-base text-muted-foreground font-mono">
+                      <div className="flex flex-wrap items-center gap-2 text-xs sm:text-base text-muted-foreground font-mono">
                         <span className="font-semibold text-foreground/90">{item.company}</span>
                         <span>•</span>
                         <span>{item.period}</span>
@@ -175,14 +175,14 @@ export function ExperienceSection() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between lg:justify-end gap-6">
-                    <span className="text-xs sm:text-sm font-mono text-muted-foreground hidden md:inline-block">
+                  <div className="flex items-center justify-between lg:justify-end gap-4 sm:gap-6 pt-1 sm:pt-0">
+                    <span className="text-xs sm:text-sm font-mono text-muted-foreground">
                       {item.location}
                     </span>
 
                     <div
                       className={cn(
-                        "size-9 rounded-full border border-border/40 flex items-center justify-center transition-all duration-300 shrink-0",
+                        "size-8 sm:size-9 rounded-full border border-border/40 flex items-center justify-center transition-all duration-300 shrink-0",
                         isExpanded
                           ? "bg-primary text-primary-foreground border-primary rotate-180"
                           : "bg-transparent text-muted-foreground group-hover:border-primary/50 group-hover:text-foreground"

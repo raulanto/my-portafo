@@ -193,6 +193,7 @@ export function LogoOrbit({
             <button
               type="button"
               aria-label={logo.title}
+              onClick={() => setActive(active === logo.title ? null : logo.title)}
               onPointerEnter={(e) =>
                 e.pointerType !== "touch" && setActive(logo.title)
               }
@@ -205,12 +206,12 @@ export function LogoOrbit({
                 hovering.current = false;
                 setActive(null);
               }}
-              className="relative grid size-14 sm:size-16 touch-manipulation place-items-center rounded-2xl bg-card/80 border border-border/40 shadow-md backdrop-blur-md text-foreground outline-hidden focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-foreground hover:border-primary/50 transition-colors"
+              className="relative grid size-11 sm:size-14 md:size-16 touch-manipulation place-items-center rounded-2xl bg-card/85 border border-border/50 shadow-md backdrop-blur-md text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary hover:border-primary/50 transition-colors"
             >
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden
-                className="size-8 sm:size-10 transition-[color,scale] duration-200 ease-out"
+                className="size-6 sm:size-8 md:size-9 transition-[color,scale] duration-200 ease-out"
                 style={{
                   fill:
                     on && readable(logo.hex) ? `#${logo.hex}` : "currentColor",
@@ -222,7 +223,7 @@ export function LogoOrbit({
               <span
                 aria-hidden
                 className={cn(
-                  "pointer-events-none absolute top-full left-1/2 mt-1 -translate-x-1/2 rounded-full bg-foreground px-2 py-0.5 text-xs font-medium whitespace-nowrap text-background transition-[opacity,translate] duration-150 ease-out",
+                  "pointer-events-none absolute top-full left-1/2 mt-1 -translate-x-1/2 rounded-full bg-foreground px-2 py-0.5 text-[10px] sm:text-xs font-semibold whitespace-nowrap text-background transition-[opacity,translate] duration-150 ease-out shadow-lg z-50",
                   on ? "translate-y-0 opacity-100" : "-translate-y-1 opacity-0"
                 )}
               >

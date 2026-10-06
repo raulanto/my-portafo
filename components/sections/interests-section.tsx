@@ -3,19 +3,19 @@ import { TextReveal } from "@/components/ui/text-reveal";
 
 export function InterestsSection() {
   return (
-    <section id="gustos" className="scroll-mt-28 flex flex-col gap-10">
+    <section id="gustos" className="scroll-mt-24 sm:scroll-mt-28 flex flex-col gap-6 sm:gap-10">
       {/* Header */}
-      <div className="flex flex-col gap-4 border-b border-border/20 pb-8">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-mono font-bold tracking-wider uppercase">
-            <span>05 / GUSTOS &amp; INTERESES</span>
+      <div className="flex flex-col gap-4 border-b border-border/20 pb-6 sm:pb-8">
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[11px] sm:text-xs font-mono font-bold tracking-wider uppercase">
+            <span>06 / GUSTOS &amp; INTERESES</span>
           </div>
-          <span className="text-xs font-mono text-muted-foreground">
+          <span className="text-[11px] sm:text-xs font-mono text-muted-foreground">
             Lo que me define fuera del trabajo
           </span>
         </div>
 
-        <ScrollTextReveal tag="h2" className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.05]">
+        <ScrollTextReveal tag="h2" className="text-3xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground leading-[1.08]">
           Más allá del{" "}
           <span className="font-serif italic font-normal text-primary text-[0.95em]">
             código limpio.
@@ -24,7 +24,7 @@ export function InterestsSection() {
       </div>
 
       {/* Editorial prose */}
-      <div className="max-w-3xl flex flex-col gap-8 text-base sm:text-lg text-muted-foreground leading-[1.85]">
+      <div className="max-w-3xl flex flex-col gap-6 sm:gap-8 text-sm sm:text-lg text-muted-foreground leading-[1.85]">
         <TextReveal>
           Tengo una obsesión tranquila con la arquitectura de software. Prefiero la hexagonal, el DDD y la separación clara de capas — no como dogma, sino porque cuando el código tiene fronteras bien definidas, escala sin dolor. Lo aplico en Go con gRPC, y documento todo con READMEs estructurados y un CLAUDE.md por proyecto.
         </TextReveal>
@@ -51,8 +51,8 @@ export function InterestsSection() {
       </div>
 
       {/* Pull quote */}
-      <blockquote className="border-l-2 border-primary/40 pl-6 mt-2">
-        <TextReveal className="text-lg sm:text-xl font-serif italic text-foreground/80 leading-relaxed">
+      <blockquote className="border-l-2 border-primary/40 pl-4 sm:pl-6 mt-2">
+        <TextReveal className="text-base sm:text-xl font-serif italic text-foreground/80 leading-relaxed">
           "No me enamoro de los frameworks: me apasiona entender las tripas del problema, limpiar el caos de los datos y construir arquitectura que perdure."
         </TextReveal>
       </blockquote>
