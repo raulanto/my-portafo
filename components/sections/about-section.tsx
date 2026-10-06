@@ -17,11 +17,21 @@ import { InfiniteCanvas, type CanvasNote } from "@/components/ui/infinite-canvas
 import { ScrollTextReveal, ScrollWordOpacity } from "@/components/ui/scroll-text-reveal";
 
 const PORTFOLIO_NOTES: CanvasNote[] = [
+  // Fila Superior (Top Row: y = -220)
+  {
+    id: "spec-frontend",
+    x: -560,
+    y: -220,
+    rotate: -1,
+    title: "Frontend Reactivo & UI",
+    text: "Vue.js, Nuxt.js, Angular, React, TypeScript, TailwindCSS. Interfaces accesibles con arquitectura por componentes.",
+    tags: ["Vue", "Nuxt", "Angular"],
+  },
   {
     id: "profile",
-    x: -140,
-    y: -150,
-    rotate: -1,
+    x: -272,
+    y: -220,
+    rotate: -0.5,
     accent: true,
     title: "Raúl Antonio • Full Stack",
     text: "Desarrollador con más de 3 años de experiencia creando soluciones escalables. Especializado en Vue, Nuxt, Angular, React, Django, Go y FastAPI.",
@@ -29,62 +39,55 @@ const PORTFOLIO_NOTES: CanvasNote[] = [
   },
   {
     id: "stat-exp",
-    x: 150,
-    y: -150,
-    rotate: 1.5,
+    x: 16,
+    y: -220,
+    rotate: 0.8,
     title: "3+ Años de Experiencia",
     text: "Desarrollo web integral de punta a punta, desde el diseño de arquitectura hasta la entrega en producción.",
     tags: ["Trayectoria", "Seniority"],
   },
   {
-    id: "stat-projects",
-    x: -140,
-    y: 45,
+    id: "spec-backend",
+    x: 304,
+    y: -220,
     rotate: 1,
+    title: "Backend & APIs",
+    text: "NestJS, Django, FastAPI, Go, Laravel, ASP.NET Core. Diseño de APIs RESTful & GraphQL con arquitectura hexagonal.",
+    tags: ["Django", "FastAPI", "Go"],
+  },
+
+  // Fila Inferior (Bottom Row: y = 20)
+  {
+    id: "spec-db",
+    x: -560,
+    y: 20,
+    rotate: 0.8,
+    title: "Bases de Datos & SQL",
+    text: "PostgreSQL, MySQL, Supabase, Redis, ORM Django. Refactorización de esquemas legacy y Window Functions.",
+    tags: ["PostgreSQL", "SQL"],
+  },
+  {
+    id: "stat-projects",
+    x: -272,
+    y: 20,
+    rotate: 0.5,
     title: "15+ Proyectos Construidos",
     text: "Sistemas Kanban, dashboards interactivos, monitoreo de sensores y conversores SQL a modelos Django.",
     tags: ["APIs", "Production"],
   },
   {
     id: "stat-blog",
-    x: 150,
-    y: 45,
-    rotate: -1.5,
+    x: 16,
+    y: 20,
+    rotate: -0.8,
     title: "17+ Artículos de Blog",
     text: "Guías técnicas sobre refactorización SQL, asincronía en Django, Golang avanzado y WebSockets.",
     tags: ["Blog", "Technical"],
   },
   {
-    id: "spec-frontend",
-    x: -430,
-    y: -50,
-    rotate: -2,
-    title: "Frontend Reactivo & UI",
-    text: "Vue.js, Nuxt.js, Angular, React, TypeScript, TailwindCSS. Interfaces accesibles con arquitectura por componentes.",
-    tags: ["Vue", "Nuxt", "Angular"],
-  },
-  {
-    id: "spec-backend",
-    x: 440,
-    y: -50,
-    rotate: 2,
-    title: "Backend & APIs",
-    text: "NestJS, Django, FastAPI, Go, Laravel, ASP.NET Core. Diseño de APIs RESTful & GraphQL con arquitectura hexagonal.",
-    tags: ["Django", "FastAPI", "Go"],
-  },
-  {
-    id: "spec-db",
-    x: -430,
-    y: 140,
-    rotate: 1,
-    title: "Bases de Datos & SQL",
-    text: "PostgreSQL, MySQL, Supabase, Redis, ORM Django. Refactorización de esquemas legacy y Window Functions.",
-    tags: ["PostgreSQL", "SQL"],
-  },
-  {
     id: "spec-devops",
-    x: 440,
-    y: 140,
+    x: 304,
+    y: 20,
     rotate: -1,
     title: "DevOps & Infraestructura",
     text: "Docker, Kubernetes, Git, CI/CD, Vercel. Despliegues continuos automatizados con cero tiempo de inactividad.",
@@ -96,7 +99,15 @@ const CANVAS_HOME = { x: 0, y: 0 };
 
 export function AboutSection() {
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [viewMode, setViewMode] = useState<"canvas" | "cards">("cards");
+  // Default to canvas on PC / desktop for full interactive experience
+  const [viewMode, setViewMode] = useState<"canvas" | "cards">("canvas");
+
+  React.useEffect(() => {
+    // If mobile viewport on initial client render, default to cards for seamless vertical touch scrolling
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setViewMode("cards");
+    }
+  }, []);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText("raulantodev@gmail.com");

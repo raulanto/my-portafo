@@ -145,7 +145,15 @@ export function InfiniteCanvas({
 
     let width = vp.clientWidth;
     let height = vp.clientHeight;
-    let view = centeredOn(home, 1, width, height);
+    // Calculate optimal scale so that all cards fit centered and fully visible on any PC screen or laptop
+    const optimalScale = clampScale(
+      Math.min(
+        (width - 56) / 1160,
+        (height - 80) / 480,
+        1,
+      ),
+    );
+    let view = centeredOn(home, optimalScale, width, height);
     let gridAlpha = -1;
     let percent = -1;
 
