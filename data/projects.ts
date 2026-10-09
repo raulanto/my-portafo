@@ -182,7 +182,7 @@ export const ALL_PROJECTS: ProjectItem[] = [
   },
   {
     id: "arquitectura-hexagonal",
-    title: "Calculadora Arquitectura Hexagonal",
+    title: "Calculadora Divisional",
     category: "Frontend",
     description:
       "Implementación de referencia de Arquitectura Hexagonal (Puertos y Adaptadores) y Domain-Driven Design con desacoplamiento total del framework.",
@@ -216,5 +216,19 @@ export const ALL_PROJECTS: ProjectItem[] = [
     github: "https://github.com/raulantodev",
     url: "https://github.com/raulanto/pdf-view",
     accent: "rose",
+  },
+    {
+    id: "agenda-citas",
+    title: "Agenda Citas y Clientes",
+    category: "Full Stack",
+    description:
+      "Herramienta web para la gestion de citas y clientes con recordatorios de eventos y notificaciones en tiempo real.",
+    tech: ["Django", "PostgreSQL", "rest-framework"],
+    highlight: "Citas y Clientes",
+    github: "https://github.com/raulanto/gestor-citas",
+    url: "https://github.com/raulanto/gestor-citas",
+    demo: "https://github.com/raulanto/gestor-citas",
+    accent: "blue",
+    featured: true,
   },
 ];
